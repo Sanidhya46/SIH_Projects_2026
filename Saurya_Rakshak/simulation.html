@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Saurya Rakshak – Industrial Safety Simulation</title>
+<style>
+:root{color-scheme:dark;--bg:#0d0f14;--fg:#eaedf3;--ac:#f59e0b;--pn:rgba(12,14,22,.92);--ok:#22c55e;--bad:#ef4444;--warn:#f59e0b}
+*{box-sizing:border-box;margin:0}html,body{height:100%;background:var(--bg);color:var(--fg);font-family:"Outfit","Segoe UI",system-ui,sans-serif;overflow:hidden}
+canvas#c{position:fixed;inset:0;width:100%;height:100%;display:block}
+.p{position:fixed;background:var(--pn);border:1px solid rgba(245,158,11,.35);border-radius:12px;padding:10px 14px;backdrop-filter:blur(10px);font-size:13px;box-shadow:0 8px 32px rgba(0,0,0,.6);z-index:20}
+#top{top:12px;left:14px}#top b{font-size:18px;color:var(--ac);letter-spacing:.4px}#stage{margin-top:3px;font-size:12px;color:#94a3b8}
+#nav{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:30;background:rgba(15,17,24,.92);border:1px solid rgba(245,158,11,.4);padding:6px 14px;border-radius:20px;font-size:12px;display:flex;gap:8px;align-items:center}
+#nav a{color:#f59e0b;text-decoration:none;font-weight:600}#nav a:hover{text-decoration:underline}
+#hud{top:80px;right:14px;width:240px;max-width:48vw;display:none}
+#hud h4{margin:0 0 6px;font-size:11.5px;color:var(--ac);letter-spacing:.3px}
+.sr{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #ffffff10;font-size:12px}
+.sr b{font-weight:700}.sr .ok{color:#22c55e}.sr .bad{color:#ef4444}.sr .warn{color:#f59e0b}.sr .off{color:#64748b}
+#iq{top:80px;left:14px;width:210px;max-width:42vw;display:none}
+#iq h4{margin:0 0 6px;font-size:11.5px;color:var(--ac)}
+.ie{padding:5px 7px;border-radius:6px;margin-bottom:4px;font-size:11px;border-left:3px solid}
+.ie.h{border-color:#ef4444;background:rgba(239,68,68,.1)}.ie.m{border-color:#f59e0b;background:rgba(245,158,11,.08)}.ie.l{border-color:#64748b;background:rgba(100,116,139,.08)}
+#sub{left:50%;transform:translateX(-50%);bottom:70px;width:min(820px,94vw);text-align:center;font-size:15px;line-height:1.45;background:rgba(10,12,18,.94);border-color:rgba(245,158,11,.35)}
+#ctl{left:50%;transform:translateX(-50%);bottom:10px;display:flex;gap:8px;align-items:center;width:min(820px,94vw)}
+button{background:#3a2a0e;color:var(--fg);border:1px solid var(--ac);border-radius:8px;padding:6px 12px;cursor:pointer;font:inherit;font-size:13px;transition:background .2s}
+button:hover{background:#5a3e12}#seek{flex:1;accent-color:#f59e0b}
+#splash{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;background:rgba(8,10,16,.96);z-index:50;text-align:center;padding:24px}
+#splash h1{font-size:clamp(30px,5.5vw,52px);color:#f59e0b;margin-bottom:8px}#splash p{max-width:560px;opacity:.9;font-size:14.5px;line-height:1.5}
+#splash button{font-size:18px;font-weight:700;padding:12px 28px;background:#b45309;margin-top:16px;border-radius:10px}
+#fin{position:fixed;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;background:rgba(8,10,16,.92);z-index:50;text-align:center;padding:24px}
+#fin h1{color:#f59e0b}#fin .g{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;width:min(840px,94vw);margin:16px 0}
+#fin .k{background:var(--pn);border:1px solid rgba(245,158,11,.3);border-radius:12px;padding:14px}#fin .k b{display:block;font-size:24px;color:#22c55e;margin-bottom:4px}
+.fx{position:fixed;inset:0;pointer-events:none;z-index:10;transition:opacity .4s}
+#arc{background:radial-gradient(ellipse at center,rgba(255,230,100,.25),transparent 70%);opacity:0}
+#gas{background:linear-gradient(180deg,rgba(180,255,100,.12) 0%,transparent 60%);opacity:0}
+#heat{background:linear-gradient(0deg,rgba(255,80,20,.15) 0%,transparent 50%);opacity:0}
+#shock{opacity:0}#shock::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 48%,rgba(255,255,0,.15) 48%,rgba(255,255,0,.15) 52%);animation:zap .15s infinite alternate}
+@keyframes zap{from{opacity:1}to{opacity:.3}}
+</style></head><body>
+<canvas id="c"></canvas>
+<div class="fx" id="arc"></div><div class="fx" id="gas"></div><div class="fx" id="heat"></div><div class="fx" id="shock"></div>
+<div id="nav"><span>Saurya Rakshak Simulation</span> · <a href="../index.html#saurya-rakshak">← Back to Main Dashboard</a> · <a href="index.html">Solution Hub</a></div>
+<div class="p" id="top"><b>⚡ Saurya Rakshak</b><div id="stage">Initializing…</div></div>
+<div class="p" id="hud"><h4>📡 Sensor HUD · Live Status</h4><div id="rows"></div></div>
+<div class="p" id="iq"><h4>🚨 Incident Queue</h4><div id="incidents"></div></div>
+<div class="p" id="sub"></div>
+<div class="p" id="ctl"><button id="pp">Pause</button><button id="rs">Restart</button><input type="range" id="seek" min="0" max="200" step=".1" value="0" aria-label="Timeline"><span id="tm">0:00</span><button id="mu">🔊</button></div>
+<div id="splash"><h1>⚡ Saurya Rakshak</h1><p>A 3-minute 20-second narrated 3D simulation showing the four-part connected safety system: Smart Helmet, Smart Gloves, Gas & Fall Detector, and the Supervisor Dashboard working together in an industrial workshop.</p><p style="font-size:12px;opacity:.7;margin-top:8px">Turn sound on. Uses browser speech synthesis.</p><button id="go">▶ Start Simulation</button></div>
+<div id="fin"><h1>Simulation Complete</h1><div class="g">
+<div class="k"><b>Unit 1</b>Smart Helmet · Strap monitoring, BLE status</div>
+<div class="k"><b>Unit 2</b>Smart Gloves · Cuff closure, removable module</div>
+<div class="k"><b>Unit 3</b>Gas & Fall · Independent alarm, IMU, 4-gas</div>
+<div class="k"><b>Unit 4</b>Dashboard · Offline sync, incident log, audit</div>
+<div class="k"><b>Local First</b>All alarms work without internet</div>
+<div class="k"><b>50-Step</b>Prototype Completion Checklist</div>
+</div><p style="font-size:12px;opacity:.75;max-width:640px">Saurya Rakshak is an industrial-safety research prototype. It supplements, not replaces, certified PPE, work permits, isolation procedures and emergency response.</p>
+<button id="rp" style="margin-top:14px;padding:8px 20px">Replay</button></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const T=200,$=id=>document.getElementById(id),cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x)),sm=x=>x*x*(3-2*x);
+
+// Narration cues
+const cues=[
+[0,"The Problem","Every year in India, thousands of workers die from electrocution, falls, gas exposure, and industrial accidents. In 2023 alone, thirteen thousand eight hundred thirty-seven electrocution deaths and over twenty-five thousand fatal falls were recorded."],
+[18,"The Problem","Workers on electrical and welding jobs face electric shock, arc flash burns, toxic fumes, falls from height, and heat stress. Conventional PPE protects physically, but nobody knows electronically whether it's being worn, whether the air is safe, or whether someone has fallen."],
+[36,"Our Solution","Introducing Saurya Rakshak. A four-part connected safety system: Smart Helmet, Smart Gloves, a portable Gas and Fall Detector, and a Supervisor Dashboard. Each unit works independently. Together, they form one monitoring ecosystem."],
+[54,"Unit 1 · Smart Helmet","Unit one. The smart safety helmet. A certified HDPE industrial helmet with an external strap sensor and BLE controller. It reports whether the chin strap is secured, monitors battery, and sends status wirelessly. No drilling, no shell modification."],
+[72,"Unit 2 · Smart Gloves","Unit two. Smart safety gloves. For welding: certified cowhide split-leather gloves. For electrical work: ASTM D one-twenty rated rubber insulating gloves. A removable cuff-mounted sensor module reports closure state without damaging the protective material."],
+[90,"Unit 3 · Gas and Fall Detector","Unit three. The gas and fall detection device. An independent body-worn unit with a four-gas detector covering LEL, oxygen, carbon monoxide, and hydrogen sulphide. Plus a six-axis IMU for fall detection, an SOS button, a buzzer, vibration motor, and high-visibility LED."],
+[110,"Local Alarms · No Internet Needed","Critical design principle: every local alarm works without internet. The buzzer sounds, the vibration fires, and the LED flashes even when WiFi is completely disconnected. Events are stored locally first, then synced when connectivity returns."],
+[126,"Hazard Demo · Gas Detection","Watch the gas detector in action. Carbon monoxide rises above the configured alarm threshold. The device triggers an immediate local alarm, saves the event, and transmits it to the supervisor dashboard."],
+[142,"Hazard Demo · Possible Fall","Now a possible fall event. The IMU detects a sudden acceleration spike followed by orientation change and brief inactivity. The local alarm activates instantly. The dashboard shows a high-priority incident."],
+[158,"Unit 4 · Supervisor Dashboard","Unit four. The supervisor dashboard. It receives events from all three wearable units, shows device health, battery status, sensor faults, and incident history. Events are deduplicated with unique IDs. Offline events sync automatically on reconnection."],
+[176,"Results & Verification","The prototype is verified through twenty systematic tests: strap state cycling, glove closure detection, IMU motion trials, gas sensor challenges, local alarm latency, offline queue recovery, and full integrated multi-device operation."],
+[190,"Conclusion","Saurya Rakshak: protection plus detection plus response. Three independent wearable units and one supervisor dashboard. Local alarms, offline persistence, evidence-driven safety. An industrial-safety research prototype ready for Smart India Hackathon."]
+];
+
+// Renderer
+const R=new THREE.WebGLRenderer({canvas:$("c"),antialias:true});R.setPixelRatio(Math.min(devicePixelRatio,2));
+const S=new THREE.Scene();S.background=new THREE.Color(0x0d0f14);S.fog=new THREE.Fog(0x0d0f14,40,100);
+const cam=new THREE.PerspectiveCamera(50,1,.1,200);
+
+S.add(new THREE.HemisphereLight(0xffe8c0,0x1a1a2e,1.1));
+const dl=new THREE.DirectionalLight(0xfff0d0,1.2);dl.position.set(8,18,10);S.add(dl);
+const pl1=new THREE.PointLight(0xf59e0b,.6,30);pl1.position.set(0,8,0);S.add(pl1);
+
+const V=(x,y,z)=>new THREE.Vector3(x,y,z);
+const Mt=(g,c,o={})=>new THREE.Mesh(g,new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:.55},o)));
+const Bx=(w,h,d,c,o)=>Mt(new THREE.BoxGeometry(w,h,d),c,o);
+const Cy=(r,h,c,o)=>Mt(new THREE.CylinderGeometry(r,r,h,20),c,o);
+const at=(m,x,y,z,p)=>{m.position.set(x,y,z);(p||S).add(m);return m};
+
+// Floor
+at(Mt(new THREE.PlaneGeometry(80,60),0x1a1c22),0,0,0).rotation.x=-Math.PI/2;
+// Grid lines
+const gg=new THREE.GridHelper(60,30,0x2a2c34,0x1e2028);S.add(gg);
+
+// Workshop walls
+at(Bx(50,.3,30,0x22252e),0,6,-15);// back wall
+at(Bx(.3,12,30,0x22252e),-25,6,0);// left wall
+at(Bx(.3,12,30,0x22252e),25,6,0);// right wall
+
+// Workbench
+at(Bx(10,.4,4,0x5c3a1a),0,3.5,0);
+[[-4.5,0,-1.5],[4.5,0,-1.5],[-4.5,0,1.5],[4.5,0,1.5]].forEach(p=>at(Cy(.15,3.3,0x444444),p[0],1.7,p[2]));
+// Tools on bench
+at(Bx(1.2,.3,.5,0x888888),2,3.85,0);// welding clamp
+at(Cy(.08,1.5,0xcccccc),-2,4.2,0);// welding rod holder
+at(Bx(.6,.4,.6,0x666666),-3,3.9,.5);// junction box
+
+// Worker figure (simplified)
+const worker=new THREE.Group();S.add(worker);
+at(Cy(.4,2.2,0x2563eb),0,2.3,0,worker);// torso
+at(Mt(new THREE.SphereGeometry(.55,16,16),0xdeb887),0,3.85,0,worker);// head
+at(Cy(.2,1.8,0x1e40af),-.7,1.3,0,worker);// left leg
+at(Cy(.2,1.8,0x1e40af),.7,1.3,0,worker);// right leg
+at(Cy(.15,1.6,0x2563eb),-.85,2.8,0,worker);// left arm
+at(Cy(.15,1.6,0x2563eb),.85,2.8,0,worker);// right arm
+worker.position.set(0,0,3);
+
+// Helmet on head
+const helmet=new THREE.Group();worker.add(helmet);
+at(Mt(new THREE.SphereGeometry(.62,16,12,0,Math.PI*2,0,Math.PI/2),0xe8e8e8,{roughness:.3}),0,4.2,0,helmet);
+const helmetLed=at(Mt(new THREE.SphereGeometry(.08,8,8),0x22c55e,{emissive:0x115522}),-.45,4.3,.4,helmet);
+const strapIndicator=at(Mt(new THREE.SphereGeometry(.06,8,8),0x22c55e,{emissive:0x115522}),.45,3.85,.45,helmet);
+
+// Glove indicators
+const gloveL=at(Mt(new THREE.SphereGeometry(.1,8,8),0x22c55e,{emissive:0x115522}),-.95,2.1,.2,worker);
+const gloveR=at(Mt(new THREE.SphereGeometry(.1,8,8),0x22c55e,{emissive:0x115522}),.95,2.1,.2,worker);
+
+// Gas/Fall detector on belt
+const detector=new THREE.Group();worker.add(detector);
+at(Bx(.8,.5,.3,0x333840),0,1.7,.55,detector);
+const detLed=at(Mt(new THREE.SphereGeometry(.07,8,8),0x22c55e,{emissive:0x115522}),-.25,1.85,.72,detector);
+const detBuzzer=at(Cy(.06,.04,0x888888),.25,1.85,.72,detector);
+
+// Supervisor station (desk + monitor)
+const supDesk=new THREE.Group();S.add(supDesk);supDesk.position.set(-12,0,-8);
+at(Bx(5,.3,2.5,0x3a3a42),0,3,0,supDesk);
+[[-2,0,-.8],[2,0,-.8],[-2,0,.8],[2,0,.8]].forEach(p=>at(Cy(.1,2.8,0x555555),p[0],1.5,p[2],supDesk));
+at(Bx(3.5,2.5,.15,0x111318,{emissive:0x050810}),0,4.6,-.9,supDesk);// monitor
+const monitorGlow=at(Bx(3.2,2.2,.05,0x0f172a,{emissive:0x1e3a5f}),.0,4.6,-.82,supDesk);
+at(Cy(.12,1.2,0x555555),0,3.6,-.8,supDesk);// monitor stand
+
+// Sparks particle system for arc
+const SPN=150,spa=new Float32Array(SPN*3);
+const spg=new THREE.BufferGeometry();spg.setAttribute("position",new THREE.BufferAttribute(spa,3));
+const sparks=new THREE.Points(spg,new THREE.PointsMaterial({color:0xffcc00,size:.15}));sparks.frustumCulled=false;S.add(sparks);
+
+// Gas cloud particles
+const GN=200,ga=new Float32Array(GN*3);
+const gag=new THREE.BufferGeometry();gag.setAttribute("position",new THREE.BufferAttribute(ga,3));
+const gasCloud=new THREE.Points(gag,new THREE.PointsMaterial({color:0x90ee90,size:.3,transparent:true,opacity:.4}));gasCloud.frustumCulled=false;S.add(gasCloud);
+
+// Camera keyframes
+const K=[
+[0,[0,8,25],[0,3,0]],
+[18,[-5,6,18],[0,3,0]],
+[36,[5,7,20],[0,3,0]],
+[54,[1.5,5.5,7],[0,4,3]],// helmet close
+[72,[-1,3.5,6.5],[-.8,2.5,3]],// gloves close
+[90,[1.5,3,6],[0,2,3]],// detector close
+[110,[3,6,14],[0,3,2]],
+[126,[4,5,10],[0,3,1]],// gas demo
+[142,[2,6,12],[0,3,3]],// fall demo
+[158,[-10,5.5,0],[-12,4,-8]],// supervisor
+[176,[0,9,22],[0,3,0]],
+[190,[0,7,20],[0,3,0]]
+];
+
+function camAt(t){
+let i=0;while(i<K.length-1&&K[i+1][0]<=t)i++;
+const a=K[Math.max(0,i)],nxt=K[Math.min(K.length-1,i+1)];
+const dur=nxt[0]-a[0]||1;
+const f=sm(cl((t-a[0])/Math.max(dur,4)));
+cam.position.lerpVectors(V(...a[1]),V(...nxt[1]),f);
+cam.position.x+=Math.sin(t*.2)*.4;
+cam.position.y+=Math.sin(t*.15)*.2;
+const la=V(0,0,0).lerpVectors(V(...a[2]),V(...nxt[2]),f);
+cam.lookAt(la);
+}
+
+// Incident log
+const incidentLog=[];
+function addIncident(t,type,sev,dev){
+if(incidentLog.find(x=>x.type===type))return;
+incidentLog.push({t,type,sev,dev});
+}
+
+// State
+let playing=false,t=0,last=0,cueI=-2,muted=false,voice=null;
+function pick(){const v=speechSynthesis.getVoices();voice=v.find(x=>/en-IN/i.test(x.lang))||v.find(x=>/^en/i.test(x.lang))||null}
+if("speechSynthesis" in window){speechSynthesis.onvoiceschanged=pick;pick()}
+function say(i){if(muted||!("speechSynthesis" in window))return;speechSynthesis.cancel();const tx=cues[i][2],dur=(i<cues.length-1?cues[i+1][0]:T)-cues[i][0];const u=new SpeechSynthesisUtterance(tx);if(voice)u.voice=voice;u.lang=voice?voice.lang:"en-IN";u.rate=cl(tx.split(" ").length/Math.max(4,dur-1)/2.5,.85,1.25);speechSynthesis.speak(u)}
+
+function setPlay(p){playing=p;$("pp").textContent=p?"⏸":"▶";cueI=-2;if(!p&&"speechSynthesis" in window)speechSynthesis.cancel()}
+
+// Sensor HUD data
+function getHUD(t){
+const strapOK=!(t>=65&&t<67);
+const cuffOK=!(t>=80&&t<82);
+const co=t>=126&&t<140?Math.round(35+80*sm(cl((t-126)/6))):t>=140?12:5;
+const coAlarm=co>50;
+const o2=t>=126&&t<140?20.1:20.9;
+const lel=t>=126&&t<140?8:0;
+const h2s=0;
+const temp=t>=126&&t<140?38:28;
+const fallEvt=t>=142&&t<155;
+const bat=Math.max(15,100-t*.35);
+const online=!(t>=116&&t<122);
+return [
+["Strap",strapOK?"CLOSED":"OPEN",strapOK?"ok":"bad"],
+["L-Cuff",cuffOK?"CLOSED":"OPEN",cuffOK?"ok":"bad"],
+["R-Cuff","CLOSED","ok"],
+["CO",co+" ppm",coAlarm?"bad":"ok"],
+["O₂",o2.toFixed(1)+"%",o2<19.5?"bad":"ok"],
+["LEL",lel+"%",lel>10?"bad":"ok"],
+["H₂S","0 ppm","ok"],
+["Temp",temp+"°C",temp>35?"warn":"ok"],
+["IMU",fallEvt?"FALL!":"OK",fallEvt?"bad":"ok"],
+["Battery",Math.round(bat)+"%",bat<20?"warn":"ok"],
+["Network",online?"ONLINE":"OFFLINE",online?"ok":"off"]
+];
+}
+
+function update(t){
+// Worker breathing motion
+worker.position.y=Math.sin(t*1.5)*.03;
+
+// Fall animation
+if(t>=144&&t<150){
+ const ff=cl((t-144)/1.5);
+ worker.rotation.x=ff*Math.PI/3;
+ worker.position.y=-ff*1.2;
+}else if(t>=150&&t<155){
+ worker.rotation.x=Math.PI/3;
+ worker.position.y=-1.2;
+}else{
+ worker.rotation.x=0;
+}
+
+// Helmet LED colors
+const strapOK=!(t>=65&&t<67);
+const hlc=strapOK?0x22c55e:0xef4444;
+helmetLed.material.color.set(t>=54?hlc:0x333333);
+helmetLed.material.emissive.set(t>=54?(strapOK?0x115522:0x771111):0x000000);
+strapIndicator.material.color.set(t>=54?hlc:0x333333);
+strapIndicator.material.emissive.set(t>=54?(strapOK?0x115522:0x771111):0x000000);
+
+// Glove LEDs
+const cuffOK=!(t>=80&&t<82);
+const gc=cuffOK?0x22c55e:0xef4444;
+gloveL.material.color.set(t>=72?gc:0x333333);gloveL.material.emissive.set(t>=72?(cuffOK?0x115522:0x771111):0x000000);
+gloveR.material.color.set(t>=72?0x22c55e:0x333333);gloveR.material.emissive.set(t>=72?0x115522:0x000000);
+
+// Detector LED
+const coAlarm=t>=130&&t<140;
+const fallAlarm=t>=144&&t<155;
+const detC=coAlarm||fallAlarm?0xef4444:t>=90?0x22c55e:0x333333;
+detLed.material.color.set(detC);detLed.material.emissive.set(coAlarm||fallAlarm?0x771111:t>=90?0x115522:0x000000);
+// Buzzer pulse
+if((coAlarm||fallAlarm)&&Math.floor(t*4)%2===0){detBuzzer.scale.setScalar(1.4)}else{detBuzzer.scale.setScalar(1)}
+
+// Monitor glow
+const supActive=t>=158;
+monitorGlow.material.emissive.set(supActive?0x1e3a5f:0x050810);
+if(supActive&&(coAlarm||fallAlarm)){monitorGlow.material.emissive.set(Math.floor(t*3)%2===0?0x5f1e1e:0x1e3a5f)}
+
+// Sparks for arc welding demo
+const arcActive=t>=126&&t<135;
+sparks.visible=arcActive;
+if(arcActive){for(let i=0;i<SPN;i++){const a=Math.random()*Math.PI*2,r=Math.random()*3,h=Math.random()*4;spa[i*3]=Math.cos(a)*r;spa[i*3+1]=3.5+h;spa[i*3+2]=Math.sin(a)*r;}spg.attributes.position.needsUpdate=true}
+
+// Gas cloud
+const gasActive=t>=126&&t<140;
+gasCloud.visible=gasActive;
+if(gasActive){const gf=cl((t-126)/4);for(let i=0;i<GN;i++){ga[i*3]=(Math.random()-.5)*6*gf;ga[i*3+1]=2+Math.random()*5*gf;ga[i*3+2]=(Math.random()-.5)*4*gf+1;}gag.attributes.position.needsUpdate=true}
+
+// FX overlays
+$("arc").style.opacity=arcActive?.6:0;
+$("gas").style.opacity=gasActive?.8:0;
+$("heat").style.opacity=(t>=126&&t<140)?.5:0;
+$("shock").style.opacity=(t>=65&&t<67)?.7:0;
+
+// HUD
+$("hud").style.display=t>=54?"block":"none";
+const hud=getHUD(t);
+$("rows").innerHTML=hud.map(r=>`<div class="sr"><span>${r[0]}</span><b class="${r[2]}">${r[1]}</b></div>`).join("");
+
+// Incidents
+if(t>=65)addIncident(t,"STRAP_OPEN","m","Helmet SR-H01");
+if(t>=80)addIncident(t,"CUFF_OPEN","m","Glove SR-G01");
+if(t>=130)addIncident(t,"CO_HIGH","h","Gas SR-GF01");
+if(t>=144)addIncident(t,"POSSIBLE_FALL","h","IMU SR-GF01");
+if(t>=116&&t<122)addIncident(t,"NETWORK_LOST","l","Gateway");
+
+$("iq").style.display=incidentLog.length?"block":"none";
+$("incidents").innerHTML=incidentLog.slice().reverse().slice(0,5).map(x=>{
+const sc=x.sev==="h"?"h":x.sev==="m"?"m":"l";
+return `<div class="ie ${sc}"><b>${x.type}</b><br>${x.dev}</div>`}).join("");
+
+$("fin").style.display=t>=198?"flex":"none";
+}
+
+// Controls
+$("go").onclick=()=>{$("splash").style.display="none";t=0;setPlay(true)};
+$("pp").onclick=()=>{if(t>=T)t=0;setPlay(!playing)};
+$("rs").onclick=()=>{t=0;incidentLog.length=0;setPlay(true)};
+$("rp").onclick=$("rs").onclick;
+$("mu").onclick=()=>{muted=!muted;$("mu").textContent=muted?"🔇":"🔊";if(muted&&"speechSynthesis" in window)speechSynthesis.cancel();else cueI=-2};
+$("seek").oninput=e=>{t=+e.target.value;cueI=-2};
+
+function resize(){R.setSize(innerWidth,innerHeight,false);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix()}
+addEventListener("resize",resize);resize();
+
+function loop(now){
+const dt=Math.min(.1,(now-last)/1000);last=now;
+if(playing){t=Math.min(T,t+dt);if(t>=T)setPlay(false)}
+camAt(t);update(t);
+let ci=0;cues.forEach((c,i)=>{if(c[0]<=t)ci=i});
+if(ci!==cueI){cueI=ci;$("sub").textContent=cues[ci][2];$("stage").textContent=cues[ci][1];if(playing)say(ci)}
+$("seek").value=t;$("tm").textContent=Math.floor(t/60)+":"+String(Math.floor(t%60)).padStart(2,"0");
+R.render(S,cam);requestAnimationFrame(loop)}
+requestAnimationFrame(loop);
+</script></body></html>

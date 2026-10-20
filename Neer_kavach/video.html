@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neer Kavach – 3D CAD System Video Demonstration</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --surface: #ffffff;
+      --text: #0f172a;
+      --text-muted: #64748b;
+      --brand: #0284c7;
+      --brand-dark: #0369a1;
+      --border: #e2e8f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2.5rem 1.5rem;
+    }
+    .header-bar {
+      max-width: 960px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--brand-dark);
+      background: #e0f2fe;
+      padding: 0.35rem 0.85rem;
+      border-radius: 100px;
+      border: 1px solid #bae6fd;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.55rem 1.1rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: 1px solid transparent;
+    }
+    .btn-primary { background: var(--brand); color: #fff; }
+    .btn-primary:hover { background: var(--brand-dark); }
+    .btn-outline { background: var(--surface); border-color: var(--border); color: var(--text); }
+    .btn-outline:hover { border-color: var(--brand); color: var(--brand-dark); }
+
+    .video-card {
+      max-width: 960px;
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.06), 0 8px 10px -6px rgba(0,0,0,0.04);
+    }
+    .video-title-area {
+      padding: 1.75rem 2rem 1.25rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .video-title-area h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.3;
+      margin-bottom: 0.4rem;
+    }
+    .video-title-area p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .video-viewport {
+      background: #000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+    }
+    video {
+      width: 100%;
+      height: 100%;
+      max-height: 540px;
+      object-fit: contain;
+    }
+    .video-footer {
+      padding: 1.5rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f8fafc;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .spec-pills {
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .spec-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #334155;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      padding: 0.25rem 0.65rem;
+      border-radius: 6px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header-bar">
+    <div class="badge">Neer Kavach · 3D Physical Prototype Render</div>
+    <div style="display:flex; gap:0.5rem;">
+      <a href="index.html" class="btn btn-outline">← Main Portal</a>
+      <a href="https://studio.tripo3d.ai/3d-model/water-treatment-system-with-multiple-tanks-blue-piping-and-control-p-10dd6fac-91e7-47b8-862a-030cf1f962f8" target="_blank" class="btn btn-primary">
+        Interactive 3D Model ↗
+      </a>
+    </div>
+  </div>
+
+  <div class="video-card">
+    <div class="video-title-area">
+      <h1>Neer Kavach: 3D CAD Hydraulic Demonstration Video</h1>
+      <p>High-resolution animated CAD render showcasing the multi-chamber modular greywater treatment train, coarse/fine mechanical screens, vertical biofiltration media stack, and flood backflow protection valves.</p>
+    </div>
+
+    <div class="video-viewport">
+      <video controls autoplay loop muted playsinline>
+        <source src="model_3d_video.mp4" type="video/mp4">
+        Your browser does not support HTML5 video playback.
+      </video>
+    </div>
+
+    <div class="video-footer">
+      <div class="spec-pills">
+        <span class="spec-pill">⏱️ Duration: 12 Seconds</span>
+        <span class="spec-pill">📐 6 Hydraulic Modules</span>
+        <span class="spec-pill">🌊 Flood Resilient Piping</span>
+        <span class="spec-pill">⚡ ESP32 Edge Telemetry</span>
+      </div>
+      <div>
+        <a href="simulation.html" class="btn btn-primary">Launch Working 3D Sim 🎮</a>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

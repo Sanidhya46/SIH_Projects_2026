@@ -1,0 +1,13 @@
+{
+  "name": "sih-projects-dual-portal",
+  "version": "1.0.0",
+  "description": "Smart India Hackathon Dual Solution Portal: Neer Kavach (PS 26257) & Saurya Rakshak",
+  "main": "index.html",
+  "scripts": {
+    "start": "powershell -ExecutionPolicy Bypass -NoProfile -File ./serve.ps1",
+    "dev": "powershell -ExecutionPolicy Bypass -NoProfile -File ./serve.ps1"
+  },
+  "keywords": ["sih", "hackathon", "neer-kavach", "saurya-rakshak", "greywater", "safety"],
+  "author": "SIH Team",
+  "license": "MIT"
+}

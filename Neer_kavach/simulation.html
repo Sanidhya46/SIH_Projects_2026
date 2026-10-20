@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Neer Kavach – 3D Hydraulic & Flood Simulation</title>
+<style>
+:root{color-scheme:dark;--bg:#0a1a2b;--fg:#eaf6ff;--ac:#2fb8ff;--pn:rgba(7,22,38,.88);--ok:#3ddc84;--bad:#ff5a5f;--warn:#ffb020;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html,body{height:100%;margin:0;background:var(--bg);color:var(--fg);font-family:"Outfit","Trebuchet MS",Verdana,system-ui,sans-serif;overflow:hidden}
+#c{position:fixed;inset:0;width:100%;height:100%;display:block}
+.p{position:fixed;background:var(--pn);border:1px solid #2fb8ff55;border-radius:12px;padding:10px 14px;backdrop-filter:blur(8px);font-size:13px;box-shadow:0 8px 24px rgba(0,0,0,0.5)}
+#top{top:calc(12px + env(safe-area-inset-top,0px));left:14px;z-index:20}
+#top b{font-size:18px;color:var(--ac);letter-spacing:0.5px}#stage{margin-top:4px;opacity:.95;font-size:12px;color:#94a3b8}
+#nav-back{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);z-index:30;background:rgba(15,23,42,0.9);border:1px solid #38bdf888;padding:6px 14px;border-radius:20px;font-size:12px;display:flex;gap:8px;align-items:center}
+#nav-back a{color:#38bdf8;text-decoration:none;font-weight:600}
+#nav-back a:hover{text-decoration:underline}
+#meter{top:calc(88px + env(safe-area-inset-top,0px));left:14px;width:185px;z-index:20}
+#bar{height:10px;border-radius:6px;background:#1c3550;margin:6px 0;overflow:hidden;border:1px solid rgba(255,255,255,0.1)}#fill{height:100%;width:100%;background:linear-gradient(90deg,#8a5a2b,#59c7ff);transition:width 0.3s ease}
+#phone{top:calc(12px + env(safe-area-inset-top,0px));right:14px;width:230px;max-width:46vw;display:none;border-radius:20px;border:2px solid #7fd0ff;z-index:20}
+#phone h4{margin:0 0 6px;font-size:11.5px;color:var(--ac);letter-spacing:0.3px}.mode{padding:6px 8px;border-radius:8px;font-weight:700;text-align:center;margin-bottom:6px;font-size:12px}
+.r{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px solid #ffffff14;font-size:12px}#log{font-size:11px;opacity:.9;margin-top:6px;max-height:88px;overflow-y:auto}
+#sub{left:50%;transform:translateX(-50%);bottom:calc(70px + env(safe-area-inset-bottom,0px));width:min(800px,94vw);text-align:center;font-size:15.5px;line-height:1.45;z-index:20;background:rgba(6,20,36,0.92);border-color:#38bdf866}
+#ctl{left:50%;transform:translateX(-50%);bottom:calc(10px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;align-items:center;width:min(800px,94vw);box-sizing:border-box;z-index:20}
+button{background:#12466e;color:var(--fg);border:1px solid var(--ac);border-radius:8px;padding:6px 12px;cursor:pointer;font:inherit;font-size:13px;transition:background 0.2s}
+button:hover{background:#1b5f94}button:focus-visible{outline:2px solid #fff}
+#seek{flex:1;accent-color:#2fb8ff}.l{position:fixed;left:0;top:0;pointer-events:none;background:#06203acc;border:1px solid #2fb8ff88;border-radius:8px;padding:3px 8px;font-size:12px;white-space:nowrap;transform:translate(-50%,-100%);z-index:15}.l.on{background:#ff8a1ecc;border-color:#fff;font-weight:700;box-shadow:0 0 10px #ff8a1e}
+#start,#res,#scr{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;background:rgba(5,14,26,.94);text-align:center;padding:24px;box-sizing:border-box;z-index:50}
+#start h1{font-size:clamp(32px,6vw,56px);margin:0 0 8px;color:#38bdf8}#start p{max-width:580px;opacity:.9;font-size:15px;line-height:1.5}#start button{font-size:18px;font-weight:700;padding:12px 28px;background:#0b7fd0;margin-top:14px;border-radius:10px}
+#res{display:none;background:rgba(5,14,26,.88)}#res .g{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;width:min(860px,94vw);margin:16px 0}#res .k{background:var(--pn);border:1px solid #2fb8ff66;border-radius:12px;padding:14px}#res .k b{display:block;font-size:26px;color:var(--ok);margin-bottom:4px}
+#scr{display:none;overflow:auto;justify-content:flex-start;text-align:left}#scr div{max-width:760px;margin:6px auto;font-size:14px}#scr i{color:var(--ac);font-style:normal;font-weight:700}
+</style></head><body>
+<canvas id="c"></canvas><div id="lb"></div>
+<div id="nav-back"><span>Neer Kavach Simulation</span> · <a href="../index.html#neer-kavach">← Back to Main Dashboard</a> · <a href="index.html">Solution Hub</a></div>
+<div class="p" id="top"><b>Neer Kavach</b><div id="stage">Initializing simulation...</div></div>
+<div class="p" id="meter"><div>Simulated Turbidity</div><div id="ntu" style="font-size:22px;font-weight:700;color:#38bdf8">—</div><div id="bar"><div id="fill"></div></div><div style="font-size:11px;opacity:.75">Illustrative, not a lab reading</div></div>
+<div class="p" id="phone"><h4>Phone Dashboard · AP: NeerKavach · 192.168.4.1</h4><div class="mode" id="mode"></div><div id="rows"></div><div id="log"></div></div>
+<div class="p" id="sub"></div>
+<div class="p" id="ctl"><button id="pp">Pause</button><button id="rs">Restart</button><input type="range" id="seek" min="0" max="180" step="0.1" value="0" aria-label="Timeline"><span id="tm">0:00</span><button id="mu">Voice on</button><button id="sc">Script</button></div>
+<div id="start"><h1>Neer Kavach</h1><p>A 3-minute narrated 3D simulation: greywater from the kitchen, four modular treatment stages, soak-pit overflow alert, flood backflow protection and external ESP32 offline dashboard.</p><p style="font-size:13px;opacity:.75">Turn your sound on. Voice uses your browser's built-in speech synthesis.</p><button id="go">Start 3D Simulation</button></div>
+<div id="res"><h1 style="margin:0;color:#38bdf8">Simulation Results</h1><div class="g">
+<div class="k"><b>~90%</b>Turbidity reduction (design target)</div><div class="k"><b>85–90%</b>Solids removal (literature range for wetlands)</div><div class="k"><b>Alert + Divert</b>Soak-pit high level sent to alternate storage</div><div class="k"><b>Valve Closed</b>Flood sensor wet, outlet isolated, manual-safe mode</div><div class="k"><b>₹6,250</b>Per household vs ₹9,300 baseline (−32.80% savings)</div></div>
+<div style="font-size:12px;opacity:.8;max-width:680px">All values are design targets or illustrative planning figures for SIH 26257. Treatment performance and costs must be verified by field lab tests and local vendor quotations.</div><button id="rp" style="margin-top:14px;padding:8px 20px">Replay Simulation</button></div>
+<div id="scr"><div><button id="cl">Close Script</button></div><div id="scl"></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const T=180;
+const cues=[
+[0,"The problem","Every monsoon, villages across India face the same crisis. Kitchen and bathroom greywater has nowhere to go. Soak pits overflow, and dirty water spreads around homes."],
+[18,"The problem","Worse, floods saturate the ground. Soak pits stop working, drains run backwards, and small houses have no land for big treatment plants."],
+[32,"Our solution","Introducing Neer Kavach. A compact, gravity-first, flood-ready greywater system, with four treatment stages plus overflow and flood protection."],
+[48,"External monitoring","The prototype itself has no electronics. When the village starts using it, we attach the ESP32 control panel externally. The phone dashboard connects over local Wi-Fi, no internet needed."],
+[62,"Kitchen greywater enters","Now watch. Dirty greywater leaves the kitchen, carrying food waste, grease, soap and hair."],
+[75,"Stage 1 · Pre-filter and grease trap","Stage one. A removable screen and grease trap catch food particles, hair and oil."],
+[90,"Stage 2 · Settling and buffer","Stage two. The settling and buffer chamber lets sludge sink, and absorbs sudden surges so nothing overloads."],
+[105,"Stage 3 · Vertical biofilter","Stage three. The vertical biofilter uses gravel, sand and plant roots to break down the organic load."],
+[118,"Stage 4 · Clean water output","Stage four. Clean water collects here, watched by a float sensor, ready for safe infiltration or non-potable reuse."],
+[130,"Problem 1 solved · Soak-pit overflow","Problem one solved: soak-pit overflow. Watch the level rise. The sensor trips, the buzzer sounds, and the excess goes to alternate storage instead of the street."],
+[148,"Problem 2 solved · Flood protection","Problem two solved: flood protection. Rain rises, the flood sensor turns wet, the check valve closes, and the outlet is isolated. The dashboard shows flood risk, and operators follow the safe manual procedure."],
+[166,"Results","Design targets: around ninety percent less turbidity, and about six thousand rupees per household, thirty-three percent below baseline. To be verified in the lab. Neer Kavach: clean water, safe villages."]];
+const $=id=>document.getElementById(id),cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x)),sm=x=>x*x*(3-2*x);
+const R=new THREE.WebGLRenderer({canvas:$("c"),antialias:true});R.setPixelRatio(Math.min(devicePixelRatio,2));
+const S=new THREE.Scene();S.background=new THREE.Color(0x0a1a2b);S.fog=new THREE.Fog(0x0a1a2b,50,110);
+const cam=new THREE.PerspectiveCamera(50,1,.1,200);
+S.add(new THREE.HemisphereLight(0xbfe3ff,0x223344,1.15));const dl=new THREE.DirectionalLight(0xffffff,1);dl.position.set(10,22,14);S.add(dl);
+const V=(x,y,z)=>new THREE.Vector3(x,y,z);
+const M=(g,c,o={})=>new THREE.Mesh(g,new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:.6},o)));
+const B=(w,h,d,c,o)=>M(new THREE.BoxGeometry(w,h,d),c,o),Cy=(r,h,c,o)=>M(new THREE.CylinderGeometry(r,r,h,24),c,o);
+const at=(m,x,y,z,p)=>{m.position.set(x,y,z);(p||S).add(m);return m};
+function pipe(a,b,r=.22,col=0x1f7fe0){const d=b.clone().sub(a),m=M(new THREE.CylinderGeometry(r,r,d.length(),12),col,{metalness:.2,roughness:.4});m.position.copy(a).addScaledVector(d,.5);m.quaternion.setFromUnitVectors(V(0,1,0),d.clone().normalize());S.add(m)}
+at(M(new THREE.PlaneGeometry(160,80),0x1d2b2a),0,0,0).rotation.x=-Math.PI/2;
+// house + kitchen
+at(B(6,4,5,0xe8d9b5),-15,2,0);const roof=at(M(new THREE.ConeGeometry(4.8,2.6,4),0xb5523b),-15,5.3,0);roof.rotation.y=Math.PI/4;
+at(B(1.6,1.2,.2,0x7fd0ff,{emissive:0x1a4a66}),-15,2.6,2.55);at(B(1.2,.9,1.4,0x9aa7b0),-11.6,1.6,0);at(Cy(.07,.9,0xcccccc),-11.6,2.5,0);
+// plumbing path
+const W=[V(-11.6,2.3,0),V(-11.6,4.4,0),V(-6,4.4,0),V(-6,1.3,0),V(9.3,1.3,0),V(11.5,1.3,0)];
+for(let i=0;i<W.length-1;i++)pipe(W[i],W[i+1]);W.forEach(p=>at(M(new THREE.SphereGeometry(.26,12,12),0x1f7fe0),p.x,p.y,p.z));
+const seg=[],cum=[0];for(let i=0;i<W.length-1;i++){seg.push(W[i+1].clone().sub(W[i]));cum.push(cum[i]+seg[i].length())}const L=cum[cum.length-1];
+function posAt(s){let i=0;while(i<seg.length-1&&s>cum[i+1])i++;return W[i].clone().addScaledVector(seg[i],(s-cum[i])/seg[i].length())}
+// prototype
+const G=new THREE.Group();S.add(G);at(B(17,.5,4.6,0x2c3036),0,.6,0,G);
+[-7.5,0,7.5].forEach(x=>[-1.8,1.8].forEach(z=>at(Cy(.35,.6,0x15181c),x,.3,z,G)));
+const wc=[0x6b4a2a,0x8c7a55,0x5fa6a0,0x59c7ff],W_=[],cx=[-6,-2,2,6];
+cx.forEach((x,i)=>{const sh=at(B(3.6,3,3.6,0x9fc8e8,{transparent:true,opacity:.16}),x,2.4,0,G);
+const e=new THREE.LineSegments(new THREE.EdgesGeometry(sh.geometry),new THREE.LineBasicMaterial({color:0x8899aa}));e.position.copy(sh.position);G.add(e);
+const w=at(B(3.3,1,3.3,wc[i],{transparent:true,opacity:.72}),x,1.5,0,G);W_.push(w);
+at(Cy(.45,.3,0x1f7fe0),x,4.05,0,G)});
+at(B(2.4,.9,2.4,0x888888,{wireframe:true}),-6,3.3,0,G);at(B(3.3,.35,3.3,0xd4a62a),-6,2.0,0,G);
+at(B(3.3,.5,3.3,0x5a3a1d),-2,1.25,0,G);
+at(B(3.3,1.1,3.3,0x333840),2,1.4,0,G);at(B(3.3,.4,3.3,0xcbb38a),2,.75+1.05,0,G);
+for(let k=0;k<7;k++){const gr=at(M(new THREE.ConeGeometry(.15,1,6),0x3fbf4f),2+(Math.random()-.5)*2.6,3.35,(Math.random()-.5)*2.6,G);gr.scale.y=.8+Math.random()*.8}
+at(Cy(.05,2.5,0xdddddd),6,2.2,0,G);const flt=at(new THREE.Mesh(new THREE.SphereGeometry(.32,16,16),new THREE.MeshStandardMaterial({color:0xdde4ea})),6,2,0,G);
+// soak pit, storage, puddle
+const pitS=at(M(new THREE.CylinderGeometry(1.5,1.5,3,24,1,true),0x9aa3a8,{transparent:true,opacity:.4,side:2}),11.5,1.5,0);
+const pitW=at(M(new THREE.CylinderGeometry(1.4,1.4,1,24),0x7a5a35,{transparent:true,opacity:.85}),11.5,.5,0);
+at(Cy(1.4,.5,0x7d7468),11.5,.25,0);
+const pud=at(M(new THREE.CircleGeometry(3.6,32),0x6b4a2a,{transparent:true,opacity:.8}),11.5,.04,0);pud.rotation.x=-Math.PI/2;
+pipe(V(11.5,2.7,0),V(15.2,2.7,0),.18);
+at(Cy(1.6,3.6,0x1f66c8,{transparent:true,opacity:.55}),15.5,1.8,0);at(Cy(.35,.4,0xd22,{}),15.5,3.8,0);
+const stW=at(M(new THREE.CylinderGeometry(1.5,1.5,1,24),0x59c7ff,{transparent:true,opacity:.85}),15.5,.5,0);
+const valve=at(new THREE.Mesh(new THREE.SphereGeometry(.45,16,16),new THREE.MeshStandardMaterial({color:0x3ddc84,emissive:0x0a3a1a})),9.3,1.3,0);
+const fsPole=at(Cy(.08,2.6,0x999999),8,1.3,5),fsLed=at(new THREE.Mesh(new THREE.SphereGeometry(.3,12,12),new THREE.MeshStandardMaterial({color:0x3ddc84,emissive:0x0a3a1a})),8,2.8,5);
+// external control panel
+const P=new THREE.Group();S.add(P);at(B(6,2.4,.6,0xe3e8ec),0,0,0,P);
+const scr=at(B(2.6,1.2,.1,0x113322,{emissive:0x113322}),-.8,0,.36,P);
+const led=at(new THREE.Mesh(new THREE.SphereGeometry(.2,12,12),new THREE.MeshStandardMaterial({color:0x3ddc84,emissive:0x1a7a3a})),1.8,.3,.35,P);
+at(B(13.5,.14,.14,0x222222),0,-1.5,0,P);at(B(.14,.4,.14,0x222222),0,-1.3,0,P);cx.forEach(x=>at(B(.1,2.2,.1,0x222222),x,-2.6,0,P));
+// particles
+const N=320,pp=new Float32Array(N*3),pc=new Float32Array(N*3),PD=[];
+const dcol=[0x6b4a2a,0xd4a62a,0x7d7468].map(h=>new THREE.Color(h)),clean=new THREE.Color(0x6fd8ff);
+const SP=2.3;for(let i=0;i<N;i++)PD.push({o:i/N,j:V((Math.random()-.5)*.22,(Math.random()-.5)*.22,(Math.random()-.5)*.22),d:dcol[i%3]});
+const sc=document.createElement("canvas");sc.width=sc.height=32;const sx=sc.getContext("2d");sx.fillStyle="#fff";sx.beginPath();sx.arc(16,16,14,0,7);sx.fill();
+const pg=new THREE.BufferGeometry();pg.setAttribute("position",new THREE.BufferAttribute(pp,3));pg.setAttribute("color",new THREE.BufferAttribute(pc,3));
+const pts=new THREE.Points(pg,new THREE.PointsMaterial({size:.42,vertexColors:true,map:new THREE.CanvasTexture(sc),transparent:true,alphaTest:.2}));pts.frustumCulled=false;S.add(pts);
+// rain + flood
+const RN=500,rp=new Float32Array(RN*3);for(let i=0;i<RN;i++){rp[i*3]=(Math.random()-.5)*70;rp[i*3+1]=Math.random()*30;rp[i*3+2]=(Math.random()-.5)*30}
+const rg=new THREE.BufferGeometry();rg.setAttribute("position",new THREE.BufferAttribute(rp,3));const rain=new THREE.Points(rg,new THREE.PointsMaterial({color:0xaed8ff,size:.18}));rain.frustumCulled=false;S.add(rain);
+const fl=at(M(new THREE.PlaneGeometry(160,80),0x3a7fb0,{transparent:true,opacity:.55}),0,-1,0);fl.rotation.x=-Math.PI/2;
+// labels
+const LB=[["Kitchen (greywater source)",V(-15,7,0),0,62],["Soak pit",V(11.5,3.6,0),0,180],["1 Pre-filter & grease trap",V(-6,5.2,0),32,180],["2 Settling & buffer",V(-2,5.2,0),32,180],["3 Vertical biofilter",V(2,5.2,0),32,180],["4 Clean water output",V(6,5.2,0),32,180],["Alternate storage",V(15.5,4.6,0),32,180],["ESP32 control panel (external)",V(0,9.1,0),50,180],["Flood sensor",V(8,3.5,5),32,180],["Check valve",V(9.3,2.3,0),32,180]];
+LB.forEach(l=>{l.el=document.createElement("div");l.el.className="l";l.el.textContent=l[0];$("lb").appendChild(l.el)});
+// camera keys
+const K=[[0,[2,10,34],[0,2,0]],[18,[-8,6,18],[-12,2.5,0]],[32,[0,8,30],[0,2.5,0]],[48,[1,10,22],[1,5,0]],[62,[-12,5,12],[-12,2.5,0]],[75,[-6,6,11],[-6,2,0]],[90,[-2,6,11],[-2,2,0]],[105,[2,6,11],[2,2,0]],[118,[6,6,11],[6,2,0]],[130,[11,5,12],[12,1.5,0]],[148,[7,6,17],[8,1,2]],[166,[0,10,32],[0,2.5,0]]];
+function camAt(t){let i=0;while(i<K.length-1&&K[i+1][0]<=t)i++;const a=K[Math.max(0,i-1)],b=K[i],f=sm(cl((t-b[0])/3.5)),m=(u,v)=>V(...u).lerp(V(...v),f);
+const p=m(a[1],b[1]);p.x+=Math.sin(t*.35)*.7;cam.position.copy(p);cam.lookAt(m(a[2],b[2]))}
+// state functions
+function soakF(t){if(t<32)return 1;if(t<36)return 1-(t-32)/4*.65;if(t<130)return .35;if(t<141)return .35+(t-130)/11*.62;if(t<150)return .97-(t-141)/9*.42;return .55}
+const stoF=t=>t<139?0:Math.min(.55,(t-139)/12*.55);
+const clF=t=>{const k=[[62,0],[75,.05],[90,.3],[105,.55],[118,.88],[130,.96]];if(t<=62)return 0;for(let i=1;i<k.length;i++)if(t<k[i][0])return k[i-1][1]+(k[i][1]-k[i-1][1])*(t-k[i-1][0])/(k[i][0]-k[i-1][0]);return .96};
+const LOG=[[50,"ESP32 online · local Wi-Fi AP"],[62,"Inflow detected from kitchen"],[139,"Soak-pit HIGH · buzzer ON · diverting to storage"],[145,"Level falling · storage filling"],[149,"Flood sensor WET · FLOOD RISK"],[153,"Check valve CLOSED · outlet isolated"],[156,"Inlet isolated manually · event logged"],[166,"Awaiting operator sign-off"]];
+let lastDash="";
+function update(t){
+ const gs=sm(cl((t-32)/3));G.visible=gs>0;G.scale.setScalar(Math.max(gs,.001));
+ const py=t<48?18:18-sm(cl((t-48)/6))*10.3;P.position.set(0,py,-1);P.visible=t>=48;
+ const soak=soakF(t),sto=stoF(t),flood=t>=149&&t<168,alarm=(t>=138.3&&t<144)||(t>=149&&t<160),closed=t>=153&&t<168;
+ for(let i=0;i<4;i++){const lv=cl((t-(62+i*8))/10)*.7*(1+Math.sin(t*2+i)*.02);const h=Math.max(.001,2.4*lv);W_[i].scale.y=h;W_[i].position.y=1.15+h/2}
+ flt.position.y=1.15+Math.max(.001,2.4*cl((t-92)/10)*.7)+.1;
+ const ph=Math.max(.01,2.8*soak);pitW.scale.y=ph;pitW.position.y=.5+ph/2;pitW.material.color.set(t<62?0x7a5a35:soak>.85?0xc89a55:0x7fb8c8);
+ const sh=Math.max(.01,3*sto/.55*.7);stW.scale.y=sh;stW.position.y=.5+sh/2;
+ pud.scale.setScalar(t<32?1+Math.sin(t*3)*.03:Math.max(.001,1-(t-32)/4));pud.visible=pud.scale.x>.01;
+ const fy=t<148?-1:t<168?-1+cl((t-148)/12)*1.85:.85-cl((t-168)/8)*1.9;fl.position.y=fy;fl.visible=fy>-.9;
+ rain.visible=t<30||(t>=146&&t<166);const ra=rg.attributes.position.array;if(rain.visible)for(let i=0;i<RN;i++){ra[i*3+1]=(ra[i*3+1]-.5+30)%30;}rg.attributes.position.needsUpdate=true;
+ fsLed.material.color.set(flood?0xff5a5f:0x3ddc84);fsLed.material.emissive.set(flood?0x7a1010:0x0a3a1a);
+ valve.material.color.set(closed?0xff5a5f:0x3ddc84);valve.material.emissive.set(closed?0x7a1010:0x0a3a1a);
+ const mode=t<50?["OFFLINE · not fitted",0x555555,"#34495e"]:t<138.3?["NORMAL",0,"#1f7a46"]:t<146?["SOAK-PIT HIGH",0,"#b26a00"]:t<149?["NORMAL",0,"#1f7a46"]:t<166?["FLOOD RISK",0,"#b3262b"]:["SAFE · MANUAL RECOVERY",0,"#b26a00"];
+ const col=mode[2];scr.material.emissive.set(col);led.material.color.set(col);led.material.emissive.set(col);
+ // particles
+ const run=t>=62&&t<156;let k=0;const tmp=new THREE.Color();
+ for(let i=0;i<N;i++){const d=PD[i],e=62+d.o*L/SP;let s=(t-e)*SP;
+  if(!run||t<e||t>=153+(1-d.o)*3){pp[k]=0;pp[k+1]=-50;pp[k+2]=0;k+=3;continue}
+  s=s%L;const p=posAt(s);pp[k]=p.x+d.j.x;pp[k+1]=p.y+d.j.y;pp[k+2]=p.z+d.j.z;
+  tmp.copy(d.d).lerp(clean,sm(cl((p.x+7)/14)));pc[k]=tmp.r;pc[k+1]=tmp.g;pc[k+2]=tmp.b;k+=3}
+ pg.attributes.position.needsUpdate=true;pg.attributes.color.needsUpdate=true;
+ // HUD
+ const c=clF(t),ntu=t<62?"—":Math.round(220*(1-c))+" NTU";$("ntu").textContent=ntu;$("fill").style.width=(t<62?100:(1-c)*100)+"%";
+ $("phone").style.display=t>=50?"block":"none";
+ const me=$("mode");me.textContent=mode[0];me.style.background=col;
+ const rows=[["Buffer",t<62?"—":"OK"],["Soak pit",Math.round(soak*100)+"%"+(soak>.85?" HIGH":"")],["Flood sensor",flood?"WET":"DRY"],["Alt. storage",Math.round(sto/.55*55)+"%"],["Outlet valve",closed?"CLOSED":"OPEN"]];
+ const lg=LOG.filter(x=>t>=x[0]).slice(-4).reverse().map(x=>`<div>${Math.floor(x[0]/60)}:${String(Math.floor(x[0]%60)).padStart(2,"0")} ${x[1]}</div>`).join("");
+ const dh=rows.map(r=>`<div class="r"><span>${r[0]}</span><b>${r[1]}</b></div>`).join("")+"§"+lg;if(dh!==lastDash){lastDash=dh;const q=dh.split("§");$("rows").innerHTML=q[0];$("log").innerHTML=q[1]}
+ const act=t<75?-1:t<90?2:t<105?3:t<118?4:t<130?5:-1;
+ LB.forEach((l,i)=>{const v=l[1].clone().project(cam);const on=t>=l[2]&&t<l[3]&&v.z<1;l.el.style.display=on?"block":"none";if(on)l.el.style.transform=`translate(${(v.x*.5+.5)*innerWidth}px,${(-v.y*.5+.5)*innerHeight}px) translate(-50%,-100%)`;l.el.className="l"+(i===act?" on":"")});
+ $("res").style.display=t>=167?"flex":"none";
+ return alarm}
+// audio + voice
+let playing=false,t=0,last=0,cueI=-2,muted=false,ac=null,gain=null,voice=null;
+function pick(){const v=speechSynthesis.getVoices();voice=v.find(x=>/en-IN/i.test(x.lang))||v.find(x=>/^en/i.test(x.lang))||null}
+if("speechSynthesis" in window){speechSynthesis.onvoiceschanged=pick;pick()}
+function say(i){if(muted||!("speechSynthesis" in window))return;speechSynthesis.cancel();const tx=cues[i][2],dur=(i<cues.length-1?cues[i+1][0]:T)-cues[i][0],u=new SpeechSynthesisUtterance(tx);if(voice)u.voice=voice;u.lang=voice?voice.lang:"en-IN";u.rate=cl(tx.split(" ").length/Math.max(4,dur-1)/2.6,.9,1.3);speechSynthesis.speak(u)}
+function setPlay(p){playing=p;$("pp").textContent=p?"Pause":"Play";cueI=-2;if(!p&&"speechSynthesis" in window)speechSynthesis.cancel();if(gain)gain.gain.value=0}
+$("go").onclick=()=>{$("start").style.display="none";try{ac=new (window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator();gain=ac.createGain();o.type="square";o.frequency.value=880;gain.gain.value=0;o.connect(gain);gain.connect(ac.destination);o.start()}catch(e){}t=0;setPlay(true)};
+$("pp").onclick=()=>{if(t>=T)t=0;setPlay(!playing)};$("rs").onclick=()=>{t=0;setPlay(true)};$("rp").onclick=$("rs").onclick;
+$("mu").onclick=()=>{muted=!muted;$("mu").textContent=muted?"Voice off":"Voice on";if(muted&&"speechSynthesis" in window)speechSynthesis.cancel();else cueI=-2};
+$("seek").oninput=e=>{t=+e.target.value;cueI=-2};
+$("sc").onclick=()=>$("scr").style.display="block";$("cl").onclick=()=>$("scr").style.display="none";
+$("scl").innerHTML="<h2>Video script and timeline</h2>"+cues.map((c,i)=>{const s=c[0],e=i<cues.length-1?cues[i+1][0]:T,f=x=>Math.floor(x/60)+":"+String(x%60).padStart(2,"0");return `<div><i>${f(s)}–${f(e)} · ${c[1]}</i><br>${c[2]}</div>`}).join("");
+function resize(){R.setSize(innerWidth,innerHeight,false);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix()}addEventListener("resize",resize);resize();
+function loop(now){const dt=Math.min(.1,(now-last)/1000);last=now;if(playing){t=Math.min(T,t+dt);if(t>=T)setPlay(false)}
+ camAt(t);const alarm=update(t);
+ let ci=0;cues.forEach((c,i)=>{if(c[0]<=t)ci=i});if(ci!==cueI){const first=cueI===-2;cueI=ci;$("sub").textContent=cues[ci][2];$("stage").textContent=cues[ci][1];if(playing)say(ci)}
+ if(gain)gain.gain.value=(alarm&&playing&&!muted&&Math.floor(t*3)%2===0)?.04:0;
+ $("seek").value=t;$("tm").textContent=Math.floor(t/60)+":"+String(Math.floor(t%60)).padStart(2,"0");
+ R.render(S,cam);requestAnimationFrame(loop)}
+requestAnimationFrame(loop);
+</script></body></html>
