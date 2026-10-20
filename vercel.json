@@ -3,8 +3,6 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/simulation", "destination": "/simulation.html" },
-    { "source": "/sim", "destination": "/simulation.html" },
     { "source": "/neer-simulation", "destination": "/Neer_kavach/simulation.html" },
     { "source": "/neer/simulation", "destination": "/Neer_kavach/simulation.html" },
     { "source": "/neer_kavach/simulation", "destination": "/Neer_kavach/simulation.html" },
