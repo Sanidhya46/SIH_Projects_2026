@@ -2,18 +2,43 @@
   "version": 2,
   "cleanUrls": true,
   "trailingSlash": false,
+  "rewrites": [
+    { "source": "/simulation", "destination": "/simulation.html" },
+    { "source": "/simulation.html", "destination": "/simulation.html" },
+    { "source": "/sim", "destination": "/simulation.html" },
+    { "source": "/neer-simulation", "destination": "/Neer_kavach/simulation.html" },
+    { "source": "/neer_simulation", "destination": "/Neer_kavach/simulation.html" },
+    { "source": "/neer/simulation", "destination": "/Neer_kavach/simulation.html" },
+    { "source": "/neer_kavach/simulation", "destination": "/Neer_kavach/simulation.html" },
+    { "source": "/neer-kavach/simulation", "destination": "/Neer_kavach/simulation.html" },
+    { "source": "/Neer_kavach/simulation", "destination": "/Neer_kavach/simulation.html" },
+    { "source": "/saurya-simulation", "destination": "/Saurya_Rakshak/simulation.html" },
+    { "source": "/saurya_simulation", "destination": "/Saurya_Rakshak/simulation.html" },
+    { "source": "/saurya/simulation", "destination": "/Saurya_Rakshak/simulation.html" },
+    { "source": "/saurya_rakshak/simulation", "destination": "/Saurya_Rakshak/simulation.html" },
+    { "source": "/saurya-rakshak/simulation", "destination": "/Saurya_Rakshak/simulation.html" },
+    { "source": "/Saurya_Rakshak/simulation", "destination": "/Saurya_Rakshak/simulation.html" },
+    { "source": "/neer", "destination": "/Neer_kavach/index.html" },
+    { "source": "/neer-kavach", "destination": "/Neer_kavach/index.html" },
+    { "source": "/neer_kavach", "destination": "/Neer_kavach/index.html" },
+    { "source": "/Neer_kavach", "destination": "/Neer_kavach/index.html" },
+    { "source": "/saurya", "destination": "/Saurya_Rakshak/index.html" },
+    { "source": "/saurya-rakshak", "destination": "/Saurya_Rakshak/index.html" },
+    { "source": "/saurya_rakshak", "destination": "/Saurya_Rakshak/index.html" },
+    { "source": "/Saurya_Rakshak", "destination": "/Saurya_Rakshak/index.html" },
+    { "source": "/neer/video", "destination": "/Neer_kavach/video.html" },
+    { "source": "/neer_kavach/video", "destination": "/Neer_kavach/video.html" },
+    { "source": "/neer-kavach/video", "destination": "/Neer_kavach/video.html" },
+    { "source": "/Neer_kavach/video", "destination": "/Neer_kavach/video.html" },
+    { "source": "/saurya/video", "destination": "/Saurya_Rakshak/video.html" },
+    { "source": "/saurya_rakshak/video", "destination": "/Saurya_Rakshak/video.html" },
+    { "source": "/saurya-rakshak/video", "destination": "/Saurya_Rakshak/video.html" },
+    { "source": "/Saurya_Rakshak/video", "destination": "/Saurya_Rakshak/video.html" }
+  ],
   "headers": [
     {
       "source": "/(.*)",
       "headers": [
-        {
-          "key": "X-Content-Type-Options",
-          "value": "nosniff"
-        },
-        {
-          "key": "X-Frame-Options",
-          "value": "SAMEORIGIN"
-        },
         {
           "key": "Access-Control-Allow-Origin",
           "value": "*"
