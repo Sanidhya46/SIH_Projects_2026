@@ -3,14 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Saurya Rakshak – Industrial Safety Simulation & Live Wearables</title>
+<title>Saurya Rakshak – Industrial Safety Simulation & Worn Gear Twin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
 <style>
 :root {
   color-scheme: dark;
-  --bg: #0a0c10;
+  --bg: #090c12;
   --fg: #eaedf3;
   --ac: #f59e0b;
   --ac-glow: rgba(245, 158, 11, 0.4);
@@ -105,9 +105,44 @@ canvas#c {
 }
 #nav a:hover { color: #fff; text-decoration: underline; }
 
+/* In-World Gear Indicator Banner */
+#gear-indicator-banner {
+  position: fixed;
+  top: 68px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 22;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  border-radius: 30px;
+  padding: 5px 16px;
+  font-size: 11.5px;
+  font-family: 'JetBrains Mono', monospace;
+  color: #38bdf8;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+}
+.gear-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.06);
+  color: #f8fafc;
+  font-weight: 600;
+}
+.gear-badge-pill.highlight {
+  background: rgba(245, 158, 11, 0.25);
+  color: #fbbf24;
+  border: 1px solid #f59e0b;
+}
+
 /* Sensor Telemetry HUD */
 #hud {
-  top: 68px;
+  top: 108px;
   left: 14px;
   width: 230px;
   max-width: 44vw;
@@ -137,12 +172,12 @@ canvas#c {
 
 /* Incident Event Queue */
 #iq {
-  top: 360px;
+  top: 390px;
   left: 14px;
   width: 230px;
   max-width: 44vw;
   display: none;
-  max-height: 240px;
+  max-height: 230px;
   overflow-y: auto;
 }
 #iq h4 {
@@ -224,13 +259,12 @@ button.btn-ctl:hover {
 
 /* ======================================================== */
 /* WEARABLE HARDWARE LIVE DOCK (RIGHT SIDE)                 */
-/* Displays Helmet, Gloves & Hazard Detector with FX        */
 /* ======================================================== */
 #hw-dock {
   position: fixed;
   top: 68px;
   right: 14px;
-  width: 320px;
+  width: 310px;
   max-width: 48vw;
   background: rgba(10, 14, 24, 0.94);
   border: 1px solid var(--pn-border);
@@ -252,7 +286,7 @@ button.btn-ctl:hover {
   padding-bottom: 8px;
 }
 .hw-header h3 {
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 800;
   color: var(--ac);
   letter-spacing: 0.5px;
@@ -318,11 +352,10 @@ button.btn-ctl:hover {
   box-shadow: 0 0 18px rgba(6, 182, 212, 0.55);
 }
 
-/* Image Containers with FX Overlays */
 .gear-img-box {
   position: relative;
-  width: 70px;
-  height: 70px;
+  width: 64px;
+  height: 64px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
@@ -336,72 +369,14 @@ button.btn-ctl:hover {
   max-width: 95%;
   max-height: 95%;
   object-fit: contain;
-  transition: transform 0.2s;
 }
 
-/* Visor Tint Animation on Helmet */
-.visor-fx {
-  position: absolute;
-  top: 40%;
-  left: 28%;
-  width: 48%;
-  height: 28%;
-  border-radius: 0 0 12px 12px;
-  background: rgba(0,0,0,0);
-  transition: all 0.15s ease-out;
-  pointer-events: none;
-  border: 1px solid transparent;
-}
-.active-arc .visor-fx {
-  background: radial-gradient(circle, rgba(15,23,42,0.95) 0%, rgba(2,6,23,0.98) 100%);
-  border-color: #38bdf8;
-  box-shadow: inset 0 0 10px #0ea5e9, 0 0 12px rgba(56, 189, 248, 0.8);
-}
-
-/* Glove Electric Spark FX */
-.glove-fx {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.2s;
-  background: radial-gradient(circle, rgba(6, 182, 212, 0.4) 0%, transparent 70%);
-}
-.active-volt .glove-fx {
-  opacity: 1;
-  animation: zap-shake 0.12s infinite alternate;
-}
-@keyframes zap-shake {
-  0% { transform: scale(1) rotate(0deg); filter: hue-rotate(0deg); }
-  50% { transform: scale(1.08) rotate(-1deg); filter: hue-rotate(40deg); }
-  100% { transform: scale(0.96) rotate(1deg); filter: hue-rotate(-20deg); }
-}
-
-/* Detector Screen Alert Glow */
-.det-screen-fx {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.2s;
-  background: rgba(239, 68, 68, 0.35);
-}
-.active-alert .det-screen-fx {
-  opacity: 1;
-  animation: alert-flash 0.3s infinite alternate;
-}
-@keyframes alert-flash {
-  from { opacity: 0.15; }
-  to { opacity: 0.6; }
-}
-
-/* Gear Info Column */
 .gear-meta {
   flex: 1;
   min-width: 0;
 }
 .gear-name {
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 700;
   color: #fff;
   margin-bottom: 2px;
@@ -410,7 +385,7 @@ button.btn-ctl:hover {
   align-items: center;
 }
 .gear-badge {
-  font-size: 9.5px;
+  font-size: 9px;
   font-family: 'JetBrains Mono', monospace;
   font-weight: 700;
   padding: 1px 5px;
@@ -423,13 +398,13 @@ button.btn-ctl:hover {
 .active-volt .gear-badge { background: rgba(6, 182, 212, 0.25); color: #67e8f9; }
 
 .gear-desc {
-  font-size: 10.5px;
+  font-size: 10px;
   color: #94a3b8;
-  line-height: 1.35;
+  line-height: 1.3;
 }
 .gear-telemetry {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-size: 9.5px;
   color: var(--cyan);
   margin-top: 2px;
   font-weight: 600;
@@ -489,11 +464,11 @@ button.btn-ctl:hover {
   transition: opacity 0.3s;
 }
 #arc {
-  background: radial-gradient(ellipse at center, rgba(255, 245, 160, 0.55), transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(255, 245, 160, 0.6), transparent 70%);
   opacity: 0;
 }
 #gas {
-  background: linear-gradient(180deg, rgba(160, 255, 120, 0.22) 0%, transparent 65%);
+  background: linear-gradient(180deg, rgba(160, 255, 120, 0.25) 0%, transparent 65%);
   opacity: 0;
 }
 #heat {
@@ -526,13 +501,13 @@ button.btn-ctl:hover {
   padding: 24px;
 }
 #splash h1 {
-  font-size: clamp(28px, 5vw, 48px);
+  font-size: clamp(28px, 5vw, 46px);
   color: #f59e0b;
   margin-bottom: 8px;
   font-weight: 800;
 }
 #splash p {
-  max-width: 600px;
+  max-width: 620px;
   color: #cbd5e1;
   font-size: 14px;
   line-height: 1.55;
@@ -620,7 +595,15 @@ button.btn-ctl:hover {
 <!-- Header Info -->
 <div class="p" id="top">
   <div class="brand-title">⚡ SAURYA RAKSHAK</div>
-  <div id="stage">Initializing Simulation Engine…</div>
+  <div id="stage">3D Worker Worn Gear Simulation…</div>
+</div>
+
+<!-- Floating Top Indicator Banner -->
+<div id="gear-indicator-banner">
+  <span>3D TWIN STATUS:</span>
+  <span class="gear-badge-pill" id="pill-h">⛑️ Helmet [IS 2925]</span>
+  <span class="gear-badge-pill" id="pill-g">🧤 Gloves [Class 0]</span>
+  <span class="gear-badge-pill" id="pill-d">📟 Pod [4-Gas + IMU]</span>
 </div>
 
 <!-- Left Sensor Telemetry HUD -->
@@ -648,13 +631,13 @@ button.btn-ctl:hover {
 </div>
 
 <!-- ======================================================== -->
-<!-- WEARABLE HARDWARE LIVE MONITOR DOCK (RIGHT)              -->
+<!-- WEARABLE HARDWARE LIVE DOCK (RIGHT)                      -->
 <!-- ======================================================== -->
 <div id="hw-dock">
   <div class="hw-header">
-    <h3>🦺 Connected Wearables Monitor</h3>
+    <h3>🦺 Worn Wearables Telemetry</h3>
     <div class="hw-live-pill">
-      <div class="live-dot"></div> TELEMETRY LIVE
+      <div class="live-dot"></div> SENSORS LIVE
     </div>
   </div>
 
@@ -663,14 +646,13 @@ button.btn-ctl:hover {
     <div class="gear-card" id="card-helmet">
       <div class="gear-img-box">
         <img src="assets/helmet.png" alt="Smart Helmet" id="img-helmet">
-        <div class="visor-fx" id="visor-overlay"></div>
       </div>
       <div class="gear-meta">
         <div class="gear-name">
           <span>Unit 1: Smart Helmet</span>
-          <span class="gear-badge" id="badge-helmet">SECURED</span>
+          <span class="gear-badge" id="badge-helmet">WORN ON HEAD</span>
         </div>
-        <div class="gear-desc" id="desc-helmet">IS 2925 shell, chin-strap Hall sensor, 4K camera, auto-darkening UV visor.</div>
+        <div class="gear-desc" id="desc-helmet">IS 2925 shell, strap Hall sensor, 4K camera, auto-darkening UV visor.</div>
         <div class="gear-telemetry" id="telem-helmet">STRAP: LOCKED · VISOR: CLEAR</div>
       </div>
     </div>
@@ -679,12 +661,11 @@ button.btn-ctl:hover {
     <div class="gear-card" id="card-gloves">
       <div class="gear-img-box">
         <img src="assets/gloves_pair.png" alt="Sensing Gloves" id="img-gloves">
-        <div class="glove-fx" id="glove-overlay"></div>
       </div>
       <div class="gear-meta">
         <div class="gear-name">
           <span>Unit 2: Sensing Gloves</span>
-          <span class="gear-badge" id="badge-gloves">CLASS 0</span>
+          <span class="gear-badge" id="badge-gloves">WORN ON HANDS</span>
         </div>
         <div class="gear-desc" id="desc-gloves">1000V dielectric standoff, capacitive NCV node, 250Hz haptic buzzer.</div>
         <div class="gear-telemetry" id="telem-gloves">NCV: NOMINAL · 0V DETECTED</div>
@@ -695,12 +676,11 @@ button.btn-ctl:hover {
     <div class="gear-card" id="card-detector">
       <div class="gear-img-box">
         <img src="assets/hazard_detector.png" alt="Hazard Detector" id="img-detector">
-        <div class="det-screen-fx" id="det-overlay"></div>
       </div>
       <div class="gear-meta">
         <div class="gear-name">
           <span>Unit 3: Hazard Detector</span>
-          <span class="gear-badge" id="badge-detector">NORMAL</span>
+          <span class="gear-badge" id="badge-detector">WORN ON CHEST</span>
         </div>
         <div class="gear-desc" id="desc-detector">4-Gas optical (CO, O₂, LEL, H₂S), 6-axis IMU fall shock, 100dB siren.</div>
         <div class="gear-telemetry" id="telem-detector">ATMOSPHERE: SAFE · IMU: 1.0G</div>
@@ -727,10 +707,11 @@ button.btn-ctl:hover {
 
 <!-- Initial Splash Modal -->
 <div id="splash">
-  <h1>⚡ Saurya Rakshak Simulation</h1>
+  <h1>⚡ Saurya Rakshak 3D Simulation</h1>
   <p>
-    An interactive 3D physics demonstration showcasing the complete connected industrial safety ecosystem:
-    Smart Tactical Helmet, Armored Sensing Gloves, and Multi-Hazard Detector Pod reacting to electrical, toxic gas, arc flash, and fall hazards in real time.
+    Interactive 3D demonstration where the industrial worker in the simulation is directly wearing the authentic
+    Saurya Rakshak Smart Tactical Helmet, Armored Sensing Gloves, and Multi-Hazard Detector Pod.
+    Watch them react live to electrical shock, arc flash, toxic gas, and fall hazards!
   </p>
   <p style="font-size:12px; opacity:0.8; margin-top:10px; color:#fbbf24;">
     🔊 Turn on sound for real-time speech narration and synthetic device audio warnings.
@@ -807,12 +788,12 @@ function playSfx(type) {
 const cues = [
   [0, "1. Industrial Hazard Landscape", "Every year, thousands of workers suffer fatal electrical contacts, fall impacts, toxic gas asphyxiation, and arc flashes across Indian industrial workshops."],
   [18, "2. Limitations of Passive PPE", "Conventional helmets and rubber gloves protect passively, but supervisors have zero electronic awareness of whether PPE is worn, whether atmosphere is toxic, or whether a worker has fallen."],
-  [36, "3. Saurya Rakshak Ecosystem", "Introducing Saurya Rakshak. A four-part connected industrial safety ecosystem: Smart Tactical Helmet, Armored Sensing Gloves, Multi-Hazard Gas & Fall Detector Pod, and Edge Supervisor Gateway."],
-  [54, "4. Unit 1: Smart Tactical Helmet", "Unit 1: The Smart Tactical Helmet. Built on an IS 2925 compliant shell with an external chin-strap Hall sensor, auto-darkening electrochromic visor, and high-intensity strobe beacon."],
-  [72, "5. Unit 2: Armored Sensing Gloves", "Unit 2: Armored Sensing Gloves. Certified Class 0 rubber providing 1000V dielectric standoff, capacitive NCV contact detection, and 250Hz pancake haptic vibration feedback."],
-  [90, "6. Unit 3: Multi-Hazard Detector Pod", "Unit 3: Portable Gas and Fall Detector Pod. Integrates 4-gas optical chambers for CO, O2, CH4, and H2S, a 6-axis IMU for fall shock detection, SOS distress trigger, and a 100dB autonomous siren."],
+  [36, "3. Saurya Rakshak Ecosystem", "Introducing Saurya Rakshak. Here you can see our worker physically wearing the three connected units: Smart Tactical Helmet on the head, Armored Sensing Gloves on the hands, and the Multi-Hazard Detector Pod on the chest."],
+  [54, "4. Unit 1: Smart Tactical Helmet", "Unit 1: Notice the Smart Tactical Helmet worn on the worker's head. Featuring the 4K camera, magnetic chin-strap Hall sensor, and the auto-darkening electrochromic visor."],
+  [72, "5. Unit 2: Armored Sensing Gloves", "Unit 2: Look at the worker's hands wearing the Armored Sensing Gloves. Certified Class 0 rubber providing 1000V dielectric standoff, capacitive NCV detection nodes, and 250Hz haptic vibration."],
+  [90, "6. Unit 3: Multi-Hazard Detector Pod", "Unit 3: Mounted on the worker's chest harness is the Multi-Hazard Detector Pod. Integrating 4-gas optical sensing, 6-axis IMU fall shock detector, and autonomous 100dB siren."],
   [110, "7. Local-First Autonomous Alarms", "Critical engineering rule: every hazard response operates autonomously without cloud or WiFi dependency. Sub-15 millisecond local trips execute instantly in edge hardware."],
-  [126, "8. Live Arc Flash & Gas Explosion Demo", "Demonstrating Arc Flash and Gas Inundation. High UV radiation triggers the electrochromic visor in under 15ms while toxic methane spike activates the 100dB siren."],
+  [126, "8. Live Arc Flash & Gas Explosion Demo", "Demonstrating Arc Flash and Gas Inundation. Notice the helmet visor directly darkening on the worker's head while the chest pod screen flashes red and sounds the 100dB siren."],
   [142, "9. High-G Fall & Immobility Immersion", "Worker freefall detection. The 6-axis IMU registers freefall acceleration followed by high-G impact shock, starting an automatic 10-second immobility countdown beacon."],
   [158, "10. Edge Supervisor Gateway Telemetry", "The supervisor gateway continuously ingests telemetry packets, validates packet checksums, deduplicates incidents, and persists logs to embedded SQLite in WAL mode."],
   [176, "11. T01-T20 Verification Matrix", "All 20 engineering benchmarks validated: dielectric standoff, sub-15ms optical trips, gas chamber linearity, IMU shock reliability, and mesh packet delivery under heavy EMI."],
@@ -823,12 +804,12 @@ const cues = [
 const R = new THREE.WebGLRenderer({ canvas: $("c"), antialias: true });
 R.setPixelRatio(Math.min(devicePixelRatio, 2));
 const S = new THREE.Scene();
-S.background = new THREE.Color(0x0a0c12);
-S.fog = new THREE.Fog(0x0a0c12, 35, 95);
+S.background = new THREE.Color(0x090c12);
+S.fog = new THREE.Fog(0x090c12, 35, 95);
 const cam = new THREE.PerspectiveCamera(50, 1, 0.1, 200);
 
-S.add(new THREE.HemisphereLight(0xffe8c0, 0x161824, 1.15));
-const dl = new THREE.DirectionalLight(0xfff0d0, 1.25);
+S.add(new THREE.HemisphereLight(0xffe8c0, 0x161824, 1.2));
+const dl = new THREE.DirectionalLight(0xfff0d0, 1.3);
 dl.position.set(8, 18, 10);
 S.add(dl);
 const pl1 = new THREE.PointLight(0xf59e0b, 0.7, 30);
@@ -840,6 +821,21 @@ const Mt = (g, c, o = {}) => new THREE.Mesh(g, new THREE.MeshStandardMaterial(Ob
 const Bx = (w, h, d, c, o) => Mt(new THREE.BoxGeometry(w, h, d), c, o);
 const Cy = (r, h, c, o) => Mt(new THREE.CylinderGeometry(r, r, h, 20), c, o);
 const at = (m, x, y, z, p) => { m.position.set(x, y, z); (p || S).add(m); return m; };
+
+// Helper to Load Gear Textures with Fallback
+const tl = new THREE.TextureLoader();
+function loadGearTexture(filename) {
+  const pUrl = '/Saurya_Rakshak/assets/' + filename;
+  const fUrl = 'assets/' + filename;
+  const tex = tl.load(pUrl, undefined, undefined, () => {
+    tl.load(fUrl, fbTex => {
+      tex.image = fbTex.image;
+      tex.needsUpdate = true;
+    });
+  });
+  tex.colorSpace = THREE.SRGBColorSpace;
+  return tex;
+}
 
 // Workshop Floor & Grid
 at(Mt(new THREE.PlaneGeometry(80, 60), 0x14161e), 0, 0, 0).rotation.x = -Math.PI / 2;
@@ -858,36 +854,117 @@ at(Bx(1.2, 0.3, 0.5, 0x777777), 2, 3.85, 0);
 at(Cy(0.08, 1.5, 0xbbbbbb), -2, 4.2, 0);
 at(Bx(0.6, 0.4, 0.6, 0x555555), -3, 3.9, 0.5);
 
-// Industrial 3D Worker Model
+// =========================================================================
+// 3D INDUSTRIAL WORKER MODEL WEARING ACTUAL SAURYA RAKSHAK GEAR
+// =========================================================================
 const worker = new THREE.Group();
 S.add(worker);
-at(Cy(0.4, 2.2, 0x2563eb), 0, 2.3, 0, worker);
-at(Mt(new THREE.SphereGeometry(0.55, 16, 16), 0xdeb887), 0, 3.85, 0, worker);
-at(Cy(0.2, 1.8, 0x1e40af), -0.7, 1.3, 0, worker);
-at(Cy(0.2, 1.8, 0x1e40af), 0.7, 1.3, 0, worker);
-at(Cy(0.15, 1.6, 0x2563eb), -0.85, 2.8, 0, worker);
-at(Cy(0.15, 1.6, 0x2563eb), 0.85, 2.8, 0, worker);
+
+// Worker Legs in Dark Tactical Navy
+at(Cy(0.2, 1.8, 0x1e293b), -0.7, 1.3, 0, worker);
+at(Cy(0.2, 1.8, 0x1e293b), 0.7, 1.3, 0, worker);
+// Heavy Duty Work Boots
+at(Bx(0.32, 0.3, 0.6, 0x0f172a), -0.7, 0.25, 0.1, worker);
+at(Bx(0.32, 0.3, 0.6, 0x0f172a), 0.7, 0.25, 0.1, worker);
+
+// Worker Torso in Navy with Reflective Safety Bands
+at(Cy(0.42, 2.2, 0x1e293b), 0, 2.3, 0, worker);
+// High-Visibility Orange Safety Harness Straps
+at(Bx(0.86, 0.12, 0.86, 0xf59e0b), 0, 2.7, 0, worker); // Waist band
+at(Bx(0.12, 1.2, 0.86, 0xf59e0b), -0.22, 2.8, 0, worker); // Left strap
+at(Bx(0.12, 1.2, 0.86, 0xf59e0b), 0.22, 2.8, 0, worker); // Right strap
+
+// Worker Head Base
+at(Mt(new THREE.SphereGeometry(0.5, 16, 16), 0xdeb887), 0, 3.85, 0, worker);
+
+// Worker Arms
+at(Cy(0.16, 1.6, 0x1e293b), -0.88, 2.7, 0, worker);
+at(Cy(0.16, 1.6, 0x1e293b), 0.88, 2.7, 0, worker);
+
 worker.position.set(0, 0, 3);
 
-// 3D Tactical Helmet on Worker
-const helmet = new THREE.Group();
-worker.add(helmet);
-at(Mt(new THREE.SphereGeometry(0.62, 16, 12, 0, Math.PI * 2, 0, Math.PI / 2), 0xf59e0b, { roughness: 0.25, metalness: 0.1 }), 0, 4.2, 0, helmet);
-const helmetVisor = at(Bx(0.7, 0.35, 0.4, 0x38bdf8, { transparent: true, opacity: 0.55, roughness: 0.1 }), 0, 4.0, 0.42, helmet);
-const helmetLed = at(Mt(new THREE.SphereGeometry(0.08, 8, 8), 0x22c55e, { emissive: 0x115522 }), -0.45, 4.3, 0.4, helmet);
-const strapIndicator = at(Mt(new THREE.SphereGeometry(0.06, 8, 8), 0x22c55e, { emissive: 0x115522 }), 0.45, 3.85, 0.45, helmet);
+// -------------------------------------------------------------------------
+// 1. UNIT 1: ACTUAL HELMET IMAGE WORN DIRECTLY ON HEAD
+// -------------------------------------------------------------------------
+const helmetTex = loadGearTexture('helmet.png');
+const helmetMat = new THREE.SpriteMaterial({
+  map: helmetTex,
+  transparent: true,
+  depthTest: true
+});
+const wornHelmet = new THREE.Sprite(helmetMat);
+wornHelmet.scale.set(1.9, 2.05, 1);
+wornHelmet.position.set(0, 4.32, 0.1);
+worker.add(wornHelmet);
 
-// 3D Glove Nodes on Worker
-const gloveL = at(Mt(new THREE.SphereGeometry(0.12, 8, 8), 0x06b6d4, { emissive: 0x083344 }), -0.95, 2.1, 0.2, worker);
-const gloveR = at(Mt(new THREE.SphereGeometry(0.12, 8, 8), 0x06b6d4, { emissive: 0x083344 }), 0.95, 2.1, 0.2, worker);
+// Visor Auto-Darkening Reactive 3D Lens (Directly Over Worn Helmet Visor)
+const visorLens = at(Bx(0.72, 0.32, 0.22, 0x0ea5e9, { transparent: true, opacity: 0.35, roughness: 0.1 }), 0, 4.05, 0.38, worker);
 
-// 3D Hazard Detector Pod on Chest
-const detector = new THREE.Group();
-worker.add(detector);
-at(Bx(0.6, 0.8, 0.25, 0x1f2937, { roughness: 0.3 }), 0, 2.5, 0.5, detector);
-at(Bx(0.45, 0.4, 0.05, 0x0284c7, { emissive: 0x0369a1 }), 0, 2.62, 0.63, detector);
-const detLed = at(Mt(new THREE.SphereGeometry(0.07, 8, 8), 0x22c55e, { emissive: 0x115522 }), -0.2, 2.85, 0.63, detector);
-const detBuzzer = at(Cy(0.06, 0.04, 0x888888), 0.2, 2.85, 0.63, detector);
+// Top Warning Strobe / Camera LED Light on Worn Helmet
+const helmetStrobeLight = new THREE.PointLight(0xf59e0b, 0, 14);
+helmetStrobeLight.position.set(0, 4.65, 0.45);
+worker.add(helmetStrobeLight);
+
+// Chin-Strap Sensor Indicator Beacon on Head
+const strapBeacon = at(Mt(new THREE.SphereGeometry(0.06, 8, 8), 0x22c55e, { emissive: 0x115522 }), 0.48, 3.75, 0.35, worker);
+
+// -------------------------------------------------------------------------
+// 2. UNIT 2: ACTUAL SENSING GLOVES WORN DIRECTLY ON HANDS
+// -------------------------------------------------------------------------
+// Left Glove: Palm View with Glowing Center Node
+const glovePalmTex = loadGearTexture('glove_palm.png');
+const gloveMatL = new THREE.SpriteMaterial({
+  map: glovePalmTex,
+  transparent: true,
+  depthTest: true
+});
+const wornGloveL = new THREE.Sprite(gloveMatL);
+wornGloveL.scale.set(0.9, 1.55, 1);
+wornGloveL.position.set(-0.95, 1.95, 0.22);
+worker.add(wornGloveL);
+
+// Right Glove: Back View with Keypad & Sensing Pads
+const gloveBackTex = loadGearTexture('glove_back.png');
+const gloveMatR = new THREE.SpriteMaterial({
+  map: gloveBackTex,
+  transparent: true,
+  depthTest: true
+});
+const wornGloveR = new THREE.Sprite(gloveMatR);
+wornGloveR.scale.set(0.9, 1.55, 1);
+wornGloveR.position.set(0.95, 1.95, 0.22);
+worker.add(wornGloveR);
+
+// High Voltage 415V Electric Arc & Zap Lights on Hands
+const gloveZapLightL = new THREE.PointLight(0x06b6d4, 0, 10);
+gloveZapLightL.position.set(-0.95, 1.95, 0.45);
+worker.add(gloveZapLightL);
+
+const gloveZapLightR = new THREE.PointLight(0x06b6d4, 0, 10);
+gloveZapLightR.position.set(0.95, 1.95, 0.45);
+worker.add(gloveZapLightR);
+
+// -------------------------------------------------------------------------
+// 3. UNIT 3: ACTUAL HAZARD DETECTOR POD WORN DIRECTLY ON CHEST
+// -------------------------------------------------------------------------
+const podTex = loadGearTexture('hazard_detector.png');
+const podMat = new THREE.SpriteMaterial({
+  map: podTex,
+  transparent: true,
+  depthTest: true
+});
+const wornDetector = new THREE.Sprite(podMat);
+wornDetector.scale.set(0.85, 1.75, 1);
+wornDetector.position.set(0, 2.65, 0.48);
+worker.add(wornDetector);
+
+// Live LCD Screen Glow on Worn Chest Pod
+const podScreenMesh = at(Bx(0.36, 0.42, 0.05, 0x0284c7, { transparent: true, opacity: 0.65, emissive: 0x0369a1 }), 0, 2.78, 0.52, worker);
+
+// 100dB Siren & Alarm Light on Chest Pod
+const podAlarmLight = new THREE.PointLight(0xef4444, 0, 12);
+podAlarmLight.position.set(0, 2.85, 0.7);
+worker.add(podAlarmLight);
 
 // Supervisor Station Monitor
 const supDesk = new THREE.Group();
@@ -913,19 +990,19 @@ const gasCloud = new THREE.Points(gag, new THREE.PointsMaterial({ color: 0x86efa
 gasCloud.frustumCulled = false;
 S.add(gasCloud);
 
-// Camera Path Keyframes
+// Camera Path Keyframes - Smooth Framings of Worn Equipment
 const K = [
   [0, [0, 8, 25], [0, 3, 0]],
   [18, [-5, 6, 18], [0, 3, 0]],
-  [36, [5, 7, 20], [0, 3, 0]],
-  [54, [1.5, 5.2, 6.5], [0, 4, 3]],     // Focus Helmet
-  [72, [-1, 3.4, 6], [-0.8, 2.3, 3]],   // Focus Gloves
-  [90, [1.5, 3.2, 5.5], [0, 2.5, 3]],    // Focus Detector Pod
+  [36, [4, 6.5, 16], [0, 3, 2]],
+  [54, [1.4, 4.8, 6.2], [0, 4.1, 3]],    // Close-Up: Worn Helmet on Head
+  [72, [-1.2, 2.9, 5.8], [-0.7, 2.0, 3]], // Close-Up: Worn Gloves on Hands
+  [90, [1.3, 3.1, 5.5], [0, 2.65, 3]],   // Close-Up: Worn Detector on Chest
   [110, [3, 6, 14], [0, 3, 2]],
-  [126, [4, 5, 10], [0, 3, 1]],          // Arc & Gas Scene
-  [142, [2, 6, 12], [0, 3, 3]],          // Fall Scene
+  [126, [3.8, 4.8, 9.5], [0, 3, 1]],     // Arc & Gas Scene
+  [142, [2, 5.5, 11], [0, 2.5, 3]],      // Fall Impact Scene
   [158, [-10, 5.5, 0], [-12, 4, -8]],    // Supervisor Gateway Desk
-  [176, [0, 9, 22], [0, 3, 0]],
+  [176, [0, 8.5, 20], [0, 3, 0]],
   [190, [0, 7, 20], [0, 3, 0]]
 ];
 
@@ -936,8 +1013,8 @@ function camAt(t) {
   const dur = nxt[0] - a[0] || 1;
   const f = sm(cl((t - a[0]) / Math.max(dur, 4)));
   cam.position.lerpVectors(V(...a[1]), V(...nxt[1]), f);
-  cam.position.x += Math.sin(t * 0.2) * 0.35;
-  cam.position.y += Math.sin(t * 0.15) * 0.15;
+  cam.position.x += Math.sin(t * 0.2) * 0.3;
+  cam.position.y += Math.sin(t * 0.15) * 0.12;
   const la = V(0, 0, 0).lerpVectors(V(...a[2]), V(...nxt[2]), f);
   cam.lookAt(la);
 }
@@ -1025,8 +1102,8 @@ function getHUD(currT, arcOn, voltOn, gasOn, fallOn, strapOpen) {
     ["Carbon Monox", `${co} ppm`, co > 50 ? "bad" : "ok"],
     ["Oxygen (O₂)", gasOn ? "18.2%" : "20.8%", gasOn ? "bad" : "ok"],
     ["Motion IMU", fallOn ? "FREEFALL 5.2G" : "1.0G STABLE", fallOn ? "bad" : "ok"],
-    ["Helmet BLE", "CONNECTED", "ok"],
-    ["Glove Link", "CLASS 0 SAFE", "ok"],
+    ["Helmet BLE", "WORN & SYNCED", "ok"],
+    ["Glove Link", "1000V ISOLATED", "ok"],
     ["Mesh Network", currT >= 116 && currT < 122 ? "OFFLINE (STORE)" : "ONLINE (LORA)", currT >= 116 && currT < 122 ? "warn" : "ok"]
   ];
 }
@@ -1038,7 +1115,7 @@ function update(currT, dt) {
     if (manualOverrideTimer <= 0) manualOverride = null;
   }
 
-  // Active Hazard States (Timeline or Manual Override)
+  // Active Hazard States
   const isArc = (currT >= 126 && currT < 135) || manualOverride === 'arc';
   const isVolt = (currT >= 65 && currT < 67) || manualOverride === 'voltage';
   const isGas = (currT >= 126 && currT < 140) || manualOverride === 'gas';
@@ -1046,7 +1123,7 @@ function update(currT, dt) {
   const isStrapOpen = (currT >= 65 && currT < 67) || manualOverride === 'strap';
   const isSos = manualOverride === 'sos';
 
-  // 1. Worker Animation
+  // 1. Worker Animation: Breathing / Work Motion / Fall
   worker.position.y = Math.sin(currT * 1.5) * 0.03;
   if (isFall) {
     worker.rotation.x = Math.PI / 3;
@@ -1055,37 +1132,87 @@ function update(currT, dt) {
     worker.rotation.x = 0;
   }
 
-  // 2. 3D Helmet Reactions
+  // Highlight Current Focused Gear in Top Banner
+  $("pill-h").className = (currT >= 54 && currT < 72) || isArc || isStrapOpen ? "gear-badge-pill highlight" : "gear-badge-pill";
+  $("pill-g").className = (currT >= 72 && currT < 90) || isVolt ? "gear-badge-pill highlight" : "gear-badge-pill";
+  $("pill-d").className = (currT >= 90 && currT < 110) || isGas || isFall || isSos ? "gear-badge-pill highlight" : "gear-badge-pill";
+
+  // -------------------------------------------------------------------------
+  // 2. VISIBLE REACTIONS ON WORN GEAR DIRECTLY ON PERSON
+  // -------------------------------------------------------------------------
+
+  // Worn Helmet: Arc Flash Darkening & Chin-Strap Alert
   if (isArc) {
-    helmetVisor.material.color.set(0x0f172a);
-    helmetVisor.material.opacity = 0.95;
-    helmetLed.material.color.set(0xf59e0b);
-    helmetLed.material.emissive.set(0x775511);
+    visorLens.material.opacity = 0.95;
+    visorLens.material.color.set(0x020617);
+    visorLens.material.emissive = new THREE.Color(0x0284c7);
+    helmetStrobeLight.color.set(0xf59e0b);
+    helmetStrobeLight.intensity = Math.floor(currT * 12) % 2 === 0 ? 4.0 : 0.5;
+    wornHelmet.material.color.set(0xffe066);
+  } else if (isStrapOpen) {
+    visorLens.material.opacity = 0.35;
+    visorLens.material.color.set(0x0ea5e9);
+    strapBeacon.material.color.set(0xef4444);
+    strapBeacon.material.emissive.set(0x771111);
+    helmetStrobeLight.color.set(0xef4444);
+    helmetStrobeLight.intensity = Math.floor(currT * 6) % 2 === 0 ? 3.0 : 0;
+    wornHelmet.material.color.set(0xffaaaa);
   } else {
-    helmetVisor.material.color.set(0x38bdf8);
-    helmetVisor.material.opacity = 0.55;
-    helmetLed.material.color.set(isStrapOpen ? 0xef4444 : 0x22c55e);
-    helmetLed.material.emissive.set(isStrapOpen ? 0x771111 : 0x115522);
-  }
-  strapIndicator.material.color.set(isStrapOpen ? 0xef4444 : 0x22c55e);
-
-  // 3. 3D Gloves Reactions
-  const gc = isVolt ? 0x06b6d4 : 0x22c55e;
-  gloveL.material.color.set(gc);
-  gloveL.material.emissive.set(isVolt ? 0x0ea5e9 : 0x115522);
-  gloveR.material.color.set(gc);
-  gloveR.material.emissive.set(isVolt ? 0x0ea5e9 : 0x115522);
-
-  // 4. 3D Detector Reactions
-  detLed.material.color.set(isGas || isFall || isSos ? 0xef4444 : 0x22c55e);
-  detLed.material.emissive.set(isGas || isFall || isSos ? 0x881111 : 0x115522);
-  if ((isGas || isFall || isSos) && Math.floor(currT * 5) % 2 === 0) {
-    detBuzzer.scale.setScalar(1.5);
-  } else {
-    detBuzzer.scale.setScalar(1.0);
+    visorLens.material.opacity = 0.35;
+    visorLens.material.color.set(0x0ea5e9);
+    strapBeacon.material.color.set(0x22c55e);
+    strapBeacon.material.emissive.set(0x115522);
+    helmetStrobeLight.intensity = 0;
+    wornHelmet.material.color.set(0xffffff);
   }
 
-  // 5. 3D Particles
+  // Worn Sensing Gloves: 415V Electric Arc & Haptic Vibration
+  if (isVolt) {
+    const zapGlow = Math.random() * 4.5 + 1.0;
+    gloveZapLightL.intensity = zapGlow;
+    gloveZapLightR.intensity = zapGlow;
+    // 250Hz Haptic Micro-Vibration Jitter on Hands
+    const jitter = Math.sin(currT * 50) * 0.04;
+    wornGloveL.position.x = -0.95 + jitter;
+    wornGloveR.position.x = 0.95 - jitter;
+    wornGloveL.material.color.set(0x67e8f9);
+    wornGloveR.material.color.set(0x67e8f9);
+  } else {
+    gloveZapLightL.intensity = 0;
+    gloveZapLightR.intensity = 0;
+    wornGloveL.position.x = -0.95;
+    wornGloveR.position.x = 0.95;
+    wornGloveL.material.color.set(0xffffff);
+    wornGloveR.material.color.set(0xffffff);
+  }
+
+  // Worn Hazard Detector on Chest: Gas Inundation & Siren Flash
+  if (isGas) {
+    podScreenMesh.material.color.set(0xef4444);
+    podScreenMesh.material.emissive.set(0x991111);
+    podAlarmLight.color.set(0xef4444);
+    podAlarmLight.intensity = Math.floor(currT * 8) % 2 === 0 ? 4.5 : 0.8;
+    wornDetector.material.color.set(0xff9999);
+  } else if (isFall) {
+    podScreenMesh.material.color.set(0xf59e0b);
+    podScreenMesh.material.emissive.set(0x884400);
+    podAlarmLight.color.set(0xf59e0b);
+    podAlarmLight.intensity = 3.5;
+    wornDetector.material.color.set(0xffd599);
+  } else if (isSos) {
+    podScreenMesh.material.color.set(0xef4444);
+    podScreenMesh.material.emissive.set(0xff0000);
+    podAlarmLight.color.set(0xef4444);
+    podAlarmLight.intensity = Math.floor(currT * 12) % 2 === 0 ? 5.0 : 0;
+    wornDetector.material.color.set(0xff6666);
+  } else {
+    podScreenMesh.material.color.set(0x0284c7);
+    podScreenMesh.material.emissive.set(0x0369a1);
+    podAlarmLight.intensity = 0;
+    wornDetector.material.color.set(0xffffff);
+  }
+
+  // 3. 3D Sparks & Gas Cloud Particles
   sparks.visible = isArc;
   if (isArc) {
     for (let i = 0; i < SPN; i++) {
@@ -1107,34 +1234,32 @@ function update(currT, dt) {
     gag.attributes.position.needsUpdate = true;
   }
 
-  // 6. Supervisor Desk Monitor
+  // 4. Supervisor Desk Monitor
   const supActive = currT >= 158;
   monitorGlow.material.emissive.set(supActive ? (isGas || isFall ? 0x661111 : 0x1e3a5f) : 0x050810);
 
-  // 7. Fullscreen Overlays
-  $("arc").style.opacity = isArc ? 0.7 : 0;
+  // 5. Fullscreen Overlays
+  $("arc").style.opacity = isArc ? 0.75 : 0;
   $("gas").style.opacity = isGas ? 0.85 : 0;
   $("shock").style.opacity = isVolt ? 0.8 : 0;
   $("heat").style.opacity = (currT >= 126 && currT < 140) ? 0.5 : 0;
 
-  // ========================================================
-  // 8. UPDATE WEARABLE HARDWARE LIVE DOCK (PHYSICAL GEAR FX)
-  // ========================================================
+  // 6. Update Wearable Hardware Live Monitor Dock (Right Panel)
   const cardHelmet = $("card-helmet");
   const badgeHelmet = $("badge-helmet");
   const telemHelmet = $("telem-helmet");
 
   if (isArc) {
     cardHelmet.className = "gear-card active-arc";
-    badgeHelmet.textContent = "ARC DETECTED (<15ms)";
-    telemHelmet.textContent = "VISOR: AUTO-DARKENED · 99.8% UV SHIELD";
+    badgeHelmet.textContent = "ARC (<15ms) TRIP";
+    telemHelmet.textContent = "VISOR: AUTO-DARKENED (99.8% UV)";
   } else if (isStrapOpen) {
     cardHelmet.className = "gear-card active-alert";
     badgeHelmet.textContent = "STRAP UNLATCHED";
-    telemHelmet.textContent = "HALL SENSOR: DISENGAGED · BEEPER 95dB";
+    telemHelmet.textContent = "HALL INTERLOCK: OPEN · 95dB BEEPER";
   } else {
     cardHelmet.className = "gear-card";
-    badgeHelmet.textContent = "SECURED";
+    badgeHelmet.textContent = "WORN ON HEAD";
     telemHelmet.textContent = "STRAP: LOCKED · VISOR: CLEAR";
   }
 
@@ -1144,11 +1269,11 @@ function update(currT, dt) {
 
   if (isVolt) {
     cardGloves.className = "gear-card active-volt";
-    badgeGloves.textContent = "415V VOLTAGE TRIP";
-    telemGloves.textContent = "NCV: 415V TOUCH · 250Hz HAPTIC ALERT";
+    badgeGloves.textContent = "415V TOUCH TRIP";
+    telemGloves.textContent = "NCV: 415V VOLTAGE · 250Hz HAPTIC";
   } else {
     cardGloves.className = "gear-card";
-    badgeGloves.textContent = "CLASS 0";
+    badgeGloves.textContent = "WORN ON HANDS";
     telemGloves.textContent = "NCV: NOMINAL · 1000V STANDOFF OK";
   }
 
@@ -1170,16 +1295,16 @@ function update(currT, dt) {
     telemDet.textContent = "DISTRESS BEACON BROADCASTING (LORA)";
   } else {
     cardDet.className = "gear-card";
-    badgeDet.textContent = "NORMAL";
+    badgeDet.textContent = "WORN ON CHEST";
     telemDet.textContent = "ATMOSPHERE: SAFE · IMU: 1.0G NOMINAL";
   }
 
-  // 9. Sensor Telemetry HUD
+  // 7. Sensor Telemetry HUD
   $("hud").style.display = currT >= 54 ? "block" : "none";
   const hud = getHUD(currT, isArc, isVolt, isGas, isFall, isStrapOpen);
   $("rows").innerHTML = hud.map(r => `<div class="sr"><span>${r[0]}</span><b class="${r[2]}">${r[1]}</b></div>`).join("");
 
-  // 10. Incidents Log
+  // 8. Incidents Log
   if (currT >= 65 && currT < 67) addIncident(currT, "CHINSTRAP_UNLATCHED", "m", "Helmet SR-H01");
   if (currT >= 65 && currT < 67) addIncident(currT, "415V_CONTACT_ALERT", "h", "Glove NCV-01");
   if (currT >= 126 && currT < 135) addIncident(currT, "ARC_FLASH_UV_BLAST", "h", "Helmet Optical");
@@ -1192,7 +1317,7 @@ function update(currT, dt) {
     return `<div class="ie ${x.sev}"><b>${x.type}</b><br><span style="font-size:10px;">${x.dev}</span></div>`;
   }).join("");
 
-  // 11. Completion Screen
+  // 9. Completion Screen
   $("fin").style.display = currT >= 198 ? "flex" : "none";
 }
 
