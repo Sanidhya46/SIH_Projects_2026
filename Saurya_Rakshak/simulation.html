@@ -16,7 +16,7 @@
   --ac-glow: rgba(245, 158, 11, 0.4);
   --cyan: #06b6d4;
   --cyan-glow: rgba(6, 182, 212, 0.45);
-  --pn: rgba(12, 15, 24, 0.92);
+  --pn: rgba(12, 15, 24, 0.94);
   --pn-border: rgba(245, 158, 11, 0.3);
   --ok: #22c55e;
   --bad: #ef4444;
@@ -108,7 +108,7 @@ canvas#c {
 /* In-World Gear Indicator Banner */
 #gear-indicator-banner {
   position: fixed;
-  top: 68px;
+  top: 66px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 22;
@@ -142,9 +142,9 @@ canvas#c {
 
 /* Sensor Telemetry HUD */
 #hud {
-  top: 108px;
+  top: 104px;
   left: 14px;
-  width: 230px;
+  width: 235px;
   max-width: 44vw;
   display: none;
 }
@@ -172,9 +172,9 @@ canvas#c {
 
 /* Incident Event Queue */
 #iq {
-  top: 390px;
+  top: 395px;
   left: 14px;
-  width: 230px;
+  width: 235px;
   max-width: 44vw;
   display: none;
   max-height: 230px;
@@ -203,10 +203,10 @@ canvas#c {
 #sub {
   left: 50%;
   transform: translateX(-50%);
-  bottom: 70px;
-  width: min(840px, 94vw);
+  bottom: 68px;
+  width: min(860px, 94vw);
   text-align: center;
-  font-size: 15px;
+  font-size: 14.5px;
   line-height: 1.45;
   background: rgba(10, 12, 18, 0.94);
   border-color: rgba(245, 158, 11, 0.35);
@@ -222,7 +222,7 @@ canvas#c {
   display: flex;
   gap: 10px;
   align-items: center;
-  width: min(840px, 94vw);
+  width: min(860px, 94vw);
   padding: 8px 14px;
 }
 button.btn-ctl {
@@ -230,15 +230,16 @@ button.btn-ctl {
   color: var(--fg);
   border: 1px solid var(--ac);
   border-radius: 8px;
-  padding: 6px 14px;
+  padding: 6px 12px;
   cursor: pointer;
   font-family: inherit;
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 700;
   transition: all 0.2s;
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  white-space: nowrap;
 }
 button.btn-ctl:hover {
   background: #453214;
@@ -254,7 +255,7 @@ button.btn-ctl:hover {
   font-family: 'JetBrains Mono', monospace;
   font-size: 12px;
   color: #94a3b8;
-  min-width: 38px;
+  min-width: 42px;
 }
 
 /* ======================================================== */
@@ -455,7 +456,7 @@ button.btn-ctl:hover {
 }
 .btn-hazard:active { transform: translateY(1px); }
 
-/* Visual Overlays for 3D Camera / Fullscreen effects */
+/* Fullscreen Hazard FX Overlays */
 .fx {
   position: fixed;
   inset: 0;
@@ -464,11 +465,11 @@ button.btn-ctl:hover {
   transition: opacity 0.3s;
 }
 #arc {
-  background: radial-gradient(ellipse at center, rgba(255, 245, 160, 0.6), transparent 70%);
+  background: radial-gradient(ellipse at center, rgba(255, 245, 160, 0.65), transparent 70%);
   opacity: 0;
 }
 #gas {
-  background: linear-gradient(180deg, rgba(160, 255, 120, 0.25) 0%, transparent 65%);
+  background: linear-gradient(180deg, rgba(160, 255, 120, 0.28) 0%, transparent 65%);
   opacity: 0;
 }
 #heat {
@@ -487,7 +488,72 @@ button.btn-ctl:hover {
 }
 @keyframes zap { from { opacity: 1; } to { opacity: 0.2; } }
 
-/* Splash Screen Modal */
+/* Full Script Modal */
+#script-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 7, 12, 0.95);
+  z-index: 60;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.script-box {
+  max-width: 880px;
+  width: 100%;
+  max-height: 85vh;
+  background: #0d111a;
+  border: 1px solid var(--ac);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 16px 50px rgba(0,0,0,0.8);
+  overflow: hidden;
+}
+.script-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.script-header h2 {
+  font-size: 18px;
+  color: var(--ac);
+  font-weight: 800;
+}
+.script-body {
+  padding: 20px;
+  overflow-y: auto;
+  line-height: 1.6;
+  font-size: 13.5px;
+  color: #cbd5e1;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.script-cue-item {
+  background: #141926;
+  border-left: 3px solid var(--ac);
+  padding: 12px 14px;
+  border-radius: 0 8px 8px 0;
+}
+.script-cue-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--cyan);
+  margin-bottom: 4px;
+}
+.script-cue-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 6px;
+}
+
+/* Initial Splash Modal */
 #splash {
   position: fixed;
   inset: 0;
@@ -625,7 +691,8 @@ button.btn-ctl:hover {
 <div class="p" id="ctl">
   <button id="pp" class="btn-ctl">⏸ Pause</button>
   <button id="rs" class="btn-ctl">↺ Restart</button>
-  <input type="range" id="seek" min="0" max="200" step=".1" value="0" aria-label="Timeline">
+  <button id="btn-show-script" class="btn-ctl" style="border-color:#06b6d4; color:#38bdf8;">📜 Script</button>
+  <input type="range" id="seek" min="0" max="230" step=".1" value="0" aria-label="Timeline">
   <span id="tm">0:00</span>
   <button id="mu" class="btn-ctl">🔊 Sound</button>
 </div>
@@ -705,13 +772,24 @@ button.btn-ctl:hover {
   </div>
 </div>
 
+<!-- Full Script Reading Modal -->
+<div id="script-modal">
+  <div class="script-box">
+    <div class="script-header">
+      <h2>📜 Complete Saurya Rakshak Engineering Script</h2>
+      <button id="btn-close-script" class="btn-ctl">✕ Close</button>
+    </div>
+    <div class="script-body" id="script-list"></div>
+  </div>
+</div>
+
 <!-- Initial Splash Modal -->
 <div id="splash">
   <h1>⚡ Saurya Rakshak 3D Simulation</h1>
   <p>
-    Interactive 3D demonstration where the industrial worker in the simulation is directly wearing the authentic
+    An interactive demonstration where the industrial worker in the 3D workshop is directly wearing the authentic
     Saurya Rakshak Smart Tactical Helmet, Armored Sensing Gloves, and Multi-Hazard Detector Pod.
-    Watch them react live to electrical shock, arc flash, toxic gas, and fall hazards!
+    Observe real-time interception of electrical shock, arc flashes, toxic gas inundations, and scaffolding falls!
   </p>
   <p style="font-size:12px; opacity:0.8; margin-top:10px; color:#fbbf24;">
     🔊 Turn on sound for real-time speech narration and synthetic device audio warnings.
@@ -738,7 +816,7 @@ button.btn-ctl:hover {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <script>
-const T = 200;
+const T = 230;
 const $ = id => document.getElementById(id);
 const cl = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
 const sm = x => x * x * (3 - 2 * x);
@@ -784,21 +862,61 @@ function playSfx(type) {
   }
 }
 
-// 12 Industrial Scenario Cues
+// Complete 12-Scene Narration Script with Restored Statistics, Problem-Solution Niches & Features
 const cues = [
-  [0, "1. Industrial Hazard Landscape", "Every year, thousands of workers suffer fatal electrical contacts, fall impacts, toxic gas asphyxiation, and arc flashes across Indian industrial workshops."],
-  [18, "2. Limitations of Passive PPE", "Conventional helmets and rubber gloves protect passively, but supervisors have zero electronic awareness of whether PPE is worn, whether atmosphere is toxic, or whether a worker has fallen."],
-  [36, "3. Saurya Rakshak Ecosystem", "Introducing Saurya Rakshak. Here you can see our worker physically wearing the three connected units: Smart Tactical Helmet on the head, Armored Sensing Gloves on the hands, and the Multi-Hazard Detector Pod on the chest."],
-  [54, "4. Unit 1: Smart Tactical Helmet", "Unit 1: Notice the Smart Tactical Helmet worn on the worker's head. Featuring the 4K camera, magnetic chin-strap Hall sensor, and the auto-darkening electrochromic visor."],
-  [72, "5. Unit 2: Armored Sensing Gloves", "Unit 2: Look at the worker's hands wearing the Armored Sensing Gloves. Certified Class 0 rubber providing 1000V dielectric standoff, capacitive NCV detection nodes, and 250Hz haptic vibration."],
-  [90, "6. Unit 3: Multi-Hazard Detector Pod", "Unit 3: Mounted on the worker's chest harness is the Multi-Hazard Detector Pod. Integrating 4-gas optical sensing, 6-axis IMU fall shock detector, and autonomous 100dB siren."],
-  [110, "7. Local-First Autonomous Alarms", "Critical engineering rule: every hazard response operates autonomously without cloud or WiFi dependency. Sub-15 millisecond local trips execute instantly in edge hardware."],
-  [126, "8. Live Arc Flash & Gas Explosion Demo", "Demonstrating Arc Flash and Gas Inundation. Notice the helmet visor directly darkening on the worker's head while the chest pod screen flashes red and sounds the 100dB siren."],
-  [142, "9. High-G Fall & Immobility Immersion", "Worker freefall detection. The 6-axis IMU registers freefall acceleration followed by high-G impact shock, starting an automatic 10-second immobility countdown beacon."],
-  [158, "10. Edge Supervisor Gateway Telemetry", "The supervisor gateway continuously ingests telemetry packets, validates packet checksums, deduplicates incidents, and persists logs to embedded SQLite in WAL mode."],
-  [176, "11. T01-T20 Verification Matrix", "All 20 engineering benchmarks validated: dielectric standoff, sub-15ms optical trips, gas chamber linearity, IMU shock reliability, and mesh packet delivery under heavy EMI."],
-  [190, "12. Research-Backed Production Architecture", "Saurya Rakshak: Protection, Detection, and Immediate Autonomous Response. Ready for deployment across electrical utilities, heavy fabrication, and confined industrial worksites."]
+  [0, "1. Industrial Fatality Toll & NCRB Reality", 
+   "Every year across India, thousands of workers lose their lives to preventable industrial hazards. In 2023 alone, National Crime Records Bureau documented thirteen thousand eight hundred thirty-seven electrocution deaths, over twenty-five thousand fatal falls from heights, and hundreds of toxic gas asphyxiation tragedies in confined spaces."],
+   
+  [20, "2. Failure of Conventional Passive PPE", 
+   "Workers on electrical, welding, and confined-space jobs face electric shock, blinding arc flash burns reaching nineteen thousand degrees, toxic fumes, and high-G falls. Conventional helmets and gloves protect purely passively, but supervisors have zero electronic awareness of whether gear is fastened, whether air is toxic, or whether a fallen worker is lying unconscious."],
+   
+  [40, "3. Our Solution: Saurya Rakshak Ecosystem", 
+   "Introducing Saurya Rakshak: an interconnected four-part active safety ecosystem engineered specifically for electrical utilities, metal fabrication, and hazardous trades. As you can see in our 3D digital twin, our worker is directly wearing the Smart Tactical Helmet, Armored Sensing Gloves, and the Chest-Mounted Multi-Hazard Detector Pod."],
+   
+  [60, "4. Unit 1: Smart Tactical Helmet (IS 2925)", 
+   "Unit one: Notice the Smart Tactical Helmet worn directly on the worker's head. Built on a certified IS twenty-nine twenty-five impact shell with an external magnetic Hall-effect sensor that continuously verifies the chin strap is securely fastened under the jaw, plus an optical UV photodiode that triggers an auto-darkening electrochromic visor in under fifteen milliseconds to prevent retinal flash burns."],
+   
+  [82, "5. Unit 2: Armored Sensing Gloves (Class 0 1000V)", 
+   "Unit two: Look at the worker's hands wearing the Armored Sensing Gloves. Certified ASTM D one-twenty Class zero rubber providing one thousand volt dielectric standoff. An embedded capacitive non-contact voltage sensor detects live four-fifteen volt lines at ten centimeters standoff, firing a two-hundred-fifty hertz palm haptic vibration motor to instinctively pull the electrician's hand away before fatal touch."],
+   
+  [104, "6. Unit 3: Multi-Hazard Detector Pod", 
+   "Unit three: Mounted directly on the worker's chest harness is the Multi-Hazard Detector Pod. It houses four independent optical gas chambers monitoring Methane explosive LEL, Oxygen deficiency below nineteen point five percent, Carbon Monoxide, and lethal Hydrogen Sulfide sewer gas, coupled with a six-axis IMU for fall detection, an autonomous one-hundred decibel acoustic siren, and a manual SOS trigger."],
+   
+  [128, "7. Local-First Architecture: 100% Offline Autonomy", 
+   "Critical engineering rule: every single hazard alarm executes locally in hardware without needing internet, cloud, or Wi-Fi. In subterranean switchyards, shielded basements, and rural substations, the buzzer sounds, the visor darkens, and the glove vibrates with zero latency. Events are saved locally first, then synchronized when connectivity returns."],
+   
+  [148, "8. Live Demo: Arc Flash & 415V Interception", 
+   "Watch the live hazard interception. An arc flash explosion unleashes blinding UV radiation: the helmet's electrochromic visor instantly darkens on the worker's head in under fifteen milliseconds, protecting the eyes. Simultaneously, approaching a live four-fifteen volt terminal triggers the glove's capacitive NCV sensor, unleashing localized haptic warning pulses to prevent ventricular fibrillation."],
+   
+  [168, "9. Live Demo: Toxic Gas & Scaffolding Fall", 
+   "Now observe toxic gas inundation. Methane and carbon monoxide exceed safety thresholds: the chest pod's screen flashes danger crimson, sounding the autonomous one-hundred decibel siren. When the worker suffers a scaffolding fall, the six-axis IMU detects freefall followed by impact shock, initiating an automatic ten-second immobility countdown beacon for emergency dispatch."],
+   
+  [190, "10. Unit 4: Edge Supervisor Gateway Telemetry", 
+   "Unit four: The Edge Supervisor Gateway. Using long-range LoRa mesh, it aggregates telemetry from up to sixty-four workers, deduplicates packets with unique collision-free IDs, and commits incident blackbox logs to embedded SQLite in WAL mode on industrial-grade SPI flash, guaranteeing complete audit recovery even after catastrophic power cuts."],
+   
+  [210, "11. T01–T20 Systematic Verification Matrix", 
+   "Saurya Rakshak is verified across twenty rigorous engineering benchmarks: two-point-five kilovolt dielectric breakdown standoff, sub-fifteen millisecond optical trip latency, four-gas linearity calibration, freefall shock algorithm validation, and zero false-trip reliability under heavy industrial electromagnetic interference."],
+   
+  [224, "12. Conclusion & Hackathon Readiness", 
+   "Saurya Rakshak: Active Protection, Autonomous Detection, and Immediate Response. A fully fabricated, hardware-validated, research-grounded industrial safety innovation ready for nationwide deployment to safeguard India's workforce."]
 ];
+
+// Populate Script Reading Modal
+const scriptList = $("script-list");
+cues.forEach(c => {
+  const item = document.createElement("div");
+  item.className = "script-cue-item";
+  const m = Math.floor(c[0] / 60), s = String(c[0] % 60).padStart(2, "0");
+  item.innerHTML = `
+    <div class="script-cue-time">⏱️ [${m}:${s}]</div>
+    <div class="script-cue-title">${c[1]}</div>
+    <div style="font-size:13px; color:#cbd5e1;">${c[2]}</div>
+  `;
+  scriptList.appendChild(item);
+});
+
+$("btn-show-script").onclick = () => { $("script-modal").style.display = "flex"; };
+$("btn-close-script").onclick = () => { $("script-modal").style.display = "none"; };
 
 // Three.js Scene Setup
 const R = new THREE.WebGLRenderer({ canvas: $("c"), antialias: true });
@@ -808,8 +926,8 @@ S.background = new THREE.Color(0x090c12);
 S.fog = new THREE.Fog(0x090c12, 35, 95);
 const cam = new THREE.PerspectiveCamera(50, 1, 0.1, 200);
 
-S.add(new THREE.HemisphereLight(0xffe8c0, 0x161824, 1.2));
-const dl = new THREE.DirectionalLight(0xfff0d0, 1.3);
+S.add(new THREE.HemisphereLight(0xffe8c0, 0x161824, 1.25));
+const dl = new THREE.DirectionalLight(0xfff0d0, 1.35);
 dl.position.set(8, 18, 10);
 S.add(dl);
 const pl1 = new THREE.PointLight(0xf59e0b, 0.7, 30);
@@ -855,7 +973,7 @@ at(Cy(0.08, 1.5, 0xbbbbbb), -2, 4.2, 0);
 at(Bx(0.6, 0.4, 0.6, 0x555555), -3, 3.9, 0.5);
 
 // =========================================================================
-// 3D INDUSTRIAL WORKER MODEL WEARING ACTUAL SAURYA RAKSHAK GEAR
+// 3D INDUSTRIAL WORKER MODEL WEARING PROPERLY ALIGNED GEAR
 // =========================================================================
 const worker = new THREE.Group();
 S.add(worker);
@@ -874,17 +992,13 @@ at(Bx(0.86, 0.12, 0.86, 0xf59e0b), 0, 2.7, 0, worker); // Waist band
 at(Bx(0.12, 1.2, 0.86, 0xf59e0b), -0.22, 2.8, 0, worker); // Left strap
 at(Bx(0.12, 1.2, 0.86, 0xf59e0b), 0.22, 2.8, 0, worker); // Right strap
 
-// Worker Head Base
-at(Mt(new THREE.SphereGeometry(0.5, 16, 16), 0xdeb887), 0, 3.85, 0, worker);
-
-// Worker Arms
-at(Cy(0.16, 1.6, 0x1e293b), -0.88, 2.7, 0, worker);
-at(Cy(0.16, 1.6, 0x1e293b), 0.88, 2.7, 0, worker);
-
-worker.position.set(0, 0, 3);
+// Worker Neck (no giant head sphere sticking outside!)
+at(Cy(0.18, 0.5, 0xd4a373), 0, 3.6, 0, worker);
+// Inner Head Base sitting cleanly inside helmet
+at(Mt(new THREE.SphereGeometry(0.36, 16, 16), 0xd4a373), 0, 4.05, -0.05, worker);
 
 // -------------------------------------------------------------------------
-// 1. UNIT 1: ACTUAL HELMET IMAGE WORN DIRECTLY ON HEAD
+// 1. UNIT 1: ACTUAL HELMET IMAGE WORN CLEANLY OVER HEAD
 // -------------------------------------------------------------------------
 const helmetTex = loadGearTexture('helmet.png');
 const helmetMat = new THREE.SpriteMaterial({
@@ -893,37 +1007,38 @@ const helmetMat = new THREE.SpriteMaterial({
   depthTest: true
 });
 const wornHelmet = new THREE.Sprite(helmetMat);
-wornHelmet.scale.set(1.9, 2.05, 1);
-wornHelmet.position.set(0, 4.32, 0.1);
+wornHelmet.scale.set(2.1, 2.25, 1);
+wornHelmet.position.set(0, 4.38, 0.12);
 worker.add(wornHelmet);
 
-// Visor Auto-Darkening Reactive 3D Lens (Directly Over Worn Helmet Visor)
-const visorLens = at(Bx(0.72, 0.32, 0.22, 0x0ea5e9, { transparent: true, opacity: 0.35, roughness: 0.1 }), 0, 4.05, 0.38, worker);
-
 // Top Warning Strobe / Camera LED Light on Worn Helmet
-const helmetStrobeLight = new THREE.PointLight(0xf59e0b, 0, 14);
-helmetStrobeLight.position.set(0, 4.65, 0.45);
+const helmetStrobeLight = new THREE.PointLight(0xf59e0b, 0, 15);
+helmetStrobeLight.position.set(0, 4.75, 0.45);
 worker.add(helmetStrobeLight);
 
 // Chin-Strap Sensor Indicator Beacon on Head
 const strapBeacon = at(Mt(new THREE.SphereGeometry(0.06, 8, 8), 0x22c55e, { emissive: 0x115522 }), 0.48, 3.75, 0.35, worker);
 
 // -------------------------------------------------------------------------
-// 2. UNIT 2: ACTUAL SENSING GLOVES WORN DIRECTLY ON HANDS
+// 2. UNIT 2: SENSING GLOVES PROPERLY CONNECTED TO FOREARMS (CUFF AT TOP)
 // -------------------------------------------------------------------------
-// Left Glove: Palm View with Glowing Center Node
-const glovePalmTex = loadGearTexture('glove_palm.png');
-const gloveMatL = new THREE.SpriteMaterial({
-  map: glovePalmTex,
-  transparent: true,
-  depthTest: true
-});
-const wornGloveL = new THREE.Sprite(gloveMatL);
-wornGloveL.scale.set(0.9, 1.55, 1);
-wornGloveL.position.set(-0.95, 1.95, 0.22);
-worker.add(wornGloveL);
+// Realistic Working Arm Articulation:
+// Upper Arms from Shoulders down to Elbows
+at(Cy(0.15, 1.1, 0x1e293b), -0.88, 2.9, 0, worker); // Right shoulder (viewer's left)
+at(Cy(0.15, 1.1, 0x1e293b), 0.88, 2.9, 0, worker);  // Left shoulder (viewer's right)
 
-// Right Glove: Back View with Keypad & Sensing Pads
+// Elbow Joints
+at(Mt(new THREE.SphereGeometry(0.16, 12, 12), 0x1e293b), -0.88, 2.3, 0, worker);
+at(Mt(new THREE.SphereGeometry(0.16, 12, 12), 0x1e293b), 0.88, 2.3, 0, worker);
+
+// Forearms Angled Forward Towards Workbench to meet Glove Cuffs
+const forearmR = at(Cy(0.14, 0.9, 0x1e293b), -0.82, 1.95, 0.15, worker);
+forearmR.rotation.x = Math.PI / 10;
+const forearmL = at(Cy(0.14, 0.9, 0x1e293b), 0.82, 1.95, 0.15, worker);
+forearmL.rotation.x = Math.PI / 10;
+
+// Hand Mount Points (at ends of forearms, fingers pointing naturally)
+// Right Hand (Viewer's Left, x < 0): Wears glove_back with thumb pointing inward (-x to +x)
 const gloveBackTex = loadGearTexture('glove_back.png');
 const gloveMatR = new THREE.SpriteMaterial({
   map: gloveBackTex,
@@ -932,17 +1047,29 @@ const gloveMatR = new THREE.SpriteMaterial({
 });
 const wornGloveR = new THREE.Sprite(gloveMatR);
 wornGloveR.scale.set(0.9, 1.55, 1);
-wornGloveR.position.set(0.95, 1.95, 0.22);
+wornGloveR.position.set(-0.82, 1.6, 0.28);
 worker.add(wornGloveR);
 
-// High Voltage 415V Electric Arc & Zap Lights on Hands
-const gloveZapLightL = new THREE.PointLight(0x06b6d4, 0, 10);
-gloveZapLightL.position.set(-0.95, 1.95, 0.45);
-worker.add(gloveZapLightL);
+// Left Hand (Viewer's Right, x > 0): Wears glove_palm with thumb pointing inward (+x to -x)
+const glovePalmTex = loadGearTexture('glove_palm.png');
+const gloveMatL = new THREE.SpriteMaterial({
+  map: glovePalmTex,
+  transparent: true,
+  depthTest: true
+});
+const wornGloveL = new THREE.Sprite(glovePalmTex ? gloveMatL : gloveMatR);
+wornGloveL.scale.set(0.9, 1.55, 1);
+wornGloveL.position.set(0.82, 1.6, 0.28);
+worker.add(wornGloveL);
 
+// High Voltage 415V Electric Arc & Zap Lights on Hands
 const gloveZapLightR = new THREE.PointLight(0x06b6d4, 0, 10);
-gloveZapLightR.position.set(0.95, 1.95, 0.45);
+gloveZapLightR.position.set(-0.82, 1.6, 0.45);
 worker.add(gloveZapLightR);
+
+const gloveZapLightL = new THREE.PointLight(0x06b6d4, 0, 10);
+gloveZapLightL.position.set(0.82, 1.6, 0.45);
+worker.add(gloveZapLightL);
 
 // -------------------------------------------------------------------------
 // 3. UNIT 3: ACTUAL HAZARD DETECTOR POD WORN DIRECTLY ON CHEST
@@ -958,13 +1085,12 @@ wornDetector.scale.set(0.85, 1.75, 1);
 wornDetector.position.set(0, 2.65, 0.48);
 worker.add(wornDetector);
 
-// Live LCD Screen Glow on Worn Chest Pod
-const podScreenMesh = at(Bx(0.36, 0.42, 0.05, 0x0284c7, { transparent: true, opacity: 0.65, emissive: 0x0369a1 }), 0, 2.78, 0.52, worker);
-
-// 100dB Siren & Alarm Light on Chest Pod
+// Subtle Chest Pod Screen Alarm Glow & 100dB Siren Light
 const podAlarmLight = new THREE.PointLight(0xef4444, 0, 12);
-podAlarmLight.position.set(0, 2.85, 0.7);
+podAlarmLight.position.set(0, 2.85, 0.65);
 worker.add(podAlarmLight);
+
+worker.position.set(0, 0, 3);
 
 // Supervisor Station Monitor
 const supDesk = new THREE.Group();
@@ -993,17 +1119,17 @@ S.add(gasCloud);
 // Camera Path Keyframes - Smooth Framings of Worn Equipment
 const K = [
   [0, [0, 8, 25], [0, 3, 0]],
-  [18, [-5, 6, 18], [0, 3, 0]],
-  [36, [4, 6.5, 16], [0, 3, 2]],
-  [54, [1.4, 4.8, 6.2], [0, 4.1, 3]],    // Close-Up: Worn Helmet on Head
-  [72, [-1.2, 2.9, 5.8], [-0.7, 2.0, 3]], // Close-Up: Worn Gloves on Hands
-  [90, [1.3, 3.1, 5.5], [0, 2.65, 3]],   // Close-Up: Worn Detector on Chest
-  [110, [3, 6, 14], [0, 3, 2]],
-  [126, [3.8, 4.8, 9.5], [0, 3, 1]],     // Arc & Gas Scene
-  [142, [2, 5.5, 11], [0, 2.5, 3]],      // Fall Impact Scene
-  [158, [-10, 5.5, 0], [-12, 4, -8]],    // Supervisor Gateway Desk
-  [176, [0, 8.5, 20], [0, 3, 0]],
-  [190, [0, 7, 20], [0, 3, 0]]
+  [20, [-5, 6, 18], [0, 3, 0]],
+  [40, [4, 6.5, 16], [0, 3, 2]],
+  [60, [1.4, 4.8, 6.2], [0, 4.2, 3]],    // Close-Up: Worn Helmet on Head
+  [82, [-1.2, 2.7, 5.8], [-0.7, 1.8, 3]], // Close-Up: Worn Gloves on Hands
+  [104, [1.3, 3.1, 5.5], [0, 2.65, 3]],   // Close-Up: Worn Detector on Chest
+  [128, [3, 6, 14], [0, 3, 2]],
+  [148, [3.8, 4.8, 9.5], [0, 3, 1]],     // Arc & Gas Scene
+  [168, [2, 5.5, 11], [0, 2.5, 3]],      // Fall Impact Scene
+  [190, [-10, 5.5, 0], [-12, 4, -8]],    // Supervisor Gateway Desk
+  [210, [0, 8.5, 20], [0, 3, 0]],
+  [224, [0, 7, 20], [0, 3, 0]]
 ];
 
 function camAt(t) {
@@ -1088,10 +1214,10 @@ function triggerManualHazard(hazard) {
 
 // Sensor Telemetry Provider
 function getHUD(currT, arcOn, voltOn, gasOn, fallOn, strapOpen) {
-  const co = gasOn ? 115 : (currT >= 126 && currT < 140 ? 85 : 5);
-  const ch4 = gasOn ? 3.4 : (currT >= 126 && currT < 140 ? 1.8 : 0.0);
-  const ncvVolt = voltOn ? 415 : (currT >= 65 && currT < 67 ? 240 : 0);
-  const uvLevel = arcOn ? 14.8 : (currT >= 126 && currT < 135 ? 12.2 : 0.4);
+  const co = gasOn ? 115 : (currT >= 148 && currT < 165 ? 85 : 5);
+  const ch4 = gasOn ? 3.4 : (currT >= 148 && currT < 165 ? 1.8 : 0.0);
+  const ncvVolt = voltOn ? 415 : (currT >= 82 && currT < 86 ? 240 : 0);
+  const uvLevel = arcOn ? 14.8 : (currT >= 148 && currT < 158 ? 12.2 : 0.4);
   const imuG = fallOn ? 5.2 : 1.0;
   
   return [
@@ -1104,7 +1230,7 @@ function getHUD(currT, arcOn, voltOn, gasOn, fallOn, strapOpen) {
     ["Motion IMU", fallOn ? "FREEFALL 5.2G" : "1.0G STABLE", fallOn ? "bad" : "ok"],
     ["Helmet BLE", "WORN & SYNCED", "ok"],
     ["Glove Link", "1000V ISOLATED", "ok"],
-    ["Mesh Network", currT >= 116 && currT < 122 ? "OFFLINE (STORE)" : "ONLINE (LORA)", currT >= 116 && currT < 122 ? "warn" : "ok"]
+    ["Mesh Network", currT >= 135 && currT < 142 ? "OFFLINE (STORE)" : "ONLINE (LORA)", currT >= 135 && currT < 142 ? "warn" : "ok"]
   ];
 }
 
@@ -1116,11 +1242,11 @@ function update(currT, dt) {
   }
 
   // Active Hazard States
-  const isArc = (currT >= 126 && currT < 135) || manualOverride === 'arc';
-  const isVolt = (currT >= 65 && currT < 67) || manualOverride === 'voltage';
-  const isGas = (currT >= 126 && currT < 140) || manualOverride === 'gas';
-  const isFall = (currT >= 144 && currT < 155) || manualOverride === 'fall';
-  const isStrapOpen = (currT >= 65 && currT < 67) || manualOverride === 'strap';
+  const isArc = (currT >= 148 && currT < 158) || manualOverride === 'arc';
+  const isVolt = (currT >= 82 && currT < 86) || manualOverride === 'voltage';
+  const isGas = (currT >= 148 && currT < 168) || manualOverride === 'gas';
+  const isFall = (currT >= 168 && currT < 182) || manualOverride === 'fall';
+  const isStrapOpen = (currT >= 60 && currT < 64) || manualOverride === 'strap';
   const isSos = manualOverride === 'sos';
 
   // 1. Worker Animation: Breathing / Work Motion / Fall
@@ -1133,9 +1259,9 @@ function update(currT, dt) {
   }
 
   // Highlight Current Focused Gear in Top Banner
-  $("pill-h").className = (currT >= 54 && currT < 72) || isArc || isStrapOpen ? "gear-badge-pill highlight" : "gear-badge-pill";
-  $("pill-g").className = (currT >= 72 && currT < 90) || isVolt ? "gear-badge-pill highlight" : "gear-badge-pill";
-  $("pill-d").className = (currT >= 90 && currT < 110) || isGas || isFall || isSos ? "gear-badge-pill highlight" : "gear-badge-pill";
+  $("pill-h").className = (currT >= 60 && currT < 82) || isArc || isStrapOpen ? "gear-badge-pill highlight" : "gear-badge-pill";
+  $("pill-g").className = (currT >= 82 && currT < 104) || isVolt ? "gear-badge-pill highlight" : "gear-badge-pill";
+  $("pill-d").className = (currT >= 104 && currT < 128) || isGas || isFall || isSos ? "gear-badge-pill highlight" : "gear-badge-pill";
 
   // -------------------------------------------------------------------------
   // 2. VISIBLE REACTIONS ON WORN GEAR DIRECTLY ON PERSON
@@ -1143,23 +1269,16 @@ function update(currT, dt) {
 
   // Worn Helmet: Arc Flash Darkening & Chin-Strap Alert
   if (isArc) {
-    visorLens.material.opacity = 0.95;
-    visorLens.material.color.set(0x020617);
-    visorLens.material.emissive = new THREE.Color(0x0284c7);
     helmetStrobeLight.color.set(0xf59e0b);
-    helmetStrobeLight.intensity = Math.floor(currT * 12) % 2 === 0 ? 4.0 : 0.5;
-    wornHelmet.material.color.set(0xffe066);
+    helmetStrobeLight.intensity = Math.floor(currT * 12) % 2 === 0 ? 4.5 : 0.5;
+    wornHelmet.material.color.set(0x38bdf8); // Polarized auto-darkened tint
   } else if (isStrapOpen) {
-    visorLens.material.opacity = 0.35;
-    visorLens.material.color.set(0x0ea5e9);
     strapBeacon.material.color.set(0xef4444);
     strapBeacon.material.emissive.set(0x771111);
     helmetStrobeLight.color.set(0xef4444);
     helmetStrobeLight.intensity = Math.floor(currT * 6) % 2 === 0 ? 3.0 : 0;
-    wornHelmet.material.color.set(0xffaaaa);
+    wornHelmet.material.color.set(0xff9999);
   } else {
-    visorLens.material.opacity = 0.35;
-    visorLens.material.color.set(0x0ea5e9);
     strapBeacon.material.color.set(0x22c55e);
     strapBeacon.material.emissive.set(0x115522);
     helmetStrobeLight.intensity = 0;
@@ -1169,45 +1288,37 @@ function update(currT, dt) {
   // Worn Sensing Gloves: 415V Electric Arc & Haptic Vibration
   if (isVolt) {
     const zapGlow = Math.random() * 4.5 + 1.0;
-    gloveZapLightL.intensity = zapGlow;
     gloveZapLightR.intensity = zapGlow;
+    gloveZapLightL.intensity = zapGlow;
     // 250Hz Haptic Micro-Vibration Jitter on Hands
     const jitter = Math.sin(currT * 50) * 0.04;
-    wornGloveL.position.x = -0.95 + jitter;
-    wornGloveR.position.x = 0.95 - jitter;
-    wornGloveL.material.color.set(0x67e8f9);
+    wornGloveR.position.x = -0.82 + jitter;
+    wornGloveL.position.x = 0.82 - jitter;
     wornGloveR.material.color.set(0x67e8f9);
+    wornGloveL.material.color.set(0x67e8f9);
   } else {
-    gloveZapLightL.intensity = 0;
     gloveZapLightR.intensity = 0;
-    wornGloveL.position.x = -0.95;
-    wornGloveR.position.x = 0.95;
-    wornGloveL.material.color.set(0xffffff);
+    gloveZapLightL.intensity = 0;
+    wornGloveR.position.x = -0.82;
+    wornGloveL.position.x = 0.82;
     wornGloveR.material.color.set(0xffffff);
+    wornGloveL.material.color.set(0xffffff);
   }
 
   // Worn Hazard Detector on Chest: Gas Inundation & Siren Flash
   if (isGas) {
-    podScreenMesh.material.color.set(0xef4444);
-    podScreenMesh.material.emissive.set(0x991111);
     podAlarmLight.color.set(0xef4444);
     podAlarmLight.intensity = Math.floor(currT * 8) % 2 === 0 ? 4.5 : 0.8;
-    wornDetector.material.color.set(0xff9999);
+    wornDetector.material.color.set(0xff7777);
   } else if (isFall) {
-    podScreenMesh.material.color.set(0xf59e0b);
-    podScreenMesh.material.emissive.set(0x884400);
     podAlarmLight.color.set(0xf59e0b);
     podAlarmLight.intensity = 3.5;
     wornDetector.material.color.set(0xffd599);
   } else if (isSos) {
-    podScreenMesh.material.color.set(0xef4444);
-    podScreenMesh.material.emissive.set(0xff0000);
     podAlarmLight.color.set(0xef4444);
     podAlarmLight.intensity = Math.floor(currT * 12) % 2 === 0 ? 5.0 : 0;
-    wornDetector.material.color.set(0xff6666);
+    wornDetector.material.color.set(0xff5555);
   } else {
-    podScreenMesh.material.color.set(0x0284c7);
-    podScreenMesh.material.emissive.set(0x0369a1);
     podAlarmLight.intensity = 0;
     wornDetector.material.color.set(0xffffff);
   }
@@ -1235,14 +1346,14 @@ function update(currT, dt) {
   }
 
   // 4. Supervisor Desk Monitor
-  const supActive = currT >= 158;
+  const supActive = currT >= 190;
   monitorGlow.material.emissive.set(supActive ? (isGas || isFall ? 0x661111 : 0x1e3a5f) : 0x050810);
 
   // 5. Fullscreen Overlays
   $("arc").style.opacity = isArc ? 0.75 : 0;
   $("gas").style.opacity = isGas ? 0.85 : 0;
   $("shock").style.opacity = isVolt ? 0.8 : 0;
-  $("heat").style.opacity = (currT >= 126 && currT < 140) ? 0.5 : 0;
+  $("heat").style.opacity = (currT >= 148 && currT < 168) ? 0.5 : 0;
 
   // 6. Update Wearable Hardware Live Monitor Dock (Right Panel)
   const cardHelmet = $("card-helmet");
@@ -1300,17 +1411,17 @@ function update(currT, dt) {
   }
 
   // 7. Sensor Telemetry HUD
-  $("hud").style.display = currT >= 54 ? "block" : "none";
+  $("hud").style.display = currT >= 40 ? "block" : "none";
   const hud = getHUD(currT, isArc, isVolt, isGas, isFall, isStrapOpen);
   $("rows").innerHTML = hud.map(r => `<div class="sr"><span>${r[0]}</span><b class="${r[2]}">${r[1]}</b></div>`).join("");
 
   // 8. Incidents Log
-  if (currT >= 65 && currT < 67) addIncident(currT, "CHINSTRAP_UNLATCHED", "m", "Helmet SR-H01");
-  if (currT >= 65 && currT < 67) addIncident(currT, "415V_CONTACT_ALERT", "h", "Glove NCV-01");
-  if (currT >= 126 && currT < 135) addIncident(currT, "ARC_FLASH_UV_BLAST", "h", "Helmet Optical");
-  if (currT >= 130 && currT < 140) addIncident(currT, "TOXIC_GAS_CH4_CO", "h", "Gas Pod SR-GF01");
-  if (currT >= 144 && currT < 155) addIncident(currT, "MAN_DOWN_FALL_5.2G", "h", "IMU 6-Axis");
-  if (currT >= 116 && currT < 122) addIncident(currT, "NETWORK_OFFLINE_WAL", "l", "Local SPI Flash");
+  if (currT >= 60 && currT < 64) addIncident(currT, "CHINSTRAP_UNLATCHED", "m", "Helmet SR-H01");
+  if (currT >= 82 && currT < 86) addIncident(currT, "415V_CONTACT_ALERT", "h", "Glove NCV-01");
+  if (currT >= 148 && currT < 158) addIncident(currT, "ARC_FLASH_UV_BLAST", "h", "Helmet Optical");
+  if (currT >= 148 && currT < 168) addIncident(currT, "TOXIC_GAS_CH4_CO", "h", "Gas Pod SR-GF01");
+  if (currT >= 168 && currT < 182) addIncident(currT, "MAN_DOWN_FALL_5.2G", "h", "IMU 6-Axis");
+  if (currT >= 135 && currT < 142) addIncident(currT, "NETWORK_OFFLINE_WAL", "l", "Local SPI Flash");
 
   $("iq").style.display = incidentLog.length ? "block" : "none";
   $("incidents").innerHTML = incidentLog.slice().reverse().slice(0, 5).map(x => {
@@ -1318,7 +1429,7 @@ function update(currT, dt) {
   }).join("");
 
   // 9. Completion Screen
-  $("fin").style.display = currT >= 198 ? "flex" : "none";
+  $("fin").style.display = currT >= 228 ? "flex" : "none";
 }
 
 // User Controls Bindings
