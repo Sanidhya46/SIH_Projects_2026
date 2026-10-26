@@ -655,7 +655,7 @@ button.btn-ctl:hover {
 <!-- Top Backlink Bar -->
 <div id="nav">
   <span>⚡ Saurya Rakshak Simulation</span> · 
-  <a href="/Saurya_Rakshak">← Return to Saurya Rakshak Portal</a>
+  <a href="index.html#video">← Return to Saurya Rakshak Portal</a>
 </div>
 
 <!-- Header Info -->
@@ -816,7 +816,7 @@ button.btn-ctl:hover {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <script>
-const T = 230;
+const T = 245;
 const $ = id => document.getElementById(id);
 const cl = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
 const sm = x => x * x * (3 - 2 * x);
@@ -1153,7 +1153,7 @@ function addIncident(t, type, sev, dev) {
 }
 
 // State Management
-let playing = false, t = 0, last = 0, cueI = -2, muted = false, voice = null;
+let playing = false, t = 0, last = 0, cueI = -2, muted = false, voice = null, isSpeaking = false;
 let manualOverride = null, manualOverrideTimer = 0;
 
 function pickVoice() {
@@ -1165,15 +1165,27 @@ if ("speechSynthesis" in window) {
   pickVoice();
 }
 
+// Chrome speech keepalive to prevent silent pause on longer narrations
+setInterval(() => {
+  if (isSpeaking && "speechSynthesis" in window && !speechSynthesis.paused && speechSynthesis.speaking) {
+    speechSynthesis.pause();
+    speechSynthesis.resume();
+  }
+}, 8000);
+
 function say(i) {
   if (muted || !("speechSynthesis" in window)) return;
   speechSynthesis.cancel();
   const tx = cues[i][2];
-  const dur = (i < cues.length - 1 ? cues[i + 1][0] : T) - cues[i][0];
   const u = new SpeechSynthesisUtterance(tx);
+  window._currUtt = u; // prevent Chromium GC
   if (voice) u.voice = voice;
   u.lang = voice ? voice.lang : "en-IN";
-  u.rate = cl(tx.split(" ").length / Math.max(4, dur - 1) / 2.5, 0.85, 1.25);
+  u.rate = 1.0; // Clear, natural cadence
+  isSpeaking = true;
+  u.onstart = () => { isSpeaking = true; };
+  u.onend = () => { isSpeaking = false; };
+  u.onerror = () => { isSpeaking = false; };
   speechSynthesis.speak(u);
 }
 
@@ -1181,7 +1193,10 @@ function setPlay(p) {
   playing = p;
   $("pp").textContent = p ? "⏸ Pause" : "▶ Resume";
   cueI = -2;
-  if (!p && "speechSynthesis" in window) speechSynthesis.cancel();
+  if (!p && "speechSynthesis" in window) {
+    isSpeaking = false;
+    speechSynthesis.cancel();
+  }
   if (p) getAudioCtx();
 }
 
@@ -1429,7 +1444,7 @@ function update(currT, dt) {
   }).join("");
 
   // 9. Completion Screen
-  $("fin").style.display = currT >= 228 ? "flex" : "none";
+  $("fin").style.display = (currT >= T - 1 && !isSpeaking) ? "flex" : "none";
 }
 
 // User Controls Bindings
@@ -1453,11 +1468,17 @@ $("rp").onclick = $("rs").onclick;
 $("mu").onclick = () => {
   muted = !muted;
   $("mu").textContent = muted ? "🔇 Muted" : "🔊 Sound";
-  if (muted && "speechSynthesis" in window) speechSynthesis.cancel();
-  else cueI = -2;
+  if (muted && "speechSynthesis" in window) {
+    isSpeaking = false;
+    speechSynthesis.cancel();
+  } else {
+    cueI = -2;
+  }
 };
 $("seek").oninput = e => {
   t = +e.target.value;
+  isSpeaking = false;
+  if ("speechSynthesis" in window) speechSynthesis.cancel();
   cueI = -2;
 };
 
@@ -1474,9 +1495,13 @@ function loop(now) {
   const dt = Math.min(0.1, (now - last) / 1000);
   last = now;
   
-  if (playing) {
+  // Voice synchronization: hold t at the cue edge until narration finishes so no sentences get cut off!
+  const nextCueTime = (cueI >= 0 && cueI < cues.length - 1) ? cues[cueI + 1][0] : T;
+  const holdForSpeech = isSpeaking && !muted && (t >= nextCueTime - 0.25);
+
+  if (playing && !holdForSpeech) {
     t = Math.min(T, t + dt);
-    if (t >= T) setPlay(false);
+    if (t >= T && !isSpeaking) setPlay(false);
   }
   
   camAt(t);

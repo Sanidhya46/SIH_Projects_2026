@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -683,15 +683,12 @@
       <button class="nav-btn" onclick="switchView('view-hazards', this)">
         <span class="icon">📋</span> 75+ Hazards & Features Matrix
       </button>
-      <button class="nav-btn" onclick="switchView('view-simulation', this)">
-        <span class="icon">🎮</span> Working 12-Scene Simulation
+      <button class="nav-btn" onclick="switchView('view-video', this)">
+        <span class="icon">🎬</span> 3D Video & Simulation
       </button>
       <a href="https://studio.tripo3d.ai/3d-model/yellow-tactical-helmet-with-camera-black-and-yellow-armored-gloves-wi-9ade27ff-b8f6-42e8-9183-e8d50393cdd1" target="_blank" class="nav-btn" style="color:#fbbf24; font-weight:700;">
-        <span class="icon">ðŸ§Š</span> 3D Model View (Tripo3D) â†—
+        <span class="icon">&#129482;</span> Interactive 3D Model &#8599;
       </a>
-      <button class="nav-btn" onclick="switchView('view-video', this)">
-        <span class="icon">ðŸŽ¬</span> 3D CAD Video View (12s)
-      </button>
 
       <div class="nav-category">Research & Proof</div>
       <button class="nav-btn" onclick="switchView('view-research', this)" style="color:#fbbf24; font-weight:700;">
@@ -723,8 +720,8 @@
       </div>
 
       <div class="external-buttons" style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-        <a href="/Saurya_Rakshak/simulation" target="_blank" class="btn btn-primary">
-          Open Standalone 12-Scene Sim ↗
+        <a href="#video" onclick="switchView('view-video')" class="btn btn-primary">
+          3D Video & Simulation ↗
         </a>
         <button onclick="switchView('view-prototype')" class="btn btn-outline">
           Hardware BOM ↗
@@ -1451,56 +1448,19 @@
       </div>
     </div>
 
-    <!-- ==================== VIEW 3: WORKING 12-SCENE SIMULATION ==================== -->
-    <div id="view-simulation" class="view-pane">
-      <div class="section-header">
-        <span class="tag-sec">Interactive Proof of Concept</span>
-        <h2 class="title-sec">Saurya Rakshak 12-Scene Industrial Safety Simulation</h2>
-        <p class="desc-sec">
-          Fully functional physics simulation with live speech narration, real-time sensor HUD, and interactive hazard triggers demonstrating all 4 wearable units.
-        </p>
-      </div>
-
-      <div class="sim-embed-card">
-        <div class="sim-header-bar">
-          <h3>🎮 Working Simulation · All 12 Industrial Safety Scenarios</h3>
-          <div style="display:flex; gap:0.6rem;">
-            <a href="/Saurya_Rakshak/simulation" target="_blank" class="btn btn-primary" style="padding:0.35rem 0.85rem; font-size:0.78rem;">
-              Open Standalone View ↗
-            </a>
-          </div>
-        </div>
-        <iframe src="/Saurya_Rakshak/simulation" class="sim-iframe" title="Saurya Rakshak Simulation"></iframe>
-      </div>
-
-      <div class="repo-card" style="margin-top:1.5rem;">
-        <h4 style="font-size:1.05rem; font-weight:800; color:var(--text-primary); margin-bottom:0.5rem;">
-          Supported Demonstration Scenarios in the Simulation:
-        </h4>
-        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:0.75rem; font-size:0.82rem; color:var(--text-secondary);">
-          <div>⚡ <strong>1. Arc Flash & UV Blast:</strong> Blinding flash trigger, auto-darkening electrochromic visor response (&lt;15ms).</div>
-          <div>⚠️ <strong>2. Live 415V Voltage Contact:</strong> Capacitive NCV sensing, haptic glove vibration warning.</div>
-          <div>☣️ <strong>3. Confined Space Gas Inundation:</strong> H₂S / CH₄ gas cloud, autonomous 100dB siren trigger.</div>
-          <div>🪜 <strong>4. Fall from Scaffolding:</strong> Freefall & impact shock detection with 10s immobility timer.</div>
-          <div>🆘 <strong>5. Manual Emergency SOS:</strong> Worker distress touch trigger and control room dispatch.</div>
-          <div>🌡️ <strong>6. WBGT Heat Stroke Stress:</strong> High ambient thermal load and mandatory hydration advisories.</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ==================== VIEW 4: MASTER RESEARCH REPOSITORY ==================== -->
-        <!-- ========================================================================= -->
-    <!-- VIEW: 3D CAD VIDEO DEMONSTRATION (12s)                                    -->
+    <!-- ========================================================================= -->
+    <!-- VIEW: 3D CAD VIDEO DEMONSTRATION & 12-SCENE SIMULATION                    -->
     <!-- ========================================================================= -->
     <div id="view-video" class="view-pane">
       <div class="section-header">
-        <span class="tag-sec">Pillar 2B Â· 3D Video Demonstration</span>
-        <h2 class="title-sec">Saurya Rakshak 3D CAD Wearables Demonstration (12 Seconds)</h2>
+        <span class="tag-sec">Pillar 2 · 3D Video & Digital Twin Suite</span>
+        <h2 class="title-sec">Saurya Rakshak: 3D CAD Wearables Video & 12-Scene Simulation</h2>
         <p class="desc-sec">
-          High-definition 3D animated CAD demonstration illustrating smart tactical helmet mounting, armored sensing gloves with capacitive NCV foil, and multi-hazard detection enclosures.
+          High-definition 3D animated CAD demonstration illustrating smart tactical helmet mounting, armored sensing gloves with capacitive NCV foil, and multi-hazard detection enclosures. Below the video, interact directly with the real-time working 12-scene industrial safety simulation!
         </p>
       </div>
 
+      <!-- TOP: 3D CAD VIDEO DEMONSTRATION -->
       <div class="sim-embed-card" style="margin-bottom:2rem;">
         <div class="sim-header-bar">
           <div style="display:flex; align-items:center; gap:1.25rem;">
@@ -1513,32 +1473,67 @@
             </span>
           </div>
           <div style="display:flex; gap:0.5rem;">
-            <a href="/Saurya_Rakshak/video.html" target="_blank" class="btn btn-outline" style="padding:0.4rem 0.85rem; font-size:0.78rem;">
-              Open Dedicated Video Page â†—
+            <a href="video.html" target="_blank" class="btn btn-outline" style="padding:0.4rem 0.85rem; font-size:0.78rem;">
+              Dedicated Video Page ↗
             </a>
             <a href="https://studio.tripo3d.ai/3d-model/yellow-tactical-helmet-with-camera-black-and-yellow-armored-gloves-wi-9ade27ff-b8f6-42e8-9183-e8d50393cdd1" target="_blank" class="btn btn-primary" style="padding:0.4rem 0.85rem; font-size:0.78rem;">
-              Interactive 3D Model â†—
+              Interactive 3D Model ↗
             </a>
           </div>
         </div>
 
         <div style="background:#000; display:flex; justify-content:center; align-items:center; aspect-ratio:16/9; max-height:560px;">
-          <video controls autoplay loop muted playsinline style="width:100%; height:100%; max-height:560px; object-fit:contain;">
-            <source src="/Saurya_Rakshak/model_3d_video.mp4" type="video/mp4">
+          <video controls autoplay loop playsinline style="width:100%; height:100%; max-height:560px; object-fit:contain;">
+            <source src="model_3d_video.mp4" type="video/mp4">
             Your browser does not support HTML5 video playback.
           </video>
         </div>
 
         <div style="padding:1.25rem 1.75rem; background:#f8fafc; border-top:1px solid var(--border-light); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
           <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
-            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">â±ï¸ Duration: 12 Seconds</span>
-            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">â›‘ï¸ Smart Tactical Helmet</span>
-            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">ðŸ§¤ Armored Sensing Gloves</span>
-            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">âš¡ 415V Touch Protection</span>
+            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">⏱️ Duration: 12 Seconds</span>
+            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">⛑️ Smart Tactical Helmet</span>
+            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">🧤 Armored Sensing Gloves</span>
+            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">⚡ 415V Touch Protection</span>
           </div>
-          <button onclick="switchView('view-simulation')" class="btn btn-primary" style="padding:0.45rem 1rem; font-size:0.8rem;">
-            Switch to Interactive Simulation ðŸŽ®
-          </button>
+          <a href="#simulation-embed" class="btn btn-outline" style="padding:0.45rem 1rem; font-size:0.8rem;">
+            Scroll to 12-Scene Simulation ↓
+          </a>
+        </div>
+      </div>
+
+      <!-- BOTTOM: WORKING 12-SCENE SIMULATION ON THE EXACT SAME #VIDEO PAGE -->
+      <div id="simulation-embed" class="sim-embed-card" style="margin-bottom:2rem;">
+        <div class="sim-header-bar">
+          <div style="display:flex; align-items:center; gap:1.25rem;">
+            <div style="display:inline-flex; align-items:center; gap:0.45rem; font-size:0.75rem; font-family:var(--font-mono); font-weight:700; color:#10b981; background:#064e3b; padding:0.25rem 0.65rem; border-radius:100px;">
+              <div style="width:8px; height:8px; border-radius:50%; background:#10b981;"></div>
+              INTERACTIVE 12-SCENE 3D SIMULATION
+            </div>
+            <span style="font-size:0.82rem; color:#94a3b8; font-family:var(--font-mono);">
+              Live Speech Narration · Reactive Wearable Sensors HUD · 4 Connected Nodes
+            </span>
+          </div>
+          <div style="display:flex; gap:0.6rem;">
+            <a href="simulation.html" target="_blank" class="btn btn-primary" style="padding:0.35rem 0.85rem; font-size:0.78rem;">
+              Fullscreen Standalone View ↗
+            </a>
+          </div>
+        </div>
+        <iframe src="simulation.html" class="sim-iframe" title="Saurya Rakshak Simulation" loading="lazy" style="height:680px; width:100%; border:none;"></iframe>
+      </div>
+
+      <div class="repo-card" style="margin-top:1.5rem; margin-bottom:2rem;">
+        <h4 style="font-size:1.05rem; font-weight:800; color:var(--text-primary); margin-bottom:0.5rem;">
+          Supported Demonstration Scenarios in the Simulation:
+        </h4>
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:0.75rem; font-size:0.82rem; color:var(--text-secondary);">
+          <div>⚡ <strong>1. Arc Flash & UV Blast:</strong> Blinding flash trigger, auto-darkening electrochromic visor response (&lt;15ms).</div>
+          <div>⚠️ <strong>2. Live 415V Voltage Contact:</strong> Capacitive NCV sensing, haptic glove vibration warning.</div>
+          <div>☣️ <strong>3. Confined Space Gas Inundation:</strong> H₂S / CH₄ gas cloud, autonomous 100dB siren trigger.</div>
+          <div>🪜 <strong>4. Fall from Scaffolding:</strong> Freefall & impact shock detection with 10s immobility timer.</div>
+          <div>🆘 <strong>5. Manual Emergency SOS:</strong> Worker distress touch trigger and control room dispatch.</div>
+          <div>🌡️ <strong>6. WBGT Heat Stroke Stress:</strong> High ambient thermal load and mandatory hydration advisories.</div>
         </div>
       </div>
     </div>
@@ -2220,9 +2215,9 @@
       <div class="hw-gallery-grid">
         <div class="hw-card-item">
           <div class="hw-card-img-wrap">
-            <img src="/Saurya_Rakshak/assets/helmet.png" alt="Smart Tactical Helmet">
+            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">&#9977; Smart Tactical Helmet</span>
           </div>
-          <div class="hw-card-title">Unit 1: Smart Tactical Helmet</div>
+            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">&#9977; Smart Tactical Helmet</span>
           <span class="hw-card-tag">IS 2925 + Auto-Darkening UV</span>
           <p class="hw-card-desc">
             Industrial impact shell with magnetic chin-strap Hall effect interlock, optical UV photodiode (&lt;15ms trip), 4K camera mount, and 95dB audible alert beacon.
@@ -2231,9 +2226,9 @@
 
         <div class="hw-card-item">
           <div class="hw-card-img-wrap">
-            <img src="/Saurya_Rakshak/assets/gloves_pair.png" alt="Armored Sensing Gloves">
+            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">&#129505; Armored Sensing Gloves</span>
           </div>
-          <div class="hw-card-title">Unit 2: Armored Sensing Gloves</div>
+            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">&#129505; Armored Sensing Gloves</span>
           <span class="hw-card-tag">ASTM D120 Class 0 (1000V)</span>
           <p class="hw-card-desc">
             Dual glove construction with flexible conductive cuff interlocks, capacitive non-contact high voltage (NCV) sensor, and 250Hz palm haptic vibration motor.
@@ -2247,7 +2242,7 @@
           <div class="hw-card-title">Unit 3: Multi-Hazard Detector Pod</div>
           <span class="hw-card-tag">4-Gas Optical + 6-Axis IMU</span>
           <p class="hw-card-desc">
-            Rugged chest/belt worn pod with autonomous gas chambers (CO, Oâ‚‚, CHâ‚„, Hâ‚‚S), freefall/impact shock detection, single-press SOS distress button, and 100dB siren.
+            Rugged chest/belt worn pod with autonomous gas chambers (CO, O, CH, HS), freefall/impact shock detection, single-press SOS distress button, and 100dB siren.
           </p>
         </div>
       </div>
@@ -2335,6 +2330,13 @@
   <script>
     // STRICT SINGLE-VIEW TAB SWITCHER
     function switchView(viewId, btnElem) {
+      if (viewId === 'view-simulation' || viewId === 'simulation') {
+        viewId = 'view-video';
+      }
+      if (!viewId.startsWith('view-')) {
+        viewId = 'view-' + viewId;
+      }
+
       // Hide all view panes
       const panes = document.querySelectorAll('.view-pane');
       panes.forEach(p => p.classList.remove('active'));
@@ -2354,12 +2356,13 @@
       if (btnElem) {
         btnElem.classList.add('active');
       } else {
-        const matchingBtn = document.querySelector(`button[onclick*="'${viewId}'"]`);
+        const matchingBtn = document.querySelector(`.sidebar-nav .nav-btn[onclick*="${viewId}"]`);
         if (matchingBtn) matchingBtn.classList.add('active');
       }
 
-      // Update URL hash without causing scroll jump
-      history.replaceState(null, null, '#' + viewId);
+      // Update URL hash without causing scroll jump (e.g. #video)
+      const cleanHash = viewId.replace('view-', '');
+      history.replaceState(null, null, '#' + cleanHash);
     }
 
     // Filter Table Rows
@@ -2383,15 +2386,21 @@
       });
     }
 
-    // On Load: Check Hash or Default to Overview
-    window.addEventListener('DOMContentLoaded', () => {
-      const hash = window.location.hash.replace('#', '');
-      if (hash && document.getElementById(hash)) {
-        switchView(hash);
+    // On Load & Hash Router: Check Hash or Default to Overview
+    function syncHashView() {
+      let hash = window.location.hash.replace('#', '') || 'overview';
+      if (hash === 'simulation') hash = 'video';
+      const viewId = 'view-' + hash;
+      if (document.getElementById(viewId)) {
+        const targetBtn = document.querySelector(`.sidebar-nav .nav-btn[onclick*="${viewId}"]`);
+        switchView(viewId, targetBtn);
       } else {
         switchView('view-overview');
       }
-    });
+    }
+
+    window.addEventListener('DOMContentLoaded', syncHashView);
+    window.addEventListener('hashchange', syncHashView);
   </script>
 
 </body>
