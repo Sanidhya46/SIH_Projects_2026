@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -683,11 +683,14 @@
       <button class="nav-btn" onclick="switchView('view-hazards', this)">
         <span class="icon">📋</span> 75+ Hazards & Features Matrix
       </button>
-      <button class="nav-btn" onclick="switchView('view-video', this)">
-        <span class="icon">🎬</span> 3D Video & Simulation
+      <button id="nav-btn-video" class="nav-btn" onclick="navigateToVideo(this)">
+        <span class="icon">🎬</span> 3D CAD Video View
+      </button>
+      <button id="nav-btn-simulation" class="nav-btn" onclick="navigateToSimulation(this)">
+        <span class="icon">🎮</span> Interactive 3D Simulation
       </button>
       <a href="https://studio.tripo3d.ai/3d-model/yellow-tactical-helmet-with-camera-black-and-yellow-armored-gloves-wi-9ade27ff-b8f6-42e8-9183-e8d50393cdd1" target="_blank" class="nav-btn" style="color:#fbbf24; font-weight:700;">
-        <span class="icon">&#129482;</span> Interactive 3D Model &#8599;
+        <span class="icon">🧊</span> Interactive 3D Model ↗
       </a>
 
       <div class="nav-category">Research & Proof</div>
@@ -720,12 +723,15 @@
       </div>
 
       <div class="external-buttons" style="display:flex; gap:0.5rem; flex-wrap:wrap;">
-        <a href="#video" onclick="switchView('view-video')" class="btn btn-primary">
-          3D Video & Simulation ↗
+        <a href="#video" onclick="navigateToVideo(document.getElementById('nav-btn-video')); return false;" class="btn btn-primary" style="background:#d97706; color:#fff;">
+          🎬 3D CAD Video
         </a>
-        <button onclick="switchView('view-prototype')" class="btn btn-outline">
-          Hardware BOM ↗
-        </button>
+        <a href="#view-simulation" onclick="navigateToSimulation(document.getElementById('nav-btn-simulation')); return false;" class="btn btn-primary" style="background:#b45309; color:#fff;">
+          🎮 3D Simulation
+        </a>
+        <a href="https://studio.tripo3d.ai/3d-model/yellow-tactical-helmet-with-camera-black-and-yellow-armored-gloves-wi-9ade27ff-b8f6-42e8-9183-e8d50393cdd1" target="_blank" class="btn btn-outline">
+          Interactive 3D CAD ↗
+        </a>
       </div>
     </div>
 
@@ -1460,24 +1466,23 @@
         </p>
       </div>
 
-      <!-- TOP: 3D CAD VIDEO DEMONSTRATION -->
       <div class="sim-embed-card" style="margin-bottom:2rem;">
         <div class="sim-header-bar">
           <div style="display:flex; align-items:center; gap:1.25rem;">
-            <div style="display:inline-flex; align-items:center; gap:0.45rem; font-size:0.75rem; font-family:var(--font-mono); font-weight:700; color:#10b981; background:#064e3b; padding:0.25rem 0.65rem; border-radius:100px;">
+            <div id="video-mode-badge" style="display:inline-flex; align-items:center; gap:0.45rem; font-size:0.75rem; font-family:var(--font-mono); font-weight:700; color:#10b981; background:#064e3b; padding:0.25rem 0.65rem; border-radius:100px;">
               <div style="width:8px; height:8px; border-radius:50%; background:#10b981;"></div>
               3D SIMULATION VIDEO DEMONSTRATION
             </div>
-            <span style="font-size:0.82rem; color:#94a3b8; font-family:var(--font-mono);">
+            <span id="video-source-label" style="font-size:0.82rem; color:#94a3b8; font-family:var(--font-mono);">
               Source: saurya_rakshak_simulation_video.mp4
             </span>
           </div>
           <div style="display:flex; gap:0.5rem;">
             <a href="/Saurya_Rakshak/video.html" target="_blank" class="btn btn-outline" style="padding:0.4rem 0.85rem; font-size:0.78rem;">
-              Dedicated Video Page â†—
+              Dedicated Video Page ↗
             </a>
             <a href="https://studio.tripo3d.ai/3d-model/yellow-tactical-helmet-with-camera-black-and-yellow-armored-gloves-wi-9ade27ff-b8f6-42e8-9183-e8d50393cdd1" target="_blank" class="btn btn-primary" style="padding:0.4rem 0.85rem; font-size:0.78rem;">
-              Interactive 3D Model â†—
+              Interactive 3D Model ↗
             </a>
           </div>
         </div>
@@ -1491,18 +1496,18 @@
             Your browser does not support HTML5 video playback.
           </video>
           <button id="saurya-video-unmute" style="position:absolute; bottom:14px; right:14px; z-index:10; background:rgba(245,158,11,0.92); color:#000; border:none; padding:7px 14px; border-radius:20px; font-weight:800; font-size:12px; cursor:pointer; display:none; box-shadow:0 4px 15px rgba(0,0,0,0.4);">
-            ðŸ”Š Click for Sound
+            🔊 Click for Sound
           </button>
         </div>
 
         <div style="padding:1.25rem 1.75rem; background:#f8fafc; border-top:1px solid var(--border-light); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
           <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
-            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">ðŸŽ¬ Simulation Video Running</span>
-            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">â›‘ï¸ Smart Tactical Helmet</span>
-            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">ðŸ§¤ Armored Sensing Gloves</span>
-            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">âš¡ 415V Touch Protection</span>
+            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">🎬 Simulation Video Running</span>
+            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">⛑️ Smart Tactical Helmet</span>
+            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">🧤 Armored Sensing Gloves</span>
+            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">⚡ 415V Touch Protection</span>
           </div>
-          <button onclick="navigateToSimulation()" class="btn btn-primary" style="padding:0.45rem 1rem; font-size:0.8rem; background:#d97706; color:#fff;">
+          <button onclick="document.getElementById('simulation-embed').scrollIntoView({ behavior: 'smooth', block: 'start' });" class="btn btn-primary" style="padding:0.45rem 1rem; font-size:0.8rem; background:#d97706; color:#fff;">
             â¬‡ï¸ Scroll to Interactive 3D Simulation
           </button>
         </div>
@@ -2310,12 +2315,13 @@
       const vid = document.getElementById('saurya-cad-video');
       const uBtn = document.getElementById('saurya-video-unmute');
       if (vid) {
-        vid.volume = 1.0;
         vid.muted = false;
+        vid.volume = 1.0;
         const p = vid.play();
         if (p !== undefined) {
           p.then(() => {
             vid.muted = false;
+            vid.volume = 1.0;
             if (uBtn) uBtn.style.display = 'none';
           }).catch(() => {
             vid.muted = true;
@@ -2334,17 +2340,48 @@
               if (uBtn) uBtn.style.display = 'none';
               window.removeEventListener('click', unmuteOnTap);
               window.removeEventListener('keydown', unmuteOnTap);
+              window.removeEventListener('touchstart', unmuteOnTap);
             };
             window.addEventListener('click', unmuteOnTap, { once: true });
             window.addEventListener('keydown', unmuteOnTap, { once: true });
+            window.addEventListener('touchstart', unmuteOnTap, { once: true });
           });
         }
+      }
+    }
+
+    function setSauryaVideoMode(mode) {
+      const vid = document.getElementById('saurya-cad-video');
+      const badge = document.getElementById('video-mode-badge');
+      const sourceLabel = document.getElementById('video-source-label');
+      const isSim = (mode === 'simulation');
+      const targetSrc = isSim ? '/Saurya_Rakshak/saurya_rakshak_simulation_video.mp4' : '/Saurya_Rakshak/model_3d_video.mp4';
+      const fileTarget = isSim ? 'saurya_rakshak_simulation_video.mp4' : 'model_3d_video.mp4';
+
+      if (badge) {
+        badge.innerHTML = '<div style="width:8px; height:8px; border-radius:50%; background:#10b981;"></div> ' + (isSim ? '3D SIMULATION VIDEO DEMONSTRATION' : '3D CAD WEARABLES MODEL VIDEO');
+      }
+      if (sourceLabel) {
+        sourceLabel.textContent = 'Source: ' + fileTarget;
+      }
+
+      if (vid) {
+        const cur = vid.currentSrc || vid.src || '';
+        if (!cur.endsWith(fileTarget)) {
+          vid.src = targetSrc;
+          vid.load();
+        }
+        playSauryaVideo();
       }
     }
 
     function switchView(viewId, btnElem, scrollToTop = true) {
       if (viewId === 'view-simulation' || viewId === 'simulation') {
         navigateToSimulation(btnElem);
+        return;
+      }
+      if (viewId === 'view-video' || viewId === 'video') {
+        navigateToVideo(btnElem);
         return;
       }
       if (!viewId.startsWith('view-')) {
@@ -2369,10 +2406,6 @@
         activeBtn.classList.add('active');
       }
 
-      if (viewId === 'view-video') {
-        playSauryaVideo();
-      }
-
       if (scrollToTop) {
         history.replaceState(null, null, '#' + viewId.replace('view-', ''));
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -2381,6 +2414,7 @@
 
     function navigateToSimulation(btnElem) {
       switchView('view-video', null, false);
+      setSauryaVideoMode('simulation');
       const currentHash = window.location.hash.toLowerCase();
       if (currentHash === '#view-simulation') {
         history.replaceState(null, null, '#view-simulation');
@@ -2394,11 +2428,34 @@
       if (simBtn) simBtn.classList.add('active');
 
       setTimeout(() => {
-        const simCard = document.getElementById('simulation-embed');
-        if (simCard) {
-          simCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const vidSec = document.getElementById('video-player-section') || document.getElementById('view-video');
+        if (vidSec) {
+          vidSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-      }, 150);
+      }, 100);
+    }
+
+    function navigateToVideo(btnElem) {
+      switchView('view-video', null, false);
+      setSauryaVideoMode('model');
+      const currentHash = window.location.hash.toLowerCase();
+      if (currentHash === '#view-video') {
+        history.replaceState(null, null, '#view-video');
+      } else {
+        history.replaceState(null, null, '#video');
+      }
+
+      const allBtns = document.querySelectorAll('.sidebar-nav .nav-btn');
+      allBtns.forEach(btn => btn.classList.remove('active'));
+      const vidBtn = btnElem || document.getElementById('nav-btn-video');
+      if (vidBtn) vidBtn.classList.add('active');
+
+      setTimeout(() => {
+        const vidSec = document.getElementById('video-player-section') || document.getElementById('view-video');
+        if (vidSec) {
+          vidSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 100);
     }
 
     // Filter Table Rows
@@ -2430,8 +2487,7 @@
         return;
       }
       if (hash === 'video' || hash === 'view-video') {
-        const targetBtn = document.getElementById('nav-btn-video') || document.querySelector('.sidebar-nav .nav-btn[onclick*="view-video"]');
-        switchView('view-video', targetBtn, true);
+        navigateToVideo();
         return;
       }
       const validViews = ['overview', 'hazards', 'research', 'prototype'];

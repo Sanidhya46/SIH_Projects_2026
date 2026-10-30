@@ -680,15 +680,18 @@
     <!-- Top Quick Links Bar -->
     <div class="top-quickbar">
       <div class="badge-ps">
-        <span>Smart India Hackathon 2024 · Problem Statement ID: 26257</span>
+        <span>Smart India Hackathon 2024 Â· Problem Statement ID: 26257</span>
       </div>
 
       <div style="display:flex; gap:0.6rem; align-items:center;">
-        <a href="#video" onclick="switchView('view-video')" class="btn btn-primary">
-          3D Video & Simulation ↗
+        <a href="#video" onclick="navigateToVideo(document.getElementById('nav-btn-video')); return false;" class="btn btn-primary">
+          ðŸŽ¬ 3D CAD Video
+        </a>
+        <a href="#view-simulation" onclick="navigateToSimulation(document.getElementById('nav-btn-simulation')); return false;" class="btn btn-primary" style="background:#0284c7;">
+          ðŸŽ® 3D Simulation
         </a>
         <a href="https://studio.tripo3d.ai/3d-model/10dd6fac-91e7-47b8-862a-030cf1f962f8?invite_code=UU8WJA" target="_blank" class="btn btn-outline">
-          Interactive 3D CAD ↗
+          Interactive 3D CAD â†—
         </a>
       </div>
     </div>
@@ -1792,12 +1795,12 @@
       <div class="sim-card" style="margin-bottom:2.5rem;">
         <div class="sim-card-topbar">
           <div style="display:flex; align-items:center; gap:1.25rem;">
-            <div class="sim-status">
+            <div id="neer-video-mode-badge" class="sim-status">
               <div class="sim-status-dot"></div>
-              3D CAD DEMONSTRATION VIDEO
+              3D SIMULATION VIDEO DEMONSTRATION
             </div>
-            <span style="font-size:0.82rem; color:var(--text-muted); font-family:var(--font-mono);">
-              File: model_3d_video.mp4
+            <span id="neer-video-source-label" style="font-size:0.82rem; color:var(--text-muted); font-family:var(--font-mono);">
+              Source: Neer_kavach.mp4
             </span>
           </div>
           <div style="display:flex; gap:0.5rem;">
@@ -1830,9 +1833,9 @@
             <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">🌊 In-line Check Valve</span>
             <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">⚡ ESP32 Solar Enclosure</span>
           </div>
-          <a href="#simulation-embed" class="btn btn-outline" style="padding:0.45rem 1rem; font-size:0.8rem;">
-            Scroll to Live Simulation ↓
-          </a>
+          <button onclick="document.getElementById('simulation-embed').scrollIntoView({ behavior: 'smooth', block: 'start' });" class="btn btn-primary" style="padding:0.45rem 1rem; font-size:0.8rem; background:#0284c7; color:#fff;">
+            â¬‡ï¸ Scroll to Interactive 3D Simulation
+          </button>
         </div>
       </div>
 
@@ -2455,12 +2458,13 @@
       const vid = document.getElementById('neer-cad-video');
       const uBtn = document.getElementById('neer-video-unmute');
       if (vid) {
-        vid.volume = 1.0;
         vid.muted = false;
+        vid.volume = 1.0;
         const p = vid.play();
         if (p !== undefined) {
           p.then(() => {
             vid.muted = false;
+            vid.volume = 1.0;
             if (uBtn) uBtn.style.display = 'none';
           }).catch(() => {
             vid.muted = true;
@@ -2479,17 +2483,48 @@
               if (uBtn) uBtn.style.display = 'none';
               window.removeEventListener('click', unmuteOnTap);
               window.removeEventListener('keydown', unmuteOnTap);
+              window.removeEventListener('touchstart', unmuteOnTap);
             };
             window.addEventListener('click', unmuteOnTap, { once: true });
             window.addEventListener('keydown', unmuteOnTap, { once: true });
+            window.addEventListener('touchstart', unmuteOnTap, { once: true });
           });
         }
+      }
+    }
+
+    function setNeerVideoMode(mode) {
+      const vid = document.getElementById('neer-cad-video');
+      const badge = document.getElementById('neer-video-mode-badge');
+      const sourceLabel = document.getElementById('neer-video-source-label');
+      const isSim = (mode === 'simulation');
+      const targetSrc = isSim ? '/Neer_kavach/Neer_kavach.mp4' : '/Neer_kavach/model_3d_video.mp4';
+      const fileTarget = isSim ? 'Neer_kavach.mp4' : 'model_3d_video.mp4';
+
+      if (badge) {
+        badge.innerHTML = '<div class="sim-status-dot"></div> ' + (isSim ? '3D SIMULATION VIDEO DEMONSTRATION' : '3D CAD MODEL VIDEO');
+      }
+      if (sourceLabel) {
+        sourceLabel.textContent = 'Source: ' + fileTarget;
+      }
+
+      if (vid) {
+        const cur = vid.currentSrc || vid.src || '';
+        if (!cur.endsWith(fileTarget)) {
+          vid.src = targetSrc;
+          vid.load();
+        }
+        playNeerVideo();
       }
     }
 
     function switchView(viewId, btnElem, scrollToTop = true) {
       if (viewId === 'view-simulation' || viewId === 'simulation') {
         navigateToSimulation(btnElem);
+        return;
+      }
+      if (viewId === 'view-video' || viewId === 'video') {
+        navigateToVideo(btnElem);
         return;
       }
       if (!viewId.startsWith('view-')) {
@@ -2509,13 +2544,9 @@
       // Update active nav button
       const allBtns = document.querySelectorAll('.sidebar-nav .nav-btn');
       allBtns.forEach(btn => btn.classList.remove('active'));
-      const activeBtn = btnElem || document.querySelector(`.sidebar-nav .nav-btn[onclick*="${viewId}"]`);
+      const activeBtn = btnElem || document.querySelector('.sidebar-nav .nav-btn[onclick*="' + viewId + '"]');
       if (activeBtn) {
         activeBtn.classList.add('active');
-      }
-
-      if (viewId === 'view-video') {
-        playNeerVideo();
       }
 
       if (scrollToTop) {
@@ -2526,6 +2557,7 @@
 
     function navigateToSimulation(btnElem) {
       switchView('view-video', null, false);
+      setNeerVideoMode('simulation');
       const currentHash = window.location.hash.toLowerCase();
       if (currentHash === '#view-simulation') {
         history.replaceState(null, null, '#view-simulation');
@@ -2539,11 +2571,34 @@
       if (simBtn) simBtn.classList.add('active');
 
       setTimeout(() => {
-        const simCard = document.getElementById('simulation-embed');
-        if (simCard) {
-          simCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        const vidSec = document.getElementById('video-player-section') || document.getElementById('view-video');
+        if (vidSec) {
+          vidSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-      }, 150);
+      }, 100);
+    }
+
+    function navigateToVideo(btnElem) {
+      switchView('view-video', null, false);
+      setNeerVideoMode('model');
+      const currentHash = window.location.hash.toLowerCase();
+      if (currentHash === '#view-video') {
+        history.replaceState(null, null, '#view-video');
+      } else {
+        history.replaceState(null, null, '#video');
+      }
+
+      const allBtns = document.querySelectorAll('.sidebar-nav .nav-btn');
+      allBtns.forEach(btn => btn.classList.remove('active'));
+      const vidBtn = btnElem || document.getElementById('nav-btn-video');
+      if (vidBtn) vidBtn.classList.add('active');
+
+      setTimeout(() => {
+        const vidSec = document.getElementById('video-player-section') || document.getElementById('view-video');
+        if (vidSec) {
+          vidSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      }, 100);
     }
 
     // Filter Table Rows in View 2
@@ -2569,13 +2624,12 @@
         return;
       }
       if (hash === 'video' || hash === 'view-video') {
-        const targetBtn = document.getElementById('nav-btn-video') || document.querySelector(`.sidebar-nav .nav-btn[onclick*="view-video"]`);
-        switchView('view-video', targetBtn, true);
+        navigateToVideo();
         return;
       }
       const validViews = ['overview', 'problems', 'research', 'prototype'];
       if (validViews.includes(hash)) {
-        const targetBtn = document.querySelector(`.sidebar-nav .nav-btn[onclick*="view-${hash}"]`);
+        const targetBtn = document.querySelector('.sidebar-nav .nav-btn[onclick*="view-' + hash + '"]');
         switchView('view-' + hash, targetBtn, true);
       } else {
         switchView('view-overview', null, true);
