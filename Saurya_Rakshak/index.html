@@ -2375,6 +2375,28 @@
       }
     }
 
+    // Direct DOM pane activation (NO RECURSION)
+    function activatePane(paneId) {
+      const allPanes = document.querySelectorAll('.view-pane');
+      allPanes.forEach(p => p.classList.remove('active'));
+      const target = document.getElementById(paneId);
+      if (target) {
+        target.classList.add('active');
+      }
+    }
+
+    function highlightNavButton(btnElem, viewId) {
+      const allBtns = document.querySelectorAll('.sidebar-nav .nav-btn');
+      allBtns.forEach(b => b.classList.remove('active'));
+      let activeBtn = btnElem;
+      if (!activeBtn && viewId) {
+        activeBtn = document.querySelector('.sidebar-nav .nav-btn[onclick*="' + viewId + '"]');
+      }
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+      }
+    }
+
     function switchView(viewId, btnElem, scrollToTop = true) {
       if (viewId === 'view-simulation' || viewId === 'simulation') {
         navigateToSimulation(btnElem);
@@ -2388,23 +2410,8 @@
         viewId = 'view-' + viewId;
       }
 
-      // Hide all view panes
-      const allPanes = document.querySelectorAll('.view-pane');
-      allPanes.forEach(pane => pane.classList.remove('active'));
-
-      // Show selected pane
-      const targetPane = document.getElementById(viewId);
-      if (targetPane) {
-        targetPane.classList.add('active');
-      }
-
-      // Update active nav button
-      const allBtns = document.querySelectorAll('.sidebar-nav .nav-btn');
-      allBtns.forEach(btn => btn.classList.remove('active'));
-      const activeBtn = btnElem || document.querySelector('.sidebar-nav .nav-btn[onclick*="' + viewId + '"]');
-      if (activeBtn) {
-        activeBtn.classList.add('active');
-      }
+      activatePane(viewId);
+      highlightNavButton(btnElem, viewId);
 
       if (scrollToTop) {
         history.replaceState(null, null, '#' + viewId.replace('view-', ''));
@@ -2413,49 +2420,47 @@
     }
 
     function navigateToSimulation(btnElem) {
-      switchView('view-video', null, false);
+      activatePane('view-video');
       setSauryaVideoMode('simulation');
-      const currentHash = window.location.hash.toLowerCase();
+
+      const simBtn = btnElem || document.getElementById('nav-btn-simulation') || document.querySelector('.sidebar-nav .nav-btn[onclick*="navigateToSimulation"]');
+      highlightNavButton(simBtn, null);
+
+      const currentHash = (window.location.hash || '').toLowerCase();
       if (currentHash === '#view-simulation') {
         history.replaceState(null, null, '#view-simulation');
       } else {
         history.replaceState(null, null, '#simulation');
       }
 
-      const allBtns = document.querySelectorAll('.sidebar-nav .nav-btn');
-      allBtns.forEach(btn => btn.classList.remove('active'));
-      const simBtn = btnElem || document.getElementById('nav-btn-simulation');
-      if (simBtn) simBtn.classList.add('active');
-
       setTimeout(() => {
         const vidSec = document.getElementById('video-player-section') || document.getElementById('view-video');
         if (vidSec) {
           vidSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-      }, 100);
+      }, 50);
     }
 
     function navigateToVideo(btnElem) {
-      switchView('view-video', null, false);
+      activatePane('view-video');
       setSauryaVideoMode('model');
-      const currentHash = window.location.hash.toLowerCase();
+
+      const vidBtn = btnElem || document.getElementById('nav-btn-video') || document.querySelector('.sidebar-nav .nav-btn[onclick*="navigateToVideo"]');
+      highlightNavButton(vidBtn, null);
+
+      const currentHash = (window.location.hash || '').toLowerCase();
       if (currentHash === '#view-video') {
         history.replaceState(null, null, '#view-video');
       } else {
         history.replaceState(null, null, '#video');
       }
 
-      const allBtns = document.querySelectorAll('.sidebar-nav .nav-btn');
-      allBtns.forEach(btn => btn.classList.remove('active'));
-      const vidBtn = btnElem || document.getElementById('nav-btn-video');
-      if (vidBtn) vidBtn.classList.add('active');
-
       setTimeout(() => {
         const vidSec = document.getElementById('video-player-section') || document.getElementById('view-video');
         if (vidSec) {
           vidSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-      }, 100);
+      }, 50);
     }
 
     // Filter Table Rows
@@ -2481,7 +2486,7 @@
 
     // On Load & Hash Router: Check Hash or Default to Overview
     function syncHashView() {
-      const hash = window.location.hash.replace('#', '').toLowerCase();
+      const hash = (window.location.hash || '').replace('#', '').toLowerCase();
       if (hash === 'simulation' || hash === 'view-simulation') {
         navigateToSimulation();
         return;
@@ -2491,15 +2496,23 @@
         return;
       }
       const validViews = ['overview', 'hazards', 'research', 'prototype'];
-      if (validViews.includes(hash)) {
-        const targetBtn = document.querySelector('.sidebar-nav .nav-btn[onclick*="view-' + hash + '"]');
-        switchView('view-' + hash, targetBtn, true);
-      } else {
-        switchView('view-overview', null, true);
+      let targetView = 'overview';
+      for (let i = 0; i < validViews.length; i++) {
+        const v = validViews[i];
+        if (hash === v || hash === 'view-' + v) {
+          targetView = v;
+          break;
+        }
       }
+      const targetBtn = document.querySelector('.sidebar-nav .nav-btn[onclick*="view-' + targetView + '"]');
+      switchView('view-' + targetView, targetBtn, true);
     }
 
-    window.addEventListener('DOMContentLoaded', syncHashView);
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', syncHashView);
+    } else {
+      syncHashView();
+    }
     window.addEventListener('hashchange', syncHashView);
   </script></body>
 </html>
