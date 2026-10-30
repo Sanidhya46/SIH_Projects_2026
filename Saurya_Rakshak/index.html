@@ -2311,10 +2311,30 @@
   <!-- JavaScript for STRICT Single-View Tab Isolation & Filtering -->
   <script>
     // STRICT SINGLE-VIEW TAB SWITCHER
-    function playSauryaVideo() {
+    function forceUnmuteSaurya() {
       const vid = document.getElementById('saurya-cad-video');
       const uBtn = document.getElementById('saurya-video-unmute');
       if (vid) {
+        vid.muted = false;
+        vid.volume = 1.0;
+        if (vid.paused) vid.play().catch(() => {});
+        if (uBtn) uBtn.style.display = 'none';
+      }
+    }
+    ['pointerdown', 'click', 'touchstart', 'keydown'].forEach(evt => {
+      window.addEventListener(evt, forceUnmuteSaurya, { passive: true });
+    });
+
+    function playSauryaVideo() {
+      const vid = document.getElementById('saurya-cad-video');
+      const uBtn = document.getElementById('saurya-video-unmute');
+      if (!vid) return;
+
+      vid.defaultMuted = false;
+      vid.muted = false;
+      vid.volume = 1.0;
+
+      const attemptPlay = () => {
         vid.muted = false;
         vid.volume = 1.0;
         const p = vid.play();
@@ -2323,30 +2343,23 @@
             vid.muted = false;
             vid.volume = 1.0;
             if (uBtn) uBtn.style.display = 'none';
-          }).catch(() => {
-            vid.muted = true;
-            vid.play();
-            if (uBtn) {
-              uBtn.style.display = 'block';
-              uBtn.onclick = () => {
-                vid.muted = false;
-                vid.volume = 1.0;
-                uBtn.style.display = 'none';
-              };
+          }).catch((err) => {
+            if (err && err.name === 'NotAllowedError') {
+              vid.muted = true;
+              vid.play().catch(() => {});
+              if (uBtn) {
+                uBtn.style.display = 'block';
+                uBtn.onclick = forceUnmuteSaurya;
+              }
             }
-            const unmuteOnTap = () => {
-              vid.muted = false;
-              vid.volume = 1.0;
-              if (uBtn) uBtn.style.display = 'none';
-              window.removeEventListener('click', unmuteOnTap);
-              window.removeEventListener('keydown', unmuteOnTap);
-              window.removeEventListener('touchstart', unmuteOnTap);
-            };
-            window.addEventListener('click', unmuteOnTap, { once: true });
-            window.addEventListener('keydown', unmuteOnTap, { once: true });
-            window.addEventListener('touchstart', unmuteOnTap, { once: true });
           });
         }
+      };
+
+      if (vid.readyState >= 2) {
+        attemptPlay();
+      } else {
+        vid.addEventListener('canplay', attemptPlay, { once: true });
       }
     }
 

@@ -259,46 +259,103 @@ button.btn-ctl:hover {
 }
 
 /* ======================================================== */
-/* WEARABLE HARDWARE LIVE DOCK (RIGHT SIDE)                 */
+/* INTERACTIVE HAZARD CONSOLE (RIGHT DOCK)                  */
 /* ======================================================== */
 #hw-dock {
   position: fixed;
   top: 68px;
   right: 14px;
-  width: 310px;
-  max-width: 48vw;
+  width: 324px;
+  max-width: 90vw;
+  max-height: calc(100vh - 84px);
+  overflow-y: auto;
+  overflow-x: hidden;
   background: rgba(10, 14, 24, 0.94);
   border: 1px solid var(--pn-border);
   border-radius: 14px;
-  padding: 12px;
+  padding: 10px 12px;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   z-index: 25;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.7);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.75);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
+  transition: all 0.3s ease;
 }
+#hw-dock::-webkit-scrollbar {
+  width: 4px;
+}
+#hw-dock::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.15);
+  border-radius: 4px;
+}
+
 .hw-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-bottom: 6px;
   border-bottom: 1px solid rgba(255,255,255,0.08);
-  padding-bottom: 8px;
 }
-.hw-header h3 {
-  font-size: 12px;
-  font-weight: 800;
-  color: var(--ac);
-  letter-spacing: 0.5px;
+.hw-header-title {
   display: flex;
   align-items: center;
   gap: 6px;
-  text-transform: uppercase;
 }
+.hw-header-title h3 {
+  font-size: 11px;
+  font-weight: 800;
+  color: var(--ac);
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  margin: 0;
+}
+.btn-toggle-wearables {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  color: #fbbf24;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-size: 9.5px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s ease;
+}
+.btn-toggle-wearables:hover {
+  background: rgba(245, 158, 11, 0.25);
+  border-color: #f59e0b;
+  color: #fff;
+  transform: translateY(-1px);
+}
+.btn-toggle-wearables.active {
+  background: #f59e0b;
+  color: #0b0f19;
+  font-weight: 800;
+  box-shadow: 0 0 10px rgba(245, 158, 11, 0.4);
+}
+
+/* Collapsible Wearables Telemetry Drawer */
+.wearables-drawer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  animation: fadeIn 0.25s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .hw-live-pill {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 10px;
+  font-size: 9px;
   font-weight: 700;
   padding: 2px 7px;
   border-radius: 10px;
@@ -310,8 +367,8 @@ button.btn-ctl:hover {
   gap: 4px;
 }
 .live-dot {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: #22c55e;
   box-shadow: 0 0 6px #22c55e;
@@ -319,20 +376,20 @@ button.btn-ctl:hover {
 }
 @keyframes pulse-live { from { opacity: 0.4; } to { opacity: 1; } }
 
-/* Cards for 3 Gear Units */
+/* Cards for 3 Gear Units inside Drawer */
 .gear-grid {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 .gear-card {
   position: relative;
   background: rgba(18, 22, 34, 0.85);
   border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 10px;
-  padding: 8px 10px;
+  border-radius: 8px;
+  padding: 6px 8px;
   display: flex;
-  gap: 10px;
+  gap: 8px;
   align-items: center;
   transition: all 0.25s ease;
   overflow: hidden;
@@ -340,29 +397,29 @@ button.btn-ctl:hover {
 .gear-card.active-alert {
   border-color: #ef4444;
   background: rgba(45, 14, 14, 0.85);
-  box-shadow: 0 0 16px rgba(239, 68, 68, 0.45);
+  box-shadow: 0 0 14px rgba(239, 68, 68, 0.45);
 }
 .gear-card.active-arc {
   border-color: #fbbf24;
   background: rgba(45, 34, 10, 0.9);
-  box-shadow: 0 0 18px rgba(251, 191, 36, 0.55);
+  box-shadow: 0 0 14px rgba(251, 191, 36, 0.55);
 }
 .gear-card.active-volt {
   border-color: #06b6d4;
   background: rgba(8, 32, 45, 0.9);
-  box-shadow: 0 0 18px rgba(6, 182, 212, 0.55);
+  box-shadow: 0 0 14px rgba(6, 182, 212, 0.55);
 }
 
 .gear-img-box {
   position: relative;
-  width: 64px;
-  height: 64px;
+  width: 48px;
+  height: 48px;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
   background: rgba(0,0,0,0.3);
-  border-radius: 8px;
+  border-radius: 6px;
   border: 1px solid rgba(255,255,255,0.05);
   overflow: hidden;
 }
@@ -377,7 +434,7 @@ button.btn-ctl:hover {
   min-width: 0;
 }
 .gear-name {
-  font-size: 11.5px;
+  font-size: 10.5px;
   font-weight: 700;
   color: #fff;
   margin-bottom: 2px;
@@ -386,10 +443,10 @@ button.btn-ctl:hover {
   align-items: center;
 }
 .gear-badge {
-  font-size: 9px;
+  font-size: 8.5px;
   font-family: 'JetBrains Mono', monospace;
   font-weight: 700;
-  padding: 1px 5px;
+  padding: 1px 4px;
   border-radius: 4px;
   background: rgba(34, 197, 94, 0.15);
   color: #4ade80;
@@ -399,13 +456,13 @@ button.btn-ctl:hover {
 .active-volt .gear-badge { background: rgba(6, 182, 212, 0.25); color: #67e8f9; }
 
 .gear-desc {
-  font-size: 10px;
+  font-size: 9px;
   color: #94a3b8;
-  line-height: 1.3;
+  line-height: 1.25;
 }
 .gear-telemetry {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 9.5px;
+  font-size: 9px;
   color: var(--cyan);
   margin-top: 2px;
   font-weight: 600;
@@ -414,21 +471,27 @@ button.btn-ctl:hover {
 .active-arc .gear-telemetry { color: #fde047; }
 .active-volt .gear-telemetry { color: #a5f3fc; }
 
-/* Interactive Test Trigger Buttons */
+/* Interactive Test Trigger Buttons (Console Main) */
 .test-bar {
-  margin-top: 2px;
-  padding-top: 8px;
-  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 .test-bar-title {
-  font-size: 10px;
+  font-size: 9.5px;
   font-family: 'JetBrains Mono', monospace;
   color: #94a3b8;
-  margin-bottom: 6px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+}
+.pulse-test-label {
+  color: #f59e0b;
+  font-size: 9px;
+  font-weight: 700;
+  animation: pulse-live 1.5s infinite alternate;
 }
 .test-btn-grid {
   display: grid;
@@ -436,25 +499,37 @@ button.btn-ctl:hover {
   gap: 5px;
 }
 .btn-hazard {
-  background: #171c28;
-  border: 1px solid rgba(255,255,255,0.12);
-  color: #e2e8f0;
-  padding: 5px 4px;
+  background: #141926;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #cbd5e1;
+  padding: 6px 3px;
   border-radius: 6px;
-  font-size: 9.5px;
+  font-size: 9px;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: all 0.15s ease;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
   white-space: nowrap;
 }
 .btn-hazard:hover {
-  background: #252e42;
+  background: #20283d;
   border-color: var(--ac);
   color: #fff;
   transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(245, 158, 11, 0.25);
 }
 .btn-hazard:active { transform: translateY(1px); }
+.btn-hazard.triggered {
+  background: rgba(239, 68, 68, 0.35) !important;
+  border-color: #ef4444 !important;
+  color: #fff !important;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.7) !important;
+  animation: pulse-live 0.6s infinite alternate;
+}
 
 /* Fullscreen Hazard FX Overlays */
 .fx {
@@ -698,76 +773,91 @@ button.btn-ctl:hover {
 </div>
 
 <!-- ======================================================== -->
-<!-- WEARABLE HARDWARE LIVE DOCK (RIGHT)                      -->
+<!-- INTERACTIVE HAZARD CONSOLE (RIGHT DOCK)                  -->
 <!-- ======================================================== -->
 <div id="hw-dock">
   <div class="hw-header">
-    <h3>🦺 Worn Wearables Telemetry</h3>
-    <div class="hw-live-pill">
-      <div class="live-dot"></div> SENSORS LIVE
+    <div class="hw-header-title">
+      <span style="font-size:13px;">⚡</span>
+      <h3>Hazard Console</h3>
+    </div>
+    <button id="btn-toggle-wearables" class="btn-toggle-wearables" onclick="toggleWearablesDrawer()" title="Toggle Worn Gear Telemetry">
+      🦺 Telemetry <span id="caret-wearables">▾</span>
+    </button>
+  </div>
+
+  <!-- Collapsible Wearable Hardware Drawer (HIDDEN BY DEFAULT TO SAVE SPACE) -->
+  <div id="wearables-drawer" class="wearables-drawer" style="display:none;">
+    <div class="hw-live-pill" style="justify-content:center; margin-bottom:4px;">
+      <div class="live-dot"></div> SENSORS LIVE TELEMETRY
+    </div>
+    <div class="gear-grid">
+      <!-- Unit 1: Smart Helmet -->
+      <div class="gear-card" id="card-helmet">
+        <div class="gear-img-box">
+          <img src="assets/helmet.png" alt="Smart Helmet" id="img-helmet">
+        </div>
+        <div class="gear-meta">
+          <div class="gear-name">
+            <span>Unit 1: Smart Helmet</span>
+            <span class="gear-badge" id="badge-helmet">WORN ON HEAD</span>
+          </div>
+          <div class="gear-desc" id="desc-helmet">IS 2925 shell, strap Hall sensor, 4K camera, auto-darkening UV visor.</div>
+          <div class="gear-telemetry" id="telem-helmet">STRAP: LOCKED · VISOR: CLEAR</div>
+        </div>
+      </div>
+
+      <!-- Unit 2: Sensing Gloves -->
+      <div class="gear-card" id="card-gloves">
+        <div class="gear-img-box">
+          <img src="assets/gloves_pair.png" alt="Sensing Gloves" id="img-gloves">
+        </div>
+        <div class="gear-meta">
+          <div class="gear-name">
+            <span>Unit 2: Sensing Gloves</span>
+            <span class="gear-badge" id="badge-gloves">WORN ON HANDS</span>
+          </div>
+          <div class="gear-desc" id="desc-gloves">1000V dielectric standoff, capacitive NCV node, 250Hz haptic buzzer.</div>
+          <div class="gear-telemetry" id="telem-gloves">NCV: NOMINAL · 0V DETECTED</div>
+        </div>
+      </div>
+
+      <!-- Unit 3: Multi-Hazard Detector Pod -->
+      <div class="gear-card" id="card-detector">
+        <div class="gear-img-box">
+          <img src="assets/hazard_detector.png" alt="Hazard Detector" id="img-detector">
+        </div>
+        <div class="gear-meta">
+          <div class="gear-name">
+            <span>Unit 3: Hazard Detector</span>
+            <span class="gear-badge" id="badge-detector">WORN ON CHEST</span>
+          </div>
+          <div class="gear-desc" id="desc-detector">4-Gas optical (CO, O₂, LEL, H₂S), 6-axis IMU fall shock, 100dB siren.</div>
+          <div class="gear-telemetry" id="telem-detector">ATMOSPHERE: SAFE · IMU: 1.0G</div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="gear-grid">
-    <!-- Unit 1: Smart Helmet -->
-    <div class="gear-card" id="card-helmet">
-      <div class="gear-img-box">
-        <img src="assets/helmet.png" alt="Smart Helmet" id="img-helmet">
-      </div>
-      <div class="gear-meta">
-        <div class="gear-name">
-          <span>Unit 1: Smart Helmet</span>
-          <span class="gear-badge" id="badge-helmet">WORN ON HEAD</span>
-        </div>
-        <div class="gear-desc" id="desc-helmet">IS 2925 shell, strap Hall sensor, 4K camera, auto-darkening UV visor.</div>
-        <div class="gear-telemetry" id="telem-helmet">STRAP: LOCKED · VISOR: CLEAR</div>
-      </div>
-    </div>
-
-    <!-- Unit 2: Sensing Gloves -->
-    <div class="gear-card" id="card-gloves">
-      <div class="gear-img-box">
-        <img src="assets/gloves_pair.png" alt="Sensing Gloves" id="img-gloves">
-      </div>
-      <div class="gear-meta">
-        <div class="gear-name">
-          <span>Unit 2: Sensing Gloves</span>
-          <span class="gear-badge" id="badge-gloves">WORN ON HANDS</span>
-        </div>
-        <div class="gear-desc" id="desc-gloves">1000V dielectric standoff, capacitive NCV node, 250Hz haptic buzzer.</div>
-        <div class="gear-telemetry" id="telem-gloves">NCV: NOMINAL · 0V DETECTED</div>
-      </div>
-    </div>
-
-    <!-- Unit 3: Multi-Hazard Detector Pod -->
-    <div class="gear-card" id="card-detector">
-      <div class="gear-img-box">
-        <img src="assets/hazard_detector.png" alt="Hazard Detector" id="img-detector">
-      </div>
-      <div class="gear-meta">
-        <div class="gear-name">
-          <span>Unit 3: Hazard Detector</span>
-          <span class="gear-badge" id="badge-detector">WORN ON CHEST</span>
-        </div>
-        <div class="gear-desc" id="desc-detector">4-Gas optical (CO, O₂, LEL, H₂S), 6-axis IMU fall shock, 100dB siren.</div>
-        <div class="gear-telemetry" id="telem-detector">ATMOSPHERE: SAFE · IMU: 1.0G</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Interactive Manual Hazard Test Triggers -->
+  <!-- Interactive Manual Hazard Test Triggers (12 Solution Triggers) -->
   <div class="test-bar">
     <div class="test-bar-title">
       <span>Interactive Hazard Triggers</span>
-      <span style="color:#f59e0b;">Click to Test</span>
+      <span class="pulse-test-label">Click to Simulate</span>
     </div>
     <div class="test-btn-grid">
-      <button class="btn-hazard" onclick="triggerManualHazard('arc')">⚡ Arc Flash</button>
-      <button class="btn-hazard" onclick="triggerManualHazard('voltage')">🔌 415V Touch</button>
-      <button class="btn-hazard" onclick="triggerManualHazard('gas')">☣️ Toxic Gas</button>
-      <button class="btn-hazard" onclick="triggerManualHazard('fall')">🚨 Fall Impact</button>
-      <button class="btn-hazard" onclick="triggerManualHazard('strap')">🦺 Strap Open</button>
-      <button class="btn-hazard" onclick="triggerManualHazard('sos')">🆘 SOS Alert</button>
+      <button class="btn-hazard" id="btn-hz-arc" onclick="triggerManualHazard('arc')" title="15ms Electrochromic Auto-Darkening Visor">⚡ Arc Flash</button>
+      <button class="btn-hazard" id="btn-hz-voltage" onclick="triggerManualHazard('voltage')" title="415V Touch / 250Hz Palm Haptic Interception">🔌 415V Touch</button>
+      <button class="btn-hazard" id="btn-hz-gas" onclick="triggerManualHazard('gas')" title="Toxic H2S Sewer Gas / 100dB Siren Trip">☣️ Toxic H₂S</button>
+      <button class="btn-hazard" id="btn-hz-ch4" onclick="triggerManualHazard('ch4')" title="Methane Combustible Gas LEL Threshold">💨 Methane LEL</button>
+      <button class="btn-hazard" id="btn-hz-fall" onclick="triggerManualHazard('fall')" title="5.2G Freefall Shock & Man-Down Beacon">🚨 5.2G Fall</button>
+      <button class="btn-hazard" id="btn-hz-strap" onclick="triggerManualHazard('strap')" title="Helmet Chin-Strap Unlatched Violation">🦺 Strap Open</button>
+      <button class="btn-hazard" id="btn-hz-sos" onclick="triggerManualHazard('sos')" title="Worker Distress SOS LoRa Mesh Ping">🆘 SOS Beacon</button>
+      <button class="btn-hazard" id="btn-hz-heat" onclick="triggerManualHazard('heat')" title="Enclosure Thermal Monitor >55°C Warning">🔥 Heat Stress</button>
+      <button class="btn-hazard" id="btn-hz-hypoxia" onclick="triggerManualHazard('hypoxia')" title="Oxygen Depletion (<19.5%) Asphyxiation Alarm">🧯 Hypoxia O₂</button>
+      <button class="btn-hazard" id="btn-hz-dielectric" onclick="triggerManualHazard('dielectric')" title="ASTM D120 Class 0 1000V Dielectric Barrier">🧤 Dielectric</button>
+      <button class="btn-hazard" id="btn-hz-lora" onclick="triggerManualHazard('lora')" title="LoRa Mesh Drop Subterranean SQLite WAL Store">📡 Vault Mesh</button>
+      <button class="btn-hazard" id="btn-hz-battery" onclick="triggerManualHazard('battery')" title="LiFePO4 Low Power Safe State Warning">🔋 LiFePO4 Low</button>
     </div>
   </div>
 </div>
@@ -1156,36 +1246,88 @@ function addIncident(t, type, sev, dev) {
   incidentLog.push({ t, type, sev, dev });
 }
 
+// Collapsible Wearables Telemetry Drawer Toggle
+function toggleWearablesDrawer() {
+  const drawer = $("wearables-drawer");
+  const caret = $("caret-wearables");
+  const btn = $("btn-toggle-wearables");
+  if (!drawer) return;
+  const isHidden = drawer.style.display === "none";
+  if (isHidden) {
+    drawer.style.display = "flex";
+    if (caret) caret.textContent = "▴";
+    if (btn) btn.classList.add("active");
+  } else {
+    drawer.style.display = "none";
+    if (caret) caret.textContent = "▾";
+    if (btn) btn.classList.remove("active");
+  }
+}
+
 // State Management
 let playing = false, t = 0, last = 0, cueI = -2, muted = false, voice = null, isSpeaking = false;
 let manualOverride = null, manualOverrideTimer = 0;
 
 function pickVoice() {
+  if (!("speechSynthesis" in window)) return;
   const v = speechSynthesis.getVoices();
-  voice = v.find(x => /en-IN/i.test(x.lang)) || v.find(x => /^en/i.test(x.lang)) || null;
+  if (!v || v.length === 0) return;
+  // Prioritize premium natural / neural / google / Indian English voices
+  voice = v.find(x => /natural|neural|online/i.test(x.name) && /^en/i.test(x.lang))
+       || v.find(x => /google/i.test(x.name) && /^en/i.test(x.lang))
+       || v.find(x => /en[-_]IN/i.test(x.lang) && !/desktop/i.test(x.name))
+       || v.find(x => /en[-_]US|en[-_]GB/i.test(x.lang))
+       || v.find(x => /^en/i.test(x.lang))
+       || v[0];
 }
 if ("speechSynthesis" in window) {
   speechSynthesis.onvoiceschanged = pickVoice;
   pickVoice();
 }
 
-// Chrome speech keepalive to prevent silent pause on longer narrations
+// Speech keepalive to prevent silent pause on long narrations
 setInterval(() => {
   if (isSpeaking && "speechSynthesis" in window && !speechSynthesis.paused && speechSynthesis.speaking) {
     speechSynthesis.pause();
     speechSynthesis.resume();
   }
-}, 8000);
+}, 7000);
+
+// Spoken Alert for Interactive Hazard Triggers
+function speakAlert(text) {
+  if (muted || !("speechSynthesis" in window)) return;
+  try {
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    window._currUtt = u;
+    if (!voice) pickVoice();
+    if (voice) u.voice = voice;
+    u.lang = voice ? voice.lang : "en-US";
+    u.rate = 1.0;
+    u.pitch = 1.02;
+    u.volume = 1.0;
+    isSpeaking = true;
+    u.onstart = () => { isSpeaking = true; };
+    u.onend = () => { isSpeaking = false; };
+    u.onerror = () => { isSpeaking = false; };
+    speechSynthesis.speak(u);
+  } catch (err) {
+    console.warn("Speech alert error:", err);
+  }
+}
 
 function say(i) {
-  if (muted || !("speechSynthesis" in window)) return;
+  if (muted || !("speechSynthesis" in window) || manualOverrideTimer > 0) return;
   speechSynthesis.cancel();
   const tx = cues[i][2];
   const u = new SpeechSynthesisUtterance(tx);
-  window._currUtt = u; // prevent Chromium GC
+  window._currUtt = u;
+  if (!voice) pickVoice();
   if (voice) u.voice = voice;
-  u.lang = voice ? voice.lang : "en-IN";
-  u.rate = 1.05; // Articulate, natural cadence
+  u.lang = voice ? voice.lang : "en-US";
+  u.rate = 1.0;
+  u.pitch = 1.0;
+  u.volume = 1.0;
   isSpeaking = true;
   u.onstart = () => { isSpeaking = true; };
   u.onend = () => { isSpeaking = false; };
@@ -1204,52 +1346,137 @@ function setPlay(p) {
   if (p) getAudioCtx();
 }
 
+// 12 Authentic Hazard Solutions Matrix
+const HAZARDS_CONFIG = {
+  arc: {
+    name: "MANUAL_ARC_FLASH",
+    sev: "h",
+    dev: "Helmet UV Visor (IS 2925)",
+    sfx: "siren",
+    voice: "Warning: High intensity arc flash detected. Electrochromic visor auto-darkened in twelve milliseconds."
+  },
+  voltage: {
+    name: "MANUAL_415V_CONTACT",
+    sev: "h",
+    dev: "Glove NCV Node (Class 0)",
+    sfx: "zap",
+    voice: "Danger: Live four-fifteen volt contact. Two-hundred-fifty hertz palm haptic vibration triggered."
+  },
+  gas: {
+    name: "MANUAL_TOXIC_H2S_GAS",
+    sev: "h",
+    dev: "Gas Pod Optical H2S Cell",
+    sfx: "siren",
+    voice: "Alert: Toxic hydrogen sulfide gas inundation at twenty-five parts per million. Siren sounding at one hundred decibels."
+  },
+  ch4: {
+    name: "MANUAL_CH4_EXPLOSIVE_LEL",
+    sev: "h",
+    dev: "Optical NDIR Methane Cell",
+    sfx: "siren",
+    voice: "Warning: Combustible methane gas reached three point four percent lower explosive limit. Immediate evacuation ordered."
+  },
+  fall: {
+    name: "MANUAL_FREEFALL_5.2G_IMPACT",
+    sev: "h",
+    dev: "Pod 6-Axis IMU Shock",
+    sfx: "beep",
+    voice: "Emergency: Scaffold freefall impact at five point two G. Ten-second man-down beacon broadcasted."
+  },
+  strap: {
+    name: "MANUAL_CHINSTRAP_UNLATCHED",
+    sev: "m",
+    dev: "Helmet Magnetic Hall Interlock",
+    sfx: "beep",
+    voice: "Safety violation: Helmet chin strap unlatched. Hall-effect interlock sounding alert."
+  },
+  sos: {
+    name: "MANUAL_WORKER_DISTRESS_SOS",
+    sev: "h",
+    dev: "Harness Distress Button (LoRa)",
+    sfx: "siren",
+    voice: "Distress signal activated. Worker SOS beacon broadcasting coordinates across LoRa mesh."
+  },
+  heat: {
+    name: "MANUAL_INTERNAL_HEAT_STRESS",
+    sev: "m",
+    dev: "Pod Ambient Thermal Sensor",
+    sfx: "beep",
+    voice: "Thermal warning: Internal ambient temperature reached fifty-eight degrees Celsius. Heat stress alert."
+  },
+  hypoxia: {
+    name: "MANUAL_O2_HYPOXIA_DEFICIT",
+    sev: "h",
+    dev: "Electrochemical O2 Sensor",
+    sfx: "siren",
+    voice: "Critical atmosphere: Oxygen level dropped to seventeen point nine percent. Atmospheric asphyxiation hazard."
+  },
+  dielectric: {
+    name: "MANUAL_DIELECTRIC_CHECK",
+    sev: "l",
+    dev: "ASTM D120 Class 0 Insulation",
+    sfx: "zap",
+    voice: "Dielectric inspection: ASTM Class zero barrier verified up to one thousand volts standoff."
+  },
+  lora: {
+    name: "MANUAL_LORA_MESH_OFFLINE",
+    sev: "m",
+    dev: "Local SQLite WAL Storage",
+    sfx: "beep",
+    voice: "Network degraded: Subterranean vault detected. Switching to local SQLite store-and-forward mode."
+  },
+  battery: {
+    name: "MANUAL_LOW_BATTERY_SAFE_MODE",
+    sev: "l",
+    dev: "LiFePO4 BMS Controller",
+    sfx: "beep",
+    voice: "Power advisory: LiFePO4 battery at fourteen percent. Return to charging dock advised."
+  }
+};
+
 // Manual Hazard Trigger Function
 function triggerManualHazard(hazard) {
   manualOverride = hazard;
-  manualOverrideTimer = 4.5; // 4.5 second duration
+  manualOverrideTimer = 5.0; // 5.0 second duration
   getAudioCtx();
-  
-  if (hazard === 'arc') {
-    playSfx('siren');
-    addIncident(t, "MANUAL_ARC_FLASH", "h", "Helmet UV Visor");
-  } else if (hazard === 'voltage') {
-    playSfx('zap');
-    addIncident(t, "MANUAL_415V_CONTACT", "h", "Glove NCV Node");
-  } else if (hazard === 'gas') {
-    playSfx('siren');
-    addIncident(t, "MANUAL_CH4_INUNDATION", "h", "Gas Pod SR-03");
-  } else if (hazard === 'fall') {
-    playSfx('beep');
-    addIncident(t, "MANUAL_FREEFALL_IMPACT", "h", "IMU 6-Axis");
-  } else if (hazard === 'strap') {
-    playSfx('beep');
-    addIncident(t, "MANUAL_STRAP_OPEN", "m", "Helmet Strap Hall");
-  } else if (hazard === 'sos') {
-    playSfx('siren');
-    addIncident(t, "MANUAL_WORKER_SOS", "h", "Pod Distress Trigger");
+
+  // Clear previous button highlights and highlight newly triggered button
+  document.querySelectorAll(".btn-hazard").forEach(b => b.classList.remove("triggered"));
+  const activeBtn = $("btn-hz-" + hazard);
+  if (activeBtn) activeBtn.classList.add("triggered");
+
+  const cfg = HAZARDS_CONFIG[hazard];
+  if (cfg) {
+    playSfx(cfg.sfx);
+    addIncident(t, cfg.name, cfg.sev, cfg.dev);
+    speakAlert(cfg.voice);
   }
 }
 
 // Sensor Telemetry Provider
 function getHUD(currT, arcOn, voltOn, gasOn, fallOn, strapOpen) {
   const co = gasOn ? 115 : (currT >= 96 && currT < 104 ? 85 : 5);
-  const ch4 = gasOn ? 3.4 : (currT >= 96 && currT < 104 ? 1.8 : 0.0);
-  const ncvVolt = voltOn ? 415 : (currT >= 45 && currT < 50 ? 240 : 0);
-  const uvLevel = arcOn ? 14.8 : (currT >= 82 && currT < 90 ? 12.2 : 0.4);
-  const imuG = fallOn ? 5.2 : 1.0;
-  
+  const ch4 = (manualOverride === 'ch4' || gasOn) ? 3.4 : (currT >= 96 && currT < 104 ? 1.8 : 0.0);
+  const h2s = (manualOverride === 'gas') ? 25 : 0;
+  const o2 = (manualOverride === 'hypoxia') ? "17.9%" : (gasOn ? "18.2%" : "20.8%");
+  const ncvVolt = (voltOn || manualOverride === 'voltage') ? 415 : (currT >= 45 && currT < 50 ? 240 : 0);
+  const uvLevel = (arcOn || manualOverride === 'arc') ? 14.8 : (currT >= 82 && currT < 90 ? 12.2 : 0.4);
+  const imuG = (fallOn || manualOverride === 'fall') ? 5.2 : 1.0;
+  const tempVal = (manualOverride === 'heat') ? "58°C HOT" : "28.5°C";
+  const batt = (manualOverride === 'battery') ? "14% LOW" : "96%";
+
   return [
     ["Chin-Strap", strapOpen ? "UNLATCHED" : "LOCKED", strapOpen ? "bad" : "ok"],
     ["NCV Voltage", ncvVolt > 50 ? `${ncvVolt}V TRIP` : "0V SAFE", ncvVolt > 50 ? "bad" : "ok"],
     ["Arc Flash UV", uvLevel > 5 ? `${uvLevel} UVI (DARK)` : `${uvLevel} UVI`, uvLevel > 5 ? "bad" : "ok"],
     ["Methane (CH₄)", `${ch4}%`, ch4 > 1.0 ? "bad" : "ok"],
-    ["Carbon Monox", `${co} ppm`, co > 50 ? "bad" : "ok"],
-    ["Oxygen (O₂)", gasOn ? "18.2%" : "20.8%", gasOn ? "bad" : "ok"],
-    ["Motion IMU", fallOn ? "FREEFALL 5.2G" : "1.0G STABLE", fallOn ? "bad" : "ok"],
-    ["Helmet BLE", "WORN & SYNCED", "ok"],
-    ["Glove Link", "1000V ISOLATED", "ok"],
-    ["Mesh Network", currT >= 74 && currT < 78 ? "OFFLINE (STORE)" : "ONLINE (LORA)", currT >= 74 && currT < 78 ? "warn" : "ok"]
+    ["Toxic H₂S", h2s > 10 ? `${h2s} ppm TRIP` : `${h2s} ppm`, h2s > 10 ? "bad" : "ok"],
+    ["Oxygen (O₂)", o2, (o2 === "17.9%" || gasOn) ? "bad" : "ok"],
+    ["Ambient Temp", tempVal, manualOverride === 'heat' ? "bad" : "ok"],
+    ["Motion IMU", imuG > 2.0 ? `FREEFALL ${imuG}G` : "1.0G STABLE", imuG > 2.0 ? "bad" : "ok"],
+    ["LiFePO4 Batt", batt, manualOverride === 'battery' ? "bad" : "ok"],
+    ["Glove Barrier", manualOverride === 'dielectric' ? "1000V STANDOFF" : "1000V ISOLATED", "ok"],
+    ["Mesh Network", (currT >= 74 && currT < 78) || manualOverride === 'lora' ? "OFFLINE (STORE)" : "ONLINE (LORA)", (currT >= 74 && currT < 78) || manualOverride === 'lora' ? "warn" : "ok"]
   ];
 }
 
@@ -1257,16 +1484,20 @@ function getHUD(currT, arcOn, voltOn, gasOn, fallOn, strapOpen) {
 function update(currT, dt) {
   if (manualOverrideTimer > 0) {
     manualOverrideTimer -= dt;
-    if (manualOverrideTimer <= 0) manualOverride = null;
+    if (manualOverrideTimer <= 0) {
+      manualOverride = null;
+      document.querySelectorAll(".btn-hazard").forEach(b => b.classList.remove("triggered"));
+    }
   }
 
   // Active Hazard States
   const isArc = (currT >= 82 && currT < 90) || manualOverride === 'arc';
-  const isVolt = (currT >= 45 && currT < 50) || manualOverride === 'voltage';
-  const isGas = (currT >= 96 && currT < 104) || manualOverride === 'gas';
+  const isVolt = (currT >= 45 && currT < 50) || manualOverride === 'voltage' || manualOverride === 'dielectric';
+  const isGas = (currT >= 96 && currT < 104) || manualOverride === 'gas' || manualOverride === 'ch4' || manualOverride === 'hypoxia';
   const isFall = (currT >= 104 && currT < 110) || manualOverride === 'fall';
   const isStrapOpen = (currT >= 33 && currT < 37) || manualOverride === 'strap';
   const isSos = manualOverride === 'sos';
+  const isHeat = (currT >= 82 && currT < 96) || manualOverride === 'heat';
 
   // 1. Worker Animation: Breathing / Work Motion / Fall
   worker.position.y = Math.sin(currT * 1.5) * 0.03;
@@ -1280,7 +1511,7 @@ function update(currT, dt) {
   // Highlight Current Focused Gear in Top Banner
   $("pill-h").className = (currT >= 33 && currT < 45) || isArc || isStrapOpen ? "gear-badge-pill highlight" : "gear-badge-pill";
   $("pill-g").className = (currT >= 45 && currT < 57) || isVolt ? "gear-badge-pill highlight" : "gear-badge-pill";
-  $("pill-d").className = (currT >= 57 && currT < 70) || isGas || isFall || isSos ? "gear-badge-pill highlight" : "gear-badge-pill";
+  $("pill-d").className = (currT >= 57 && currT < 70) || isGas || isFall || isSos || isHeat ? "gear-badge-pill highlight" : "gear-badge-pill";
 
   // -------------------------------------------------------------------------
   // 2. VISIBLE REACTIONS ON WORN GEAR DIRECTLY ON PERSON
@@ -1337,6 +1568,10 @@ function update(currT, dt) {
     podAlarmLight.color.set(0xef4444);
     podAlarmLight.intensity = Math.floor(currT * 12) % 2 === 0 ? 5.0 : 0;
     wornDetector.material.color.set(0xff5555);
+  } else if (isHeat) {
+    podAlarmLight.color.set(0xf97316);
+    podAlarmLight.intensity = 3.0;
+    wornDetector.material.color.set(0xfca5a5);
   } else {
     podAlarmLight.intensity = 0;
     wornDetector.material.color.set(0xffffff);
@@ -1372,9 +1607,9 @@ function update(currT, dt) {
   $("arc").style.opacity = isArc ? 0.75 : 0;
   $("gas").style.opacity = isGas ? 0.85 : 0;
   $("shock").style.opacity = isVolt ? 0.8 : 0;
-  $("heat").style.opacity = (currT >= 82 && currT < 96) ? 0.5 : 0;
+  $("heat").style.opacity = isHeat ? 0.6 : 0;
 
-  // 6. Update Wearable Hardware Live Monitor Dock (Right Panel)
+  // 6. Update Wearable Hardware Live Monitor Dock (Drawer Cards)
   const cardHelmet = $("card-helmet");
   const badgeHelmet = $("badge-helmet");
   const telemHelmet = $("telem-helmet");
@@ -1397,7 +1632,11 @@ function update(currT, dt) {
   const badgeGloves = $("badge-gloves");
   const telemGloves = $("telem-gloves");
 
-  if (isVolt) {
+  if (manualOverride === 'dielectric') {
+    cardGloves.className = "gear-card active-volt";
+    badgeGloves.textContent = "DIELECTRIC VERIFIED";
+    telemGloves.textContent = "1000V ISOLATION STANDOFF VERIFIED";
+  } else if (isVolt) {
     cardGloves.className = "gear-card active-volt";
     badgeGloves.textContent = "415V TOUCH TRIP";
     telemGloves.textContent = "NCV: 415V VOLTAGE · 250Hz HAPTIC";
@@ -1411,17 +1650,37 @@ function update(currT, dt) {
   const badgeDet = $("badge-detector");
   const telemDet = $("telem-detector");
 
-  if (isGas) {
+  if (manualOverride === 'ch4') {
     cardDet.className = "gear-card active-alert";
-    badgeDet.textContent = "GAS ALARM TRIP";
-    telemDet.textContent = "CH₄: 3.4% · CO: 115 PPM · 100dB SIREN";
+    badgeDet.textContent = "CH4 LEL TRIP";
+    telemDet.textContent = "CH₄: 3.4% LEL · COMBUSTIBLE ALERT";
+  } else if (manualOverride === 'hypoxia') {
+    cardDet.className = "gear-card active-alert";
+    badgeDet.textContent = "O2 DEFICIT TRIP";
+    telemDet.textContent = "O₂: 17.9% · ASPHYXIATION DANGER";
+  } else if (manualOverride === 'heat') {
+    cardDet.className = "gear-card active-alert";
+    badgeDet.textContent = "HEAT STRESS TRIP";
+    telemDet.textContent = "CORE TEMP: 58°C · ENCLOSURE TRIP";
+  } else if (manualOverride === 'lora') {
+    cardDet.className = "gear-card active-alert";
+    badgeDet.textContent = "LORA VAULT CACHE";
+    telemDet.textContent = "SQLITE WAL BUFFER · NO PACKET LOSS";
+  } else if (manualOverride === 'battery') {
+    cardDet.className = "gear-card active-alert";
+    badgeDet.textContent = "LOW BATTERY 14%";
+    telemDet.textContent = "LIFEPO4 BMS: 14% · RECHARGE REQUIRED";
+  } else if (isGas) {
+    cardDet.className = "gear-card active-alert";
+    badgeDet.textContent = "H2S GAS ALARM";
+    telemDet.textContent = "H₂S: 25 PPM · CO: 115 PPM · 100dB SIREN";
   } else if (isFall) {
     cardDet.className = "gear-card active-alert";
     badgeDet.textContent = "FREEFALL 5.2G";
     telemDet.textContent = "IMPACT: 5.2G · IMMOBILITY 10s COUNTDOWN";
   } else if (isSos) {
     cardDet.className = "gear-card active-alert";
-    badgeDet.textContent = "MANUAL WORKER SOS";
+    badgeDet.textContent = "WORKER SOS ACTIVE";
     telemDet.textContent = "DISTRESS BEACON BROADCASTING (LORA)";
   } else {
     cardDet.className = "gear-card";
