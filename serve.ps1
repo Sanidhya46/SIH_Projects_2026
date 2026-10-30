@@ -48,8 +48,17 @@ while ($listener.IsListening) {
         $response = $context.Response
 
         $urlPath = [System.Uri]::UnescapeDataString($request.Url.LocalPath).TrimStart('/')
-        if ([string]::IsNullOrWhiteSpace($urlPath)) {
-            $urlPath = "index.html"
+        if ([string]::IsNullOrWhiteSpace($urlPath) -or $urlPath -eq "index.html") {
+            $urlPath = "Neer_kavach/index.html"
+        }
+        if ($urlPath -eq "neer" -or $urlPath -eq "neer_kavach" -or $urlPath -eq "Neer_kavach") {
+            $urlPath = "Neer_kavach/index.html"
+        }
+        if ($urlPath -eq "saurya" -or $urlPath -eq "saurya_rakshak" -or $urlPath -eq "Saurya_Rakshak") {
+            $urlPath = "Saurya_Rakshak/index.html"
+        }
+        if ($urlPath -eq "simulation" -or $urlPath -eq "simulation.html") {
+            $urlPath = "Neer_kavach/simulation.html"
         }
 
         $filePath = Join-Path $Root $urlPath

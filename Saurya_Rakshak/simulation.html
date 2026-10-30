@@ -655,7 +655,7 @@ button.btn-ctl:hover {
 <!-- Top Backlink Bar -->
 <div id="nav">
   <span>⚡ Saurya Rakshak Simulation</span> · 
-  <a href="index.html#video">← Return to Saurya Rakshak Portal</a>
+  <a href="/Saurya_Rakshak#video">← Return to Saurya Rakshak Portal</a>
 </div>
 
 <!-- Header Info -->
@@ -816,6 +816,10 @@ button.btn-ctl:hover {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
 <script>
+if (window.self !== window.top) {
+  const nb = document.getElementById('nav');
+  if (nb) nb.style.display = 'none';
+}
 const T = 245;
 const $ = id => document.getElementById(id);
 const cl = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));

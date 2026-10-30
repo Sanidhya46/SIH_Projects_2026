@@ -3,6 +3,13 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
+    { "source": "/", "destination": "/Neer_kavach/index.html" },
+    { "source": "/simulation", "destination": "/Neer_kavach/simulation.html" },
+    { "source": "/simulation.html", "destination": "/Neer_kavach/simulation.html" },
+    { "source": "/video", "destination": "/Neer_kavach/video.html" },
+    { "source": "/video.html", "destination": "/Neer_kavach/video.html" },
+    { "source": "/Neer_kavach.mp4", "destination": "/Neer_kavach/Neer_kavach.mp4" },
+    { "source": "/model_3d_video.mp4", "destination": "/Neer_kavach/model_3d_video.mp4" },
     { "source": "/neer-simulation", "destination": "/Neer_kavach/simulation.html" },
     { "source": "/neer/simulation", "destination": "/Neer_kavach/simulation.html" },
     { "source": "/neer_kavach/simulation", "destination": "/Neer_kavach/simulation.html" },

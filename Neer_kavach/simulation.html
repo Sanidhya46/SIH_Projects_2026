@@ -28,7 +28,7 @@ button:hover{background:#1b5f94}button:focus-visible{outline:2px solid #fff}
 #scr{display:none;overflow:auto;justify-content:flex-start;text-align:left}#scr div{max-width:760px;margin:6px auto;font-size:14px}#scr i{color:var(--ac);font-style:normal;font-weight:700}
 </style></head><body>
 <canvas id="c"></canvas><div id="lb"></div>
-<div id="nav-back"><span>&#127754; Neer Kavach Simulation</span> &middot; <a href="index.html#video">&larr; Return to Neer Kavach Portal</a></div>
+<div id="nav-back"><span>&#127754; Neer Kavach Simulation</span> &middot; <a href="/Neer_kavach#video">&larr; Return to Neer Kavach Portal</a></div>
 <div class="p" id="top"><b>Neer Kavach</b><div id="stage">Initializing simulation...</div></div>
 <div class="p" id="meter"><div>Simulated Turbidity</div><div id="ntu" style="font-size:22px;font-weight:700;color:#38bdf8">—</div><div id="bar"><div id="fill"></div></div><div style="font-size:11px;opacity:.75">Illustrative, not a lab reading</div></div>
 <div class="p" id="phone"><h4>Phone Dashboard · AP: NeerKavach · 192.168.4.1</h4><div class="mode" id="mode"></div><div id="rows"></div><div id="log"></div></div>
@@ -41,6 +41,10 @@ button:hover{background:#1b5f94}button:focus-visible{outline:2px solid #fff}
 <div id="scr"><div><button id="cl">Close Script</button></div><div id="scl"></div></div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>
+if (window.self !== window.top) {
+  const nb = document.getElementById('nav-back');
+  if (nb) nb.style.display = 'none';
+}
 const T=180;
 const cues=[
 [0,"The problem","Every monsoon, villages across India face the same crisis. Kitchen and bathroom greywater has nowhere to go. Soak pits overflow, and dirty water spreads around homes."],
