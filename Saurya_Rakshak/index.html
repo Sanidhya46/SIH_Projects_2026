@@ -1466,40 +1466,45 @@
           <div style="display:flex; align-items:center; gap:1.25rem;">
             <div style="display:inline-flex; align-items:center; gap:0.45rem; font-size:0.75rem; font-family:var(--font-mono); font-weight:700; color:#10b981; background:#064e3b; padding:0.25rem 0.65rem; border-radius:100px;">
               <div style="width:8px; height:8px; border-radius:50%; background:#10b981;"></div>
-              12-SECOND 3D ANIMATION
+              3D SIMULATION VIDEO DEMONSTRATION
             </div>
             <span style="font-size:0.82rem; color:#94a3b8; font-family:var(--font-mono);">
-              Source: model_3d_video.mp4
+              Source: saurya_rakshak_simulation_video.mp4
             </span>
           </div>
           <div style="display:flex; gap:0.5rem;">
             <a href="/Saurya_Rakshak/video.html" target="_blank" class="btn btn-outline" style="padding:0.4rem 0.85rem; font-size:0.78rem;">
-              Dedicated Video Page ↗
+              Dedicated Video Page â†—
             </a>
             <a href="https://studio.tripo3d.ai/3d-model/yellow-tactical-helmet-with-camera-black-and-yellow-armored-gloves-wi-9ade27ff-b8f6-42e8-9183-e8d50393cdd1" target="_blank" class="btn btn-primary" style="padding:0.4rem 0.85rem; font-size:0.78rem;">
-              Interactive 3D Model ↗
+              Interactive 3D Model â†—
             </a>
           </div>
         </div>
 
-        <div style="background:#000; display:flex; justify-content:center; align-items:center; aspect-ratio:16/9; max-height:560px;">
-          <video id="saurya-cad-video" controls autoplay loop muted playsinline style="width:100%; height:100%; max-height:560px; object-fit:contain;">
+        <div id="video-player-section" style="background:#000; display:flex; justify-content:center; align-items:center; aspect-ratio:16/9; max-height:560px; position:relative;">
+          <video id="saurya-cad-video" controls autoplay loop playsinline style="width:100%; height:100%; max-height:560px; object-fit:contain;">
+            <source src="/Saurya_Rakshak/saurya_rakshak_simulation_video.mp4" type="video/mp4">
+            <source src="saurya_rakshak_simulation_video.mp4" type="video/mp4">
             <source src="/Saurya_Rakshak/model_3d_video.mp4" type="video/mp4">
             <source src="model_3d_video.mp4" type="video/mp4">
             Your browser does not support HTML5 video playback.
           </video>
+          <button id="saurya-video-unmute" style="position:absolute; bottom:14px; right:14px; z-index:10; background:rgba(245,158,11,0.92); color:#000; border:none; padding:7px 14px; border-radius:20px; font-weight:800; font-size:12px; cursor:pointer; display:none; box-shadow:0 4px 15px rgba(0,0,0,0.4);">
+            ðŸ”Š Click for Sound
+          </button>
         </div>
 
         <div style="padding:1.25rem 1.75rem; background:#f8fafc; border-top:1px solid var(--border-light); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
           <div style="display:flex; gap:0.75rem; flex-wrap:wrap;">
-            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">⏱️ Duration: 12 Seconds</span>
-            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">⛑️ Smart Tactical Helmet</span>
-            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">🧤 Armored Sensing Gloves</span>
-            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">⚡ 415V Touch Protection</span>
+            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">ðŸŽ¬ Simulation Video Running</span>
+            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">â›‘ï¸ Smart Tactical Helmet</span>
+            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">ðŸ§¤ Armored Sensing Gloves</span>
+            <span style="font-family:var(--font-mono); font-size:0.78rem; background:#fff; border:1px solid #cbd5e1; padding:0.25rem 0.65rem; border-radius:6px;">âš¡ 415V Touch Protection</span>
           </div>
-          <a href="#simulation-embed" class="btn btn-outline" style="padding:0.45rem 1rem; font-size:0.8rem;">
-            Scroll to 12-Scene Simulation ↓
-          </a>
+          <button onclick="navigateToSimulation()" class="btn btn-primary" style="padding:0.45rem 1rem; font-size:0.8rem; background:#d97706; color:#fff;">
+            â¬‡ï¸ Scroll to Interactive 3D Simulation
+          </button>
         </div>
       </div>
 
@@ -1521,7 +1526,7 @@
             </a>
           </div>
         </div>
-        <iframe id="saurya-sim-iframe" src="/Saurya_Rakshak/simulation.html" class="sim-iframe" title="Saurya Rakshak Simulation" loading="lazy" style="height:680px; width:100%; border:none;"></iframe>
+        <iframe id="saurya-sim-iframe" src="/Saurya_Rakshak/simulation.html" class="sim-iframe" title="Saurya Rakshak Simulation" loading="eager" style="height:680px; width:100%; border:none;"></iframe>
         <script>
           (function() {
             if (window.location.protocol === 'file:') {
@@ -2301,40 +2306,99 @@
   <!-- JavaScript for STRICT Single-View Tab Isolation & Filtering -->
   <script>
     // STRICT SINGLE-VIEW TAB SWITCHER
-    function switchView(viewId, btnElem) {
+    function playSauryaVideo() {
+      const vid = document.getElementById('saurya-cad-video');
+      const uBtn = document.getElementById('saurya-video-unmute');
+      if (vid) {
+        vid.volume = 1.0;
+        vid.muted = false;
+        const p = vid.play();
+        if (p !== undefined) {
+          p.then(() => {
+            vid.muted = false;
+            if (uBtn) uBtn.style.display = 'none';
+          }).catch(() => {
+            vid.muted = true;
+            vid.play();
+            if (uBtn) {
+              uBtn.style.display = 'block';
+              uBtn.onclick = () => {
+                vid.muted = false;
+                vid.volume = 1.0;
+                uBtn.style.display = 'none';
+              };
+            }
+            const unmuteOnTap = () => {
+              vid.muted = false;
+              vid.volume = 1.0;
+              if (uBtn) uBtn.style.display = 'none';
+              window.removeEventListener('click', unmuteOnTap);
+              window.removeEventListener('keydown', unmuteOnTap);
+            };
+            window.addEventListener('click', unmuteOnTap, { once: true });
+            window.addEventListener('keydown', unmuteOnTap, { once: true });
+          });
+        }
+      }
+    }
+
+    function switchView(viewId, btnElem, scrollToTop = true) {
       if (viewId === 'view-simulation' || viewId === 'simulation') {
-        viewId = 'view-video';
+        navigateToSimulation(btnElem);
+        return;
       }
       if (!viewId.startsWith('view-')) {
         viewId = 'view-' + viewId;
       }
 
       // Hide all view panes
-      const panes = document.querySelectorAll('.view-pane');
-      panes.forEach(p => p.classList.remove('active'));
+      const allPanes = document.querySelectorAll('.view-pane');
+      allPanes.forEach(pane => pane.classList.remove('active'));
 
-      // Remove active class from all sidebar nav buttons
-      const navBtns = document.querySelectorAll('.nav-btn');
-      navBtns.forEach(b => b.classList.remove('active'));
-
-      // Activate target view pane
+      // Show selected pane
       const targetPane = document.getElementById(viewId);
       if (targetPane) {
         targetPane.classList.add('active');
+      }
+
+      // Update active nav button
+      const allBtns = document.querySelectorAll('.sidebar-nav .nav-btn');
+      allBtns.forEach(btn => btn.classList.remove('active'));
+      const activeBtn = btnElem || document.querySelector('.sidebar-nav .nav-btn[onclick*="' + viewId + '"]');
+      if (activeBtn) {
+        activeBtn.classList.add('active');
+      }
+
+      if (viewId === 'view-video') {
+        playSauryaVideo();
+      }
+
+      if (scrollToTop) {
+        history.replaceState(null, null, '#' + viewId.replace('view-', ''));
         window.scrollTo({ top: 0, behavior: 'smooth' });
       }
+    }
 
-      // Activate button
-      if (btnElem) {
-        btnElem.classList.add('active');
+    function navigateToSimulation(btnElem) {
+      switchView('view-video', null, false);
+      const currentHash = window.location.hash.toLowerCase();
+      if (currentHash === '#view-simulation') {
+        history.replaceState(null, null, '#view-simulation');
       } else {
-        const matchingBtn = document.querySelector(`.sidebar-nav .nav-btn[onclick*="${viewId}"]`);
-        if (matchingBtn) matchingBtn.classList.add('active');
+        history.replaceState(null, null, '#simulation');
       }
 
-      // Update URL hash without causing scroll jump (e.g. #video)
-      const cleanHash = viewId.replace('view-', '');
-      history.replaceState(null, null, '#' + cleanHash);
+      const allBtns = document.querySelectorAll('.sidebar-nav .nav-btn');
+      allBtns.forEach(btn => btn.classList.remove('active'));
+      const simBtn = btnElem || document.getElementById('nav-btn-simulation');
+      if (simBtn) simBtn.classList.add('active');
+
+      setTimeout(() => {
+        const simCard = document.getElementById('simulation-embed');
+        if (simCard) {
+          simCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 150);
     }
 
     // Filter Table Rows
@@ -2360,20 +2424,26 @@
 
     // On Load & Hash Router: Check Hash or Default to Overview
     function syncHashView() {
-      let hash = window.location.hash.replace('#', '') || 'overview';
-      if (hash === 'simulation') hash = 'video';
-      const viewId = 'view-' + hash;
-      if (document.getElementById(viewId)) {
-        const targetBtn = document.querySelector(`.sidebar-nav .nav-btn[onclick*="${viewId}"]`);
-        switchView(viewId, targetBtn);
+      const hash = window.location.hash.replace('#', '').toLowerCase();
+      if (hash === 'simulation' || hash === 'view-simulation') {
+        navigateToSimulation();
+        return;
+      }
+      if (hash === 'video' || hash === 'view-video') {
+        const targetBtn = document.getElementById('nav-btn-video') || document.querySelector('.sidebar-nav .nav-btn[onclick*="view-video"]');
+        switchView('view-video', targetBtn, true);
+        return;
+      }
+      const validViews = ['overview', 'hazards', 'research', 'prototype'];
+      if (validViews.includes(hash)) {
+        const targetBtn = document.querySelector('.sidebar-nav .nav-btn[onclick*="view-' + hash + '"]');
+        switchView('view-' + hash, targetBtn, true);
       } else {
-        switchView('view-overview');
+        switchView('view-overview', null, true);
       }
     }
 
     window.addEventListener('DOMContentLoaded', syncHashView);
     window.addEventListener('hashchange', syncHashView);
-  </script>
-
-</body>
+  </script></body>
 </html>

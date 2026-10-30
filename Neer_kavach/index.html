@@ -1810,14 +1810,17 @@
           </div>
         </div>
 
-        <div style="background:#000; display:flex; justify-content:center; align-items:center; aspect-ratio:16/9; max-height:560px;">
-          <video id="neer-cad-video" controls autoplay loop muted playsinline style="width:100%; height:100%; max-height:560px; object-fit:contain;">
+        <div id="video-player-section" style="background:#000; display:flex; justify-content:center; align-items:center; aspect-ratio:16/9; max-height:560px; position:relative;">
+          <video id="neer-cad-video" controls autoplay loop playsinline style="width:100%; height:100%; max-height:560px; object-fit:contain;">
             <source src="/Neer_kavach/Neer_kavach.mp4" type="video/mp4">
             <source src="/Neer_kavach/model_3d_video.mp4" type="video/mp4">
             <source src="Neer_kavach.mp4" type="video/mp4">
             <source src="model_3d_video.mp4" type="video/mp4">
             Your browser does not support HTML5 video playback.
           </video>
+          <button id="neer-video-unmute" style="position:absolute; bottom:14px; right:14px; z-index:10; background:rgba(2,132,199,0.92); color:#fff; border:none; padding:7px 14px; border-radius:20px; font-weight:700; font-size:12px; cursor:pointer; display:none; box-shadow:0 4px 15px rgba(0,0,0,0.4);">
+            ðŸ”Š Click for Sound
+          </button>
         </div>
 
         <div style="padding:1.25rem 1.75rem; background:#f8fafc; border-top:1px solid var(--border-light); display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
@@ -1851,7 +1854,7 @@
         </div>
 
         <div class="sim-iframe-container" style="height:620px;">
-          <iframe id="neer-sim-iframe" src="/Neer_kavach/simulation.html" title="Neer Kavach 3D Simulation" loading="lazy" style="height:620px; width:100%; border:none;"></iframe>
+          <iframe id="neer-sim-iframe" src="/Neer_kavach/simulation.html" title="Neer Kavach 3D Simulation" loading="eager" style="height:640px; width:100%; border:none;"></iframe>
           <script>
             (function() {
               if (window.location.protocol === 'file:') {
@@ -2448,15 +2451,52 @@
 
   <!-- Strict Single-View Switching Script -->
   <script>
-    function switchView(viewId, btnElem) {
+    function playNeerVideo() {
+      const vid = document.getElementById('neer-cad-video');
+      const uBtn = document.getElementById('neer-video-unmute');
+      if (vid) {
+        vid.volume = 1.0;
+        vid.muted = false;
+        const p = vid.play();
+        if (p !== undefined) {
+          p.then(() => {
+            vid.muted = false;
+            if (uBtn) uBtn.style.display = 'none';
+          }).catch(() => {
+            vid.muted = true;
+            vid.play();
+            if (uBtn) {
+              uBtn.style.display = 'block';
+              uBtn.onclick = () => {
+                vid.muted = false;
+                vid.volume = 1.0;
+                uBtn.style.display = 'none';
+              };
+            }
+            const unmuteOnTap = () => {
+              vid.muted = false;
+              vid.volume = 1.0;
+              if (uBtn) uBtn.style.display = 'none';
+              window.removeEventListener('click', unmuteOnTap);
+              window.removeEventListener('keydown', unmuteOnTap);
+            };
+            window.addEventListener('click', unmuteOnTap, { once: true });
+            window.addEventListener('keydown', unmuteOnTap, { once: true });
+          });
+        }
+      }
+    }
+
+    function switchView(viewId, btnElem, scrollToTop = true) {
       if (viewId === 'view-simulation' || viewId === 'simulation') {
-        viewId = 'view-video';
+        navigateToSimulation(btnElem);
+        return;
       }
       if (!viewId.startsWith('view-')) {
         viewId = 'view-' + viewId;
       }
 
-      // Hide all view panes
+      // Hide all panes
       const allPanes = document.querySelectorAll('.view-pane');
       allPanes.forEach(pane => pane.classList.remove('active'));
 
@@ -2474,9 +2514,36 @@
         activeBtn.classList.add('active');
       }
 
-      // Sync URL hash without jumping
-      history.replaceState(null, null, '#' + viewId.replace('view-', ''));
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (viewId === 'view-video') {
+        playNeerVideo();
+      }
+
+      if (scrollToTop) {
+        history.replaceState(null, null, '#' + viewId.replace('view-', ''));
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+    }
+
+    function navigateToSimulation(btnElem) {
+      switchView('view-video', null, false);
+      const currentHash = window.location.hash.toLowerCase();
+      if (currentHash === '#view-simulation') {
+        history.replaceState(null, null, '#view-simulation');
+      } else {
+        history.replaceState(null, null, '#simulation');
+      }
+
+      const allBtns = document.querySelectorAll('.sidebar-nav .nav-btn');
+      allBtns.forEach(btn => btn.classList.remove('active'));
+      const simBtn = btnElem || document.getElementById('nav-btn-simulation');
+      if (simBtn) simBtn.classList.add('active');
+
+      setTimeout(() => {
+        const simCard = document.getElementById('simulation-embed');
+        if (simCard) {
+          simCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 150);
     }
 
     // Filter Table Rows in View 2
@@ -2496,19 +2563,27 @@
     }
 
     function syncHashView() {
-      let hash = window.location.hash.replace('#', '') || 'overview';
-      if (hash === 'simulation') hash = 'video';
-      const validViews = ['overview', 'problems', 'video', 'research', 'prototype'];
+      const hash = window.location.hash.replace('#', '').toLowerCase();
+      if (hash === 'simulation' || hash === 'view-simulation') {
+        navigateToSimulation();
+        return;
+      }
+      if (hash === 'video' || hash === 'view-video') {
+        const targetBtn = document.getElementById('nav-btn-video') || document.querySelector(`.sidebar-nav .nav-btn[onclick*="view-video"]`);
+        switchView('view-video', targetBtn, true);
+        return;
+      }
+      const validViews = ['overview', 'problems', 'research', 'prototype'];
       if (validViews.includes(hash)) {
         const targetBtn = document.querySelector(`.sidebar-nav .nav-btn[onclick*="view-${hash}"]`);
-        switchView('view-' + hash, targetBtn);
+        switchView('view-' + hash, targetBtn, true);
+      } else {
+        switchView('view-overview', null, true);
       }
     }
 
     // Hash router on load & hashchange
     window.addEventListener('DOMContentLoaded', syncHashView);
     window.addEventListener('hashchange', syncHashView);
-  </script>
-
-</body>
+  </script></body>
 </html>
