@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -2454,18 +2454,47 @@
 
   <!-- Strict Single-View Switching Script -->
   <script>
-    function forceUnmuteNeer() {
+    let userManuallyPausedNeer = false;
+    let neerAudioUnlocked = false;
+
+    function initNeerVideoListeners() {
+      const vid = document.getElementById('neer-cad-video');
+      if (!vid || vid._listenersAttached) return;
+      vid._listenersAttached = true;
+      vid.addEventListener('pause', () => {
+        userManuallyPausedNeer = true;
+      });
+      vid.addEventListener('play', () => {
+        userManuallyPausedNeer = false;
+      });
+    }
+
+    function forceUnmuteNeer(e) {
       const vid = document.getElementById('neer-cad-video');
       const uBtn = document.getElementById('neer-video-unmute');
-      if (vid) {
-        vid.muted = false;
-        vid.volume = 1.0;
-        if (vid.paused) vid.play().catch(() => {});
-        if (uBtn) uBtn.style.display = 'none';
+      if (!vid) return;
+      
+      // If user paused the video, respect the pause!
+      if (userManuallyPausedNeer) return;
+      
+      // If user touched directly on video player controls, let native player handle it
+      if (e && (e.target === vid || vid.contains(e.target))) return;
+
+      vid.muted = false;
+      vid.volume = 1.0;
+      if (vid.paused && !userManuallyPausedNeer) {
+        vid.play().catch(() => {});
       }
+      if (uBtn) uBtn.style.display = 'none';
+      neerAudioUnlocked = true;
     }
+
     ['pointerdown', 'click', 'touchstart', 'keydown'].forEach(evt => {
-      window.addEventListener(evt, forceUnmuteNeer, { passive: true });
+      window.addEventListener(evt, (e) => {
+        if (!neerAudioUnlocked && !userManuallyPausedNeer) {
+          forceUnmuteNeer(e);
+        }
+      }, { passive: true });
     });
 
     function playNeerVideo() {
@@ -2473,11 +2502,14 @@
       const uBtn = document.getElementById('neer-video-unmute');
       if (!vid) return;
 
+      initNeerVideoListeners();
+      userManuallyPausedNeer = false;
       vid.defaultMuted = false;
       vid.muted = false;
       vid.volume = 1.0;
 
       const attemptPlay = () => {
+        if (userManuallyPausedNeer) return;
         vid.muted = false;
         vid.volume = 1.0;
         const p = vid.play();
@@ -2485,6 +2517,7 @@
           p.then(() => {
             vid.muted = false;
             vid.volume = 1.0;
+            neerAudioUnlocked = true;
             if (uBtn) uBtn.style.display = 'none';
           }).catch((err) => {
             if (err && err.name === 'NotAllowedError') {
@@ -2492,7 +2525,15 @@
               vid.play().catch(() => {});
               if (uBtn) {
                 uBtn.style.display = 'block';
-                uBtn.onclick = forceUnmuteNeer;
+                uBtn.onclick = (ev) => {
+                  if (ev) ev.stopPropagation();
+                  userManuallyPausedNeer = false;
+                  vid.muted = false;
+                  vid.volume = 1.0;
+                  vid.play().catch(() => {});
+                  uBtn.style.display = 'none';
+                  neerAudioUnlocked = true;
+                };
               }
             }
           });

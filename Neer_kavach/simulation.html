@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Neer Kavach – 3D Hydraulic & Flood Simulation</title>
@@ -33,7 +33,7 @@ button:hover{background:#1b5f94}button:focus-visible{outline:2px solid #fff}
 <div class="p" id="meter"><div>Simulated Turbidity</div><div id="ntu" style="font-size:22px;font-weight:700;color:#38bdf8">—</div><div id="bar"><div id="fill"></div></div><div style="font-size:11px;opacity:.75">Illustrative, not a lab reading</div></div>
 <div class="p" id="phone"><h4>Phone Dashboard · AP: NeerKavach · 192.168.4.1</h4><div class="mode" id="mode"></div><div id="rows"></div><div id="log"></div></div>
 <div class="p" id="sub"></div>
-<div class="p" id="ctl"><button id="pp">Pause</button><button id="rs">Restart</button><input type="range" id="seek" min="0" max="102" step="0.1" value="0" aria-label="Timeline"><span id="tm">0:00</span><button id="mu">Voice on</button><button id="sc">Script</button></div>
+<div class="p" id="ctl"><button id="pp">Pause</button><button id="rs">Restart</button><input type="range" id="seek" min="0" max="144" step="0.1" value="0" aria-label="Timeline"><span id="tm">0:00</span><button id="mu">Voice on</button><button id="sc">Script</button></div>
 <div id="start"><h1>Neer Kavach</h1><p>A fast-paced narrated 3D simulation: greywater from the kitchen, four modular treatment stages, soak-pit overflow alert, flood backflow protection and external ESP32 offline dashboard.</p><p style="font-size:13px;opacity:.75">Voice and audio are active by default using your browser's speech synthesis engine.</p><button id="go">Start 3D Simulation</button></div>
 <div id="res"><h1 style="margin:0;color:#38bdf8">Simulation Results</h1><div class="g">
 <div class="k"><b>~90%</b>Turbidity reduction (design target)</div><div class="k"><b>85–90%</b>Solids removal (literature range for wetlands)</div><div class="k"><b>Alert + Divert</b>Soak-pit high level sent to alternate storage</div><div class="k"><b>Valve Closed</b>Flood sensor wet, outlet isolated, manual-safe mode</div><div class="k"><b>₹6,250</b>Per household vs ₹9,300 baseline (−32.80% savings)</div></div>
@@ -45,20 +45,20 @@ if (window.self !== window.top) {
   const nb = document.getElementById('nav-back');
   if (nb) nb.style.display = 'none';
 }
-const T=102;
+const T=144;
 const cues=[
 [0,"The problem","Every monsoon, villages across India face the same crisis. Kitchen and bathroom greywater has nowhere to go. Soak pits overflow, and dirty water spreads around homes."],
-[9,"The problem","Worse, floods saturate the ground. Soak pits stop working, drains run backwards, and small houses have no land for big treatment plants."],
-[17,"Our solution","Introducing Neer Kavach. A compact, gravity-first, flood-ready greywater system, with four treatment stages plus overflow and flood protection."],
-[26,"External monitoring","The prototype itself has no electronics. When the village starts using it, we attach the ESP32 control panel externally. The phone dashboard connects over local Wi-Fi, no internet needed."],
-[35,"Kitchen greywater enters","Now watch. Dirty greywater leaves the kitchen, carrying food waste, grease, soap and hair."],
-[43,"Stage 1 · Pre-filter and grease trap","Stage one. A removable screen and grease trap catch food particles, hair and oil."],
-[51,"Stage 2 · Settling and buffer","Stage two. The settling and buffer chamber lets sludge sink, and absorbs sudden surges so nothing overloads."],
-[59,"Stage 3 · Vertical biofilter","Stage three. The vertical biofilter uses gravel, sand and plant roots to break down the organic load."],
-[67,"Stage 4 · Clean water output","Stage four. Clean water collects here, watched by a float sensor, ready for safe infiltration or non-potable reuse."],
-[75,"Problem 1 solved · Soak-pit overflow","Problem one solved: soak-pit overflow. Watch the level rise. The sensor trips, the buzzer sounds, and the excess goes to alternate storage instead of the street."],
-[85,"Problem 2 solved · Flood protection","Problem two solved: flood protection. Rain rises, the flood sensor turns wet, the check valve closes, and the outlet is isolated. The dashboard shows flood risk, and operators follow the safe manual procedure."],
-[94,"Results","Design targets: around ninety percent less turbidity, and about six thousand rupees per household, thirty-three percent below baseline. To be verified in the lab. Neer Kavach: clean water, safe villages."]];
+[12,"The problem","Worse, floods saturate the ground. Soak pits stop working, drains run backwards, and small houses have no land for big treatment plants."],
+[24,"Our solution","Introducing Neer Kavach. A compact, gravity-first, flood-ready greywater system, with four treatment stages plus overflow and flood protection."],
+[36,"External monitoring","The prototype itself has no electronics. When the village starts using it, we attach the ESP32 control panel externally. The phone dashboard connects over local Wi-Fi, no internet needed."],
+[48,"Kitchen greywater enters","Now watch. Dirty greywater leaves the kitchen, carrying food waste, grease, soap and hair."],
+[58,"Stage 1 Â· Pre-filter and grease trap","Stage one. A removable screen and grease trap catch food particles, hair and oil."],
+[68,"Stage 2 Â· Settling and buffer","Stage two. The settling and buffer chamber lets sludge sink, and absorbs sudden surges so nothing overloads."],
+[78,"Stage 3 Â· Vertical biofilter","Stage three. The vertical biofilter uses gravel, sand and plant roots to break down the organic load."],
+[88,"Stage 4 Â· Clean water output","Stage four. Clean water collects here, watched by a float sensor, ready for safe infiltration or non-potable reuse."],
+[98,"Problem 1 solved Â· Soak-pit overflow","Problem one solved: soak-pit overflow. Watch the level rise. The sensor trips, the buzzer sounds, and the excess goes to alternate storage instead of the street."],
+[114,"Problem 2 solved Â· Flood protection","Problem two solved: flood protection. Rain rises, the flood sensor turns wet, the check valve closes, and the outlet is isolated. The dashboard shows flood risk, and operators follow the safe manual procedure."],
+[130,"Results","Design targets: around ninety percent less turbidity, and about six thousand rupees per household, thirty-three percent below baseline. To be verified in the lab. Neer Kavach: clean water, safe villages."]];
 const $=id=>document.getElementById(id),cl=(x,a=0,b=1)=>Math.max(a,Math.min(b,x)),sm=x=>x*x*(3-2*x);
 const R=new THREE.WebGLRenderer({canvas:$("c"),antialias:true});R.setPixelRatio(Math.min(devicePixelRatio,2));
 const S=new THREE.Scene();S.background=new THREE.Color(0x0a1a2b);S.fog=new THREE.Fog(0x0a1a2b,50,110);
@@ -121,47 +121,47 @@ const fl=at(M(new THREE.PlaneGeometry(160,80),0x3a7fb0,{transparent:true,opacity
 const LB=[["Kitchen (greywater source)",V(-15,7,0),0,35],["Soak pit",V(11.5,3.6,0),0,102],["1 Pre-filter & grease trap",V(-6,5.2,0),17,102],["2 Settling & buffer",V(-2,5.2,0),17,102],["3 Vertical biofilter",V(2,5.2,0),17,102],["4 Clean water output",V(6,5.2,0),17,102],["Alternate storage",V(15.5,4.6,0),17,102],["ESP32 control panel (external)",V(0,9.1,0),26,102],["Flood sensor",V(8,3.5,5),17,102],["Check valve",V(9.3,2.3,0),17,102]];
 LB.forEach(l=>{l.el=document.createElement("div");l.el.className="l";l.el.textContent=l[0];$("lb").appendChild(l.el)});
 // camera keys
-const K=[[0,[2,10,34],[0,2,0]],[9,[-8,6,18],[-12,2.5,0]],[17,[0,8,30],[0,2.5,0]],[26,[1,10,22],[1,5,0]],[35,[-12,5,12],[-12,2.5,0]],[43,[-6,6,11],[-6,2,0]],[51,[-2,6,11],[-2,2,0]],[59,[2,6,11],[2,2,0]],[67,[6,6,11],[6,2,0]],[75,[11,5,12],[12,1.5,0]],[85,[7,6,17],[8,1,2]],[94,[0,10,32],[0,2.5,0]]];
+const K=[[0,[2,10,34],[0,2,0]],[12,[-8,6,18],[-12,2.5,0]],[24,[0,8,30],[0,2.5,0]],[36,[1,10,22],[1,5,0]],[48,[-12,5,12],[-12,2.5,0]],[58,[-6,6,11],[-6,2,0]],[68,[-2,6,11],[-2,2,0]],[78,[2,6,11],[2,2,0]],[88,[6,6,11],[6,2,0]],[98,[11,5,12],[12,1.5,0]],[114,[7,6,17],[8,1,2]],[130,[0,10,32],[0,2.5,0]]];
 function camAt(t){let i=0;while(i<K.length-1&&K[i+1][0]<=t)i++;const a=K[Math.max(0,i-1)],b=K[i],f=sm(cl((t-b[0])/2.8)),m=(u,v)=>V(...u).lerp(V(...v),f);
 const p=m(a[1],b[1]);p.x+=Math.sin(t*.35)*.7;cam.position.copy(p);cam.lookAt(m(a[2],b[2]))}
 // state functions
-function soakF(t){if(t<17)return 1;if(t<21)return 1-(t-17)/4*.65;if(t<75)return .35;if(t<81)return .35+(t-75)/6*.62;if(t<87)return .97-(t-81)/6*.42;return .55}
-const stoF=t=>t<79?0:Math.min(.55,(t-79)/6*.55);
-const clF=t=>{const k=[[35,0],[43,.05],[51,.3],[59,.55],[67,.88],[75,.96]];if(t<=35)return 0;for(let i=1;i<k.length;i++)if(t<k[i][0])return k[i-1][1]+(k[i][1]-k[i-1][1])*(t-k[i-1][0])/(k[i][0]-k[i-1][0]);return .96};
-const LOG=[[26,"ESP32 online · local Wi-Fi AP"],[35,"Inflow detected from kitchen"],[79,"Soak-pit HIGH · buzzer ON · diverting to storage"],[82,"Level falling · storage filling"],[86,"Flood sensor WET · FLOOD RISK"],[88,"Check valve CLOSED · outlet isolated"],[90,"Inlet isolated manually · event logged"],[94,"Awaiting operator sign-off"]];
+function soakF(t){if(t<24)return 1;if(t<28)return 1-(t-24)/4*.65;if(t<98)return .35;if(t<106)return .35+(t-98)/8*.62;if(t<114)return .97-(t-106)/8*.42;return .55}
+const stoF=t=>t<102?0:Math.min(.55,(t-102)/8*.55);
+const clF=t=>{const k=[[48,0],[58,.05],[68,.3],[78,.55],[88,.88],[98,.96]];if(t<=48)return 0;for(let i=1;i<k.length;i++)if(t<k[i][0])return k[i-1][1]+(k[i][1]-k[i-1][1])*(t-k[i-1][0])/(k[i][0]-k[i-1][0]);return .96};
+const LOG=[[36,"ESP32 online Â· local Wi-Fi AP"],[48,"Inflow detected from kitchen"],[104,"Soak-pit HIGH Â· buzzer ON Â· diverting to storage"],[108,"Level falling Â· storage filling"],[115,"Flood sensor WET Â· FLOOD RISK"],[118,"Check valve CLOSED Â· outlet isolated"],[122,"Inlet isolated manually Â· event logged"],[130,"Awaiting operator sign-off"]];
 let lastDash="";
 function update(t){
- const gs=sm(cl((t-17)/2));G.visible=gs>0;G.scale.setScalar(Math.max(gs,.001));
- const py=t<26?18:18-sm(cl((t-26)/4))*10.3;P.position.set(0,py,-1);P.visible=t>=26;
- const soak=soakF(t),sto=stoF(t),flood=t>=86&&t<94,alarm=(t>=78&&t<82)||(t>=86&&t<92),closed=t>=88&&t<94;
- for(let i=0;i<4;i++){const lv=cl((t-(35+i*7))/7)*.7*(1+Math.sin(t*2+i)*.02);const h=Math.max(.001,2.4*lv);W_[i].scale.y=h;W_[i].position.y=1.15+h/2}
- flt.position.y=1.15+Math.max(.001,2.4*cl((t-55)/6)*.7)+.1;
- const ph=Math.max(.01,2.8*soak);pitW.scale.y=ph;pitW.position.y=.5+ph/2;pitW.material.color.set(t<35?0x7a5a35:soak>.85?0xc89a55:0x7fb8c8);
+ const gs=sm(cl((t-24)/2));G.visible=gs>0;G.scale.setScalar(Math.max(gs,.001));
+ const py=t<36?18:18-sm(cl((t-36)/4))*10.3;P.position.set(0,py,-1);P.visible=t>=36;
+ const soak=soakF(t),sto=stoF(t),flood=t>=115&&t<128,alarm=(t>=104&&t<110)||(t>=115&&t<124),closed=t>=118&&t<128;
+ for(let i=0;i<4;i++){const lv=cl((t-(48+i*10))/10)*.7*(1+Math.sin(t*2+i)*.02);const h=Math.max(.001,2.4*lv);W_[i].scale.y=h;W_[i].position.y=1.15+h/2}
+ flt.position.y=1.15+Math.max(.001,2.4*cl((t-75)/6)*.7)+.1;
+ const ph=Math.max(.01,2.8*soak);pitW.scale.y=ph;pitW.position.y=.5+ph/2;pitW.material.color.set(t<48?0x7a5a35:soak>.85?0xc89a55:0x7fb8c8);
  const sh=Math.max(.01,3*sto/.55*.7);stW.scale.y=sh;stW.position.y=.5+sh/2;
- pud.scale.setScalar(t<17?1+Math.sin(t*3)*.03:Math.max(.001,1-(t-17)/3));pud.visible=pud.scale.x>.01;
- const fy=t<85?-1:t<94?-1+cl((t-85)/6)*1.85:.85-cl((t-94)/4)*1.9;fl.position.y=fy;fl.visible=fy>-.9;
- rain.visible=t<16||(t>=84&&t<94);const ra=rg.attributes.position.array;if(rain.visible)for(let i=0;i<RN;i++){ra[i*3+1]=(ra[i*3+1]-.5+30)%30;}rg.attributes.position.needsUpdate=true;
+ pud.scale.setScalar(t<24?1+Math.sin(t*3)*.03:Math.max(.001,1-(t-24)/4));pud.visible=pud.scale.x>.01;
+ const fy=t<114?-1:t<124?-1+cl((t-114)/8)*1.85:.85-cl((t-124)/6)*1.9;fl.position.y=fy;fl.visible=fy>-.9;
+ rain.visible=t<24||(t>=112&&t<128);const ra=rg.attributes.position.array;if(rain.visible)for(let i=0;i<RN;i++){ra[i*3+1]=(ra[i*3+1]-.5+30)%30;}rg.attributes.position.needsUpdate=true;
  fsLed.material.color.set(flood?0xff5a5f:0x3ddc84);fsLed.material.emissive.set(flood?0x7a1010:0x0a3a1a);
  valve.material.color.set(closed?0xff5a5f:0x3ddc84);valve.material.emissive.set(closed?0x7a1010:0x0a3a1a);
- const mode=t<26?["OFFLINE · not fitted",0x555555,"#34495e"]:t<78?["NORMAL",0,"#1f7a46"]:t<83?["SOAK-PIT HIGH",0,"#b26a00"]:t<86?["NORMAL",0,"#1f7a46"]:t<94?["FLOOD RISK",0,"#b3262b"]:["SAFE · MANUAL RECOVERY",0,"#b26a00"];
+ const mode=t<36?["OFFLINE Â· not fitted",0x555555,"#34495e"]:t<98?["NORMAL",0,"#1f7a46"]:t<110?["SOAK-PIT HIGH",0,"#b26a00"]:t<115?["NORMAL",0,"#1f7a46"]:t<128?["FLOOD RISK",0,"#b3262b"]:["SAFE Â· MANUAL RECOVERY",0,"#b26a00"];
  const col=mode[2];scr.material.emissive.set(col);led.material.color.set(col);led.material.emissive.set(col);
  // particles
- const run=t>=35&&t<90;let k=0;const tmp=new THREE.Color();
- for(let i=0;i<N;i++){const d=PD[i],e=35+d.o*L/SP;let s=(t-e)*SP;
-  if(!run||t<e||t>=88+(1-d.o)*2){pp[k]=0;pp[k+1]=-50;pp[k+2]=0;k+=3;continue}
+ const run=t>=48&&t<120;let k=0;const tmp=new THREE.Color();
+ for(let i=0;i<N;i++){const d=PD[i],e=48+d.o*L/SP;let s=(t-e)*SP;
+  if(!run||t<e||t>=118+(1-d.o)*2){pp[k]=0;pp[k+1]=-50;pp[k+2]=0;k+=3;continue}
   s=s%L;const p=posAt(s);pp[k]=p.x+d.j.x;pp[k+1]=p.y+d.j.y;pp[k+2]=p.z+d.j.z;
   tmp.copy(d.d).lerp(clean,sm(cl((p.x+7)/14)));pc[k]=tmp.r;pc[k+1]=tmp.g;pc[k+2]=tmp.b;k+=3}
  pg.attributes.position.needsUpdate=true;pg.attributes.color.needsUpdate=true;
  // HUD
- const c=clF(t),ntu=t<35?"—":Math.round(220*(1-c))+" NTU";$("ntu").textContent=ntu;$("fill").style.width=(t<35?100:(1-c)*100)+"%";
- $("phone").style.display=t>=26?"block":"none";
+ const c=clF(t),ntu=t<48?"â€”":Math.round(220*(1-c))+" NTU";$("ntu").textContent=ntu;$("fill").style.width=(t<48?100:(1-c)*100)+"%";
+ $("phone").style.display=t>=36?"block":"none";
  const me=$("mode");me.textContent=mode[0];me.style.background=col;
- const rows=[["Buffer",t<35?"—":"OK"],["Soak pit",Math.round(soak*100)+"%"+(soak>.85?" HIGH":"")],["Flood sensor",flood?"WET":"DRY"],["Alt. storage",Math.round(sto/.55*55)+"%"],["Outlet valve",closed?"CLOSED":"OPEN"]];
+ const rows=[["Buffer",t<48?"â€”":"OK"],["Soak pit",Math.round(soak*100)+"%"+(soak>.85?" HIGH":"")],["Flood sensor",flood?"WET":"DRY"],["Alt. storage",Math.round(sto/.55*55)+"%"],["Outlet valve",closed?"CLOSED":"OPEN"]];
  const lg=LOG.filter(x=>t>=x[0]).slice(-4).reverse().map(x=>`<div>${Math.floor(x[0]/60)}:${String(Math.floor(x[0]%60)).padStart(2,"0")} ${x[1]}</div>`).join("");
- const dh=rows.map(r=>`<div class="r"><span>${r[0]}</span><b>${r[1]}</b></div>`).join("")+"§"+lg;if(dh!==lastDash){lastDash=dh;const q=dh.split("§");$("rows").innerHTML=q[0];$("log").innerHTML=q[1]}
- const act=t<43?-1:t<51?2:t<59?3:t<67?4:t<75?5:-1;
+ const dh=rows.map(r=>`<div class="r"><span>${r[0]}</span><b>${r[1]}</b></div>`).join("")+"Â§"+lg;if(dh!==lastDash){lastDash=dh;const q=dh.split("Â§");$("rows").innerHTML=q[0];$("log").innerHTML=q[1]}
+ const act=t<58?-1:t<68?2:t<78?3:t<88?4:t<98?5:-1;
  LB.forEach((l,i)=>{const v=l[1].clone().project(cam);const on=t>=l[2]&&t<l[3]&&v.z<1;l.el.style.display=on?"block":"none";if(on)l.el.style.transform=`translate(${(v.x*.5+.5)*innerWidth}px,${(-v.y*.5+.5)*innerHeight}px) translate(-50%,-100%)`;l.el.className="l"+(i===act?" on":"")});
- $("res").style.display=t>=95?"flex":"none";
+ $("res").style.display=t>=132?"flex":"none";
  return alarm}
 // audio + voice
 let playing=false,t=0,last=0,cueI=-2,muted=false,ac=null,gain=null,voice=null,isSpeaking=false;
@@ -201,6 +201,11 @@ function setPlay(p){
   }
   if(gain)gain.gain.value=0;
 }
+$("start").onclick=(e)=>{
+  if(e.target&&e.target.id!=="go"){
+    $("go").click();
+  }
+};
 $("go").onclick=()=>{
   $("start").style.display="none";
   try{
@@ -240,13 +245,29 @@ $("seek").oninput=e=>{
 $("sc").onclick=()=>$("scr").style.display="block";$("cl").onclick=()=>$("scr").style.display="none";
 $("scl").innerHTML="<h2>Video script and timeline</h2>"+cues.map((c,i)=>{const s=c[0],e=i<cues.length-1?cues[i+1][0]:T,f=x=>Math.floor(x/60)+":"+String(x%60).padStart(2,"0");return `<div><i>${f(s)}–${f(e)} · ${c[1]}</i><br>${c[2]}</div>`}).join("");
 function resize(){R.setSize(innerWidth,innerHeight,false);cam.aspect=innerWidth/innerHeight;cam.updateProjectionMatrix()}addEventListener("resize",resize);resize();
+let sceneHoldTimer = 0;
 function loop(now){
-  const dt=Math.min(.1,(now-last)/1000);
-  last=now;
+  const dt = Math.min(.1, (now - last) / 1000);
+  last = now;
 
-  if(playing){
-    t=Math.min(T,t+dt);
-    if(t>=T)setPlay(false);
+  if (playing) {
+    let currentCueIndex = 0;
+    cues.forEach((c, i) => { if (c[0] <= t) currentCueIndex = i; });
+    const nextCue = cues[currentCueIndex + 1];
+
+    if (isSpeaking && nextCue && (t + dt >= nextCue[0])) {
+      sceneHoldTimer += dt;
+      if (sceneHoldTimer > 6.0) {
+        isSpeaking = false;
+        t = Math.min(T, t + dt);
+      } else {
+        t = nextCue[0] - 0.001;
+      }
+    } else {
+      sceneHoldTimer = 0;
+      t = Math.min(T, t + dt);
+    }
+    if (t >= T) setPlay(false);
   }
   camAt(t);
   const alarm=update(t);

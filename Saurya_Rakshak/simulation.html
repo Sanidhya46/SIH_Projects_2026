@@ -767,7 +767,7 @@ button.btn-ctl:hover {
   <button id="pp" class="btn-ctl">⏸ Pause</button>
   <button id="rs" class="btn-ctl">↺ Restart</button>
   <button id="btn-show-script" class="btn-ctl" style="border-color:#06b6d4; color:#38bdf8;">📜 Script</button>
-  <input type="range" id="seek" min="0" max="140" step=".1" value="0" aria-label="Timeline">
+  <input type="range" id="seek" min="0" max="240" step=".1" value="0" aria-label="Timeline">
   <span id="tm">0:00</span>
   <button id="mu" class="btn-ctl">🔊 Sound</button>
 </div>
@@ -910,7 +910,7 @@ if (window.self !== window.top) {
   const nb = document.getElementById('nav');
   if (nb) nb.style.display = 'none';
 }
-const T = 140;
+const T = 240;
 const $ = id => document.getElementById(id);
 const cl = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
 const sm = x => x * x * (3 - 2 * x);
@@ -960,38 +960,38 @@ function playSfx(type) {
 const cues = [
   [0, "1. Industrial Fatality Toll & NCRB Reality", 
    "Every year across India, thousands of workers lose their lives to preventable industrial hazards. In 2023 alone, National Crime Records Bureau documented thirteen thousand eight hundred thirty-seven electrocution deaths, over twenty-five thousand fatal falls from heights, and hundreds of toxic gas asphyxiation tragedies in confined spaces."],
-   
-  [11, "2. Failure of Conventional Passive PPE", 
+    
+  [18, "2. Failure of Conventional Passive PPE", 
    "Workers on electrical, welding, and confined-space jobs face electric shock, blinding arc flash burns reaching nineteen thousand degrees, toxic fumes, and high-G falls. Conventional helmets and gloves protect purely passively, but supervisors have zero electronic awareness of whether gear is fastened, whether air is toxic, or whether a fallen worker is lying unconscious."],
-   
-  [22, "3. Our Solution: Saurya Rakshak Ecosystem", 
+    
+  [40, "3. Our Solution: Saurya Rakshak Ecosystem", 
    "Introducing Saurya Rakshak: an interconnected four-part active safety ecosystem engineered specifically for electrical utilities, metal fabrication, and hazardous trades. As you can see in our 3D digital twin, our worker is directly wearing the Smart Tactical Helmet, Armored Sensing Gloves, and the Chest-Mounted Multi-Hazard Detector Pod."],
-   
-  [33, "4. Unit 1: Smart Tactical Helmet (IS 2925)", 
+    
+  [60, "4. Unit 1: Smart Tactical Helmet (IS 2925)", 
    "Unit one: Notice the Smart Tactical Helmet worn directly on the worker's head. Built on a certified IS twenty-nine twenty-five impact shell with an external magnetic Hall-effect sensor that continuously verifies the chin strap is securely fastened under the jaw, plus an optical UV photodiode that triggers an auto-darkening electrochromic visor in under fifteen milliseconds to prevent retinal flash burns."],
-   
-  [45, "5. Unit 2: Armored Sensing Gloves (Class 0 1000V)", 
+    
+  [82, "5. Unit 2: Armored Sensing Gloves (Class 0 1000V)", 
    "Unit two: Look at the worker's hands wearing the Armored Sensing Gloves. Certified ASTM D one-twenty Class zero rubber providing one thousand volt dielectric standoff. An embedded capacitive non-contact voltage sensor detects live four-fifteen volt lines at ten centimeters standoff, firing a two-hundred-fifty hertz palm haptic vibration motor to instinctively pull the electrician's hand away before fatal touch."],
-   
-  [57, "6. Unit 3: Multi-Hazard Detector Pod", 
+    
+  [104, "6. Unit 3: Multi-Hazard Detector Pod", 
    "Unit three: Mounted directly on the worker's chest harness is the Multi-Hazard Detector Pod. It houses four independent optical gas chambers monitoring Methane explosive LEL, Oxygen deficiency below nineteen point five percent, Carbon Monoxide, and lethal Hydrogen Sulfide sewer gas, coupled with a six-axis IMU for fall detection, an autonomous one-hundred decibel acoustic siren, and a manual SOS trigger."],
-   
-  [70, "7. Local-First Architecture: 100% Offline Autonomy", 
+    
+  [127, "7. Local-First Architecture: 100% Offline Autonomy", 
    "Critical engineering rule: every single hazard alarm executes locally in hardware without needing internet, cloud, or Wi-Fi. In subterranean switchyards, shielded basements, and rural substations, the buzzer sounds, the visor darkens, and the glove vibrates with zero latency. Events are saved locally first, then synchronized when connectivity returns."],
-   
-  [82, "8. Live Demo: Arc Flash & 415V Interception", 
+    
+  [148, "8. Live Demo: Arc Flash & 415V Interception", 
    "Watch the live hazard interception. An arc flash explosion unleashes blinding UV radiation: the helmet's electrochromic visor instantly darkens on the worker's head in under fifteen milliseconds, protecting the eyes. Simultaneously, approaching a live four-fifteen volt terminal triggers the glove's capacitive NCV sensor, unleashing localized haptic warning pulses to prevent ventricular fibrillation."],
-   
-  [96, "9. Live Demo: Toxic Gas & Scaffolding Fall", 
+    
+  [170, "9. Live Demo: Toxic Gas & Scaffolding Fall", 
    "Now observe toxic gas inundation. Methane and carbon monoxide exceed safety thresholds: the chest pod's screen flashes danger crimson, sounding the autonomous one-hundred decibel siren. When the worker suffers a scaffolding fall, the six-axis IMU detects freefall followed by impact shock, initiating an automatic ten-second immobility countdown beacon for emergency dispatch."],
-   
-  [110, "10. Unit 4: Edge Supervisor Gateway Telemetry", 
+    
+  [192, "10. Unit 4: Edge Supervisor Gateway Telemetry", 
    "Unit four: The Edge Supervisor Gateway. Using long-range LoRa mesh, it aggregates telemetry from up to sixty-four workers, deduplicates packets with unique collision-free IDs, and commits incident blackbox logs to embedded SQLite in WAL mode on industrial-grade SPI flash, guaranteeing complete audit recovery even after catastrophic power cuts."],
-   
-  [122, "11. T01–T20 Systematic Verification Matrix", 
+    
+  [212, "11. T01â€“T20 Systematic Verification Matrix", 
    "Saurya Rakshak is verified across twenty rigorous engineering benchmarks: two-point-five kilovolt dielectric breakdown standoff, sub-fifteen millisecond optical trip latency, four-gas linearity calibration, freefall shock algorithm validation, and zero false-trip reliability under heavy industrial electromagnetic interference."],
-   
-  [131, "12. Conclusion & Hackathon Readiness", 
+    
+  [227, "12. Conclusion & Hackathon Readiness", 
    "Saurya Rakshak: Active Protection, Autonomous Detection, and Immediate Response. A fully fabricated, hardware-validated, research-grounded industrial safety innovation ready for nationwide deployment to safeguard India's workforce."]
 ];
 
@@ -1213,17 +1213,17 @@ S.add(gasCloud);
 // Camera Path Keyframes - Smooth Framings of Worn Equipment
 const K = [
   [0, [0, 8, 25], [0, 3, 0]],
-  [11, [-5, 6, 18], [0, 3, 0]],
-  [22, [4, 6.5, 16], [0, 3, 2]],
-  [33, [1.4, 4.8, 6.2], [0, 4.2, 3]],    // Close-Up: Worn Helmet on Head
-  [45, [-1.2, 2.7, 5.8], [-0.7, 1.8, 3]], // Close-Up: Worn Gloves on Hands
-  [57, [1.3, 3.1, 5.5], [0, 2.65, 3]],   // Close-Up: Worn Detector on Chest
-  [70, [3, 6, 14], [0, 3, 2]],
-  [82, [3.8, 4.8, 9.5], [0, 3, 1]],     // Arc & Gas Scene
-  [96, [2, 5.5, 11], [0, 2.5, 3]],      // Fall Impact Scene
-  [110, [-10, 5.5, 0], [-12, 4, -8]],    // Supervisor Gateway Desk
-  [122, [0, 8.5, 20], [0, 3, 0]],
-  [131, [0, 7, 20], [0, 3, 0]]
+  [18, [-5, 6, 18], [0, 3, 0]],
+  [40, [4, 6.5, 16], [0, 3, 2]],
+  [60, [1.4, 4.8, 6.2], [0, 4.2, 3]],    // Close-Up: Worn Helmet on Head
+  [82, [-1.2, 2.7, 5.8], [-0.7, 1.8, 3]], // Close-Up: Worn Gloves on Hands
+  [104, [1.3, 3.1, 5.5], [0, 2.65, 3]],   // Close-Up: Worn Detector on Chest
+  [127, [3, 6, 14], [0, 3, 2]],
+  [148, [3.8, 4.8, 9.5], [0, 3, 1]],     // Arc & Gas Scene
+  [170, [2, 5.5, 11], [0, 2.5, 3]],      // Fall Impact Scene
+  [192, [-10, 5.5, 0], [-12, 4, -8]],    // Supervisor Gateway Desk
+  [212, [0, 8.5, 20], [0, 3, 0]],
+  [227, [0, 7, 20], [0, 3, 0]]
 ];
 
 function camAt(t) {
@@ -1455,28 +1455,28 @@ function triggerManualHazard(hazard) {
 
 // Sensor Telemetry Provider
 function getHUD(currT, arcOn, voltOn, gasOn, fallOn, strapOpen) {
-  const co = gasOn ? 115 : (currT >= 96 && currT < 104 ? 85 : 5);
-  const ch4 = (manualOverride === 'ch4' || gasOn) ? 3.4 : (currT >= 96 && currT < 104 ? 1.8 : 0.0);
+  const co = gasOn ? 115 : (currT >= 170 && currT < 182 ? 85 : 5);
+  const ch4 = (manualOverride === 'ch4' || gasOn) ? 3.4 : (currT >= 170 && currT < 182 ? 1.8 : 0.0);
   const h2s = (manualOverride === 'gas') ? 25 : 0;
   const o2 = (manualOverride === 'hypoxia') ? "17.9%" : (gasOn ? "18.2%" : "20.8%");
-  const ncvVolt = (voltOn || manualOverride === 'voltage') ? 415 : (currT >= 45 && currT < 50 ? 240 : 0);
-  const uvLevel = (arcOn || manualOverride === 'arc') ? 14.8 : (currT >= 82 && currT < 90 ? 12.2 : 0.4);
+  const ncvVolt = (voltOn || manualOverride === 'voltage') ? 415 : (currT >= 82 && currT < 96 ? 240 : 0);
+  const uvLevel = (arcOn || manualOverride === 'arc') ? 14.8 : (currT >= 148 && currT < 162 ? 12.2 : 0.4);
   const imuG = (fallOn || manualOverride === 'fall') ? 5.2 : 1.0;
-  const tempVal = (manualOverride === 'heat') ? "58°C HOT" : "28.5°C";
+  const tempVal = (manualOverride === 'heat') ? "58Â°C HOT" : "28.5Â°C";
   const batt = (manualOverride === 'battery') ? "14% LOW" : "96%";
 
   return [
     ["Chin-Strap", strapOpen ? "UNLATCHED" : "LOCKED", strapOpen ? "bad" : "ok"],
     ["NCV Voltage", ncvVolt > 50 ? `${ncvVolt}V TRIP` : "0V SAFE", ncvVolt > 50 ? "bad" : "ok"],
     ["Arc Flash UV", uvLevel > 5 ? `${uvLevel} UVI (DARK)` : `${uvLevel} UVI`, uvLevel > 5 ? "bad" : "ok"],
-    ["Methane (CH₄)", `${ch4}%`, ch4 > 1.0 ? "bad" : "ok"],
-    ["Toxic H₂S", h2s > 10 ? `${h2s} ppm TRIP` : `${h2s} ppm`, h2s > 10 ? "bad" : "ok"],
-    ["Oxygen (O₂)", o2, (o2 === "17.9%" || gasOn) ? "bad" : "ok"],
+    ["Methane (CHâ‚„)", `${ch4}%`, ch4 > 1.0 ? "bad" : "ok"],
+    ["Toxic Hâ‚‚S", h2s > 10 ? `${h2s} ppm TRIP` : `${h2s} ppm`, h2s > 10 ? "bad" : "ok"],
+    ["Oxygen (Oâ‚‚)", o2, (o2 === "17.9%" || gasOn) ? "bad" : "ok"],
     ["Ambient Temp", tempVal, manualOverride === 'heat' ? "bad" : "ok"],
     ["Motion IMU", imuG > 2.0 ? `FREEFALL ${imuG}G` : "1.0G STABLE", imuG > 2.0 ? "bad" : "ok"],
     ["LiFePO4 Batt", batt, manualOverride === 'battery' ? "bad" : "ok"],
     ["Glove Barrier", manualOverride === 'dielectric' ? "1000V STANDOFF" : "1000V ISOLATED", "ok"],
-    ["Mesh Network", (currT >= 74 && currT < 78) || manualOverride === 'lora' ? "OFFLINE (STORE)" : "ONLINE (LORA)", (currT >= 74 && currT < 78) || manualOverride === 'lora' ? "warn" : "ok"]
+    ["Mesh Network", (currT >= 130 && currT < 140) || manualOverride === 'lora' ? "OFFLINE (STORE)" : "ONLINE (LORA)", (currT >= 130 && currT < 140) || manualOverride === 'lora' ? "warn" : "ok"]
   ];
 }
 
@@ -1491,13 +1491,13 @@ function update(currT, dt) {
   }
 
   // Active Hazard States
-  const isArc = (currT >= 82 && currT < 90) || manualOverride === 'arc';
-  const isVolt = (currT >= 45 && currT < 50) || manualOverride === 'voltage' || manualOverride === 'dielectric';
-  const isGas = (currT >= 96 && currT < 104) || manualOverride === 'gas' || manualOverride === 'ch4' || manualOverride === 'hypoxia';
-  const isFall = (currT >= 104 && currT < 110) || manualOverride === 'fall';
-  const isStrapOpen = (currT >= 33 && currT < 37) || manualOverride === 'strap';
+  const isArc = (currT >= 148 && currT < 162) || manualOverride === 'arc';
+  const isVolt = (currT >= 82 && currT < 96) || (currT >= 162 && currT < 170) || manualOverride === 'voltage' || manualOverride === 'dielectric';
+  const isGas = (currT >= 170 && currT < 182) || manualOverride === 'gas' || manualOverride === 'ch4' || manualOverride === 'hypoxia';
+  const isFall = (currT >= 182 && currT < 192) || manualOverride === 'fall';
+  const isStrapOpen = (currT >= 60 && currT < 70) || manualOverride === 'strap';
   const isSos = manualOverride === 'sos';
-  const isHeat = (currT >= 82 && currT < 96) || manualOverride === 'heat';
+  const isHeat = (currT >= 148 && currT < 170) || manualOverride === 'heat';
 
   // 1. Worker Animation: Breathing / Work Motion / Fall
   worker.position.y = Math.sin(currT * 1.5) * 0.03;
@@ -1509,9 +1509,9 @@ function update(currT, dt) {
   }
 
   // Highlight Current Focused Gear in Top Banner
-  $("pill-h").className = (currT >= 33 && currT < 45) || isArc || isStrapOpen ? "gear-badge-pill highlight" : "gear-badge-pill";
-  $("pill-g").className = (currT >= 45 && currT < 57) || isVolt ? "gear-badge-pill highlight" : "gear-badge-pill";
-  $("pill-d").className = (currT >= 57 && currT < 70) || isGas || isFall || isSos || isHeat ? "gear-badge-pill highlight" : "gear-badge-pill";
+  $("pill-h").className = (currT >= 60 && currT < 82) || isArc || isStrapOpen ? "gear-badge-pill highlight" : "gear-badge-pill";
+  $("pill-g").className = (currT >= 82 && currT < 104) || isVolt ? "gear-badge-pill highlight" : "gear-badge-pill";
+  $("pill-d").className = (currT >= 104 && currT < 127) || isGas || isFall || isSos || isHeat ? "gear-badge-pill highlight" : "gear-badge-pill";
 
   // -------------------------------------------------------------------------
   // 2. VISIBLE REACTIONS ON WORN GEAR DIRECTLY ON PERSON
@@ -1689,17 +1689,17 @@ function update(currT, dt) {
   }
 
   // 7. Sensor Telemetry HUD
-  $("hud").style.display = currT >= 22 ? "block" : "none";
+  $("hud").style.display = currT >= 40 ? "block" : "none";
   const hud = getHUD(currT, isArc, isVolt, isGas, isFall, isStrapOpen);
   $("rows").innerHTML = hud.map(r => `<div class="sr"><span>${r[0]}</span><b class="${r[2]}">${r[1]}</b></div>`).join("");
 
   // 8. Incidents Log
-  if (currT >= 33 && currT < 37) addIncident(currT, "CHINSTRAP_UNLATCHED", "m", "Helmet SR-H01");
-  if (currT >= 45 && currT < 49) addIncident(currT, "415V_CONTACT_ALERT", "h", "Glove NCV-01");
-  if (currT >= 82 && currT < 87) addIncident(currT, "ARC_FLASH_UV_BLAST", "h", "Helmet Optical");
-  if (currT >= 96 && currT < 101) addIncident(currT, "TOXIC_GAS_CH4_CO", "h", "Gas Pod SR-GF01");
-  if (currT >= 104 && currT < 109) addIncident(currT, "MAN_DOWN_FALL_5.2G", "h", "IMU 6-Axis");
-  if (currT >= 74 && currT < 78) addIncident(currT, "NETWORK_OFFLINE_WAL", "l", "Local SPI Flash");
+  if (currT >= 62 && currT < 68) addIncident(currT, "CHINSTRAP_UNLATCHED", "m", "Helmet SR-H01");
+  if (currT >= 85 && currT < 92) addIncident(currT, "415V_CONTACT_ALERT", "h", "Glove NCV-01");
+  if (currT >= 150 && currT < 156) addIncident(currT, "ARC_FLASH_UV_BLAST", "h", "Helmet Optical");
+  if (currT >= 172 && currT < 178) addIncident(currT, "TOXIC_GAS_CH4_CO", "h", "Gas Pod SR-GF01");
+  if (currT >= 182 && currT < 188) addIncident(currT, "MAN_DOWN_FALL_5.2G", "h", "IMU 6-Axis");
+  if (currT >= 132 && currT < 138) addIncident(currT, "NETWORK_OFFLINE_WAL", "l", "Local SPI Flash");
 
   $("iq").style.display = incidentLog.length ? "block" : "none";
   $("incidents").innerHTML = incidentLog.slice().reverse().slice(0, 5).map(x => {
@@ -1711,6 +1711,11 @@ function update(currT, dt) {
 }
 
 // User Controls Bindings
+$("splash").onclick = (e) => {
+  if (e.target && e.target.id !== "go") {
+    $("go").click();
+  }
+};
 $("go").onclick = () => {
   $("splash").style.display = "none";
   t = 0;
@@ -1758,12 +1763,31 @@ addEventListener("resize", resize);
 resize();
 
 // Simulation Animation Frame Loop
+let sceneHoldTimer = 0;
 function loop(now) {
   const dt = Math.min(0.1, (now - last) / 1000);
   last = now;
   
   if (playing) {
-    t = Math.min(T, t + dt);
+    let currentCueIndex = 0;
+    cues.forEach((c, i) => { if (c[0] <= t) currentCueIndex = i; });
+    const nextCue = cues[currentCueIndex + 1];
+    
+    // PERFECT VOICE SYNC: If the speech engine is still reciting the current scene's script,
+    // hold right before the next scene boundary so the voice finishes completely!
+    if (isSpeaking && nextCue && (t + dt >= nextCue[0])) {
+      sceneHoldTimer += dt;
+      if (sceneHoldTimer > 6.0) {
+        // Safety timeout to prevent freeze if TTS onend didn't fire
+        isSpeaking = false;
+        t = Math.min(T, t + dt);
+      } else {
+        t = nextCue[0] - 0.001;
+      }
+    } else {
+      sceneHoldTimer = 0;
+      t = Math.min(T, t + dt);
+    }
     if (t >= T) setPlay(false);
   }
   
